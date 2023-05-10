@@ -50,7 +50,7 @@ const config = {
     }
   },
   fps: {
-    target: 60,
+    target: 70,
     forceSetTimeOut: true
   },
   scene: initScenes()

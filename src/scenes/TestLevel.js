@@ -15,12 +15,14 @@ class TestLevel extends Phaser.Scene{
 
         this.SCREEN_WIDTH = this.config.width;
         this.SCREEN_HEIGHT = this.config.height;
-        this.MAP_WIDTH = 3225;
-        this.MAP_HEIGHT = 1612.5; 
+        this.MAP_WIDTH = 6450/2;
+        this.MAP_HEIGHT = 3225/2; 
         this.zoom = this.config.zoomFactor; 
         this.sceneName = this.add.systems.config;
 
         //this.physics.add.sprite(0,0, "bg").setOrigin(0).setScrollFactor(0).setDepth(-10); 
+
+        this.add.image(0,0,"back").setOrigin(0,0).setScale(1.5);
 
         //Creation de la scene : map + layers
         const map = this.createMap();  
@@ -60,7 +62,7 @@ class TestLevel extends Phaser.Scene{
 
     //Creation des layers
     createLayers(map){
-        const tileset = map.getTileset("tileset");
+        const tileset = map.getTileset("placeholder");
         const layer_plateformes = map.createLayer("Plateformes", tileset);
         layer_plateformes.setScale(0.25);
         const playerSpawn = map.getObjectLayer('PlayerSpawn');

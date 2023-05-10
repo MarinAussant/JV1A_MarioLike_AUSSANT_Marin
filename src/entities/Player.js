@@ -17,23 +17,29 @@ class Player extends Phaser.Physics.Arcade.Sprite{
         this.listeSkyglow = skyglow; 
 
         this.init();
-        this.initEvents(); 
+        this.initEvents();
+
+        this.currentState = null;
+        this.states = {};
+
     }
 
     init(){
         //Variables personnage
-        this.gravity = 100; 
+        this.gravity = 1500; 
         this.speed = 300; 
 
         this.acceleration = 50;
         this.deceleration = 90;
         this.turnSpeed = 50;
 
+        this.isOnFloor;
+
         this.airAcceleration = 25;
         this.ariDeceleration = 70;
         this.airTurnSpeed = 80;
 
-        this.jumpSpeed = 500; 
+        this.jumpSpeed = 800; 
         this.timeToApex = 0.4;
         this.jumpCutOff = 3;
 
@@ -64,6 +70,16 @@ class Player extends Phaser.Physics.Arcade.Sprite{
         this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this); 
     }
 
+    setState(stateName){
+        if (this.currentState){
+            this.currentState.exit();
+        }
+
+        this.currentState = this.states[stateName];
+
+        this.currentState.enter();
+    }
+
     update(time, delta){
 
         if(!this.active){return; }
@@ -82,7 +98,7 @@ class Player extends Phaser.Physics.Arcade.Sprite{
         const isUpJustDown = Phaser.Input.Keyboard.JustDown(up);
 
     
-        const isOnFloor = this.body.onFloor(); 
+        this.isOnFloor = this.body.onFloor(); 
 
 
         //Déplacements
@@ -111,8 +127,6 @@ class Player extends Phaser.Physics.Arcade.Sprite{
         if (isSpaceJustDown && (isOnFloor)){
             this.setVelocityY(-this.jumpSpeed);
         }
-
-        console.log(this.x);
 
 
         //  if(isSpaceJustDown ){
