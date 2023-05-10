@@ -1,5 +1,8 @@
 import collidable from "../extra/makeCollidable.js";
-import { getTimestamp } from "../extra/time.js";
+import JumpState from "../states/JumpState.js";
+import IdleState from "../states/IdleState.js";
+import RunState from "../states/RunState.js";
+import FallState from "../states/FallState.js";
 
 
 // Class Player
@@ -18,15 +21,13 @@ class Player extends Phaser.Physics.Arcade.Sprite{
 
         this.init();
         this.initEvents();
-
-        this.currentState = null;
-        this.states = {};
+        this.initStates();
 
     }
 
     init(){
         //Variables personnage
-        this.gravity = 1500; 
+        this.gravity = 2000; 
         this.speed = 300; 
 
         this.acceleration = 50;
@@ -39,9 +40,10 @@ class Player extends Phaser.Physics.Arcade.Sprite{
         this.ariDeceleration = 70;
         this.airTurnSpeed = 80;
 
-        this.jumpSpeed = 800; 
+        this.jumpSpeed = 800;
+        this.boostJumpSpeed = 1200; 
         this.timeToApex = 0.4;
-        this.jumpCutOff = 3;
+        this.jumpCutOff = 150;
 
         this.coyoteTime = 0.05;
         this.jumpBuffer = 0.1;
@@ -57,10 +59,11 @@ class Player extends Phaser.Physics.Arcade.Sprite{
 
         //Physique avec le monde
         this.body.setGravityY(this.gravity);
+        //this.body.maxVelocity.y = this.boostJumpSpeed;
         this.setDepth(1);  
         this.setCollideWorldBounds(true); 
         this.setSize(11,20);
-        this.setOffset(26,28);  
+        this.setOffset(26,28);
 
 
     }
@@ -68,6 +71,19 @@ class Player extends Phaser.Physics.Arcade.Sprite{
     initEvents(){
         //Ecoute la fonction update de la scène et appelle la fonction update de l'objet
         this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this); 
+    }
+
+    initStates(){
+
+        this.currentState = null;
+        this.states = {};
+
+        this.states["idle"] = new IdleState(this, this.scene);
+        this.states["run"] = new RunState(this, this.scene);
+        this.states["jump"] = new JumpState(this, this.scene);
+        this.states["fall"] = new FallState(this, this.scene);
+
+        this.setState("idle")
     }
 
     setState(stateName){
@@ -87,52 +103,15 @@ class Player extends Phaser.Physics.Arcade.Sprite{
         if(this.cantMove){
             return; 
         }
-
-        //Keys
-        const {left, right, up, down, space} = this.cursors;
-        const zKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
-        const qKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
-        const dKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-        const sKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-        const isSpaceJustDown = Phaser.Input.Keyboard.JustDown(space); 
-        const isUpJustDown = Phaser.Input.Keyboard.JustDown(up);
-
     
         this.isOnFloor = this.body.onFloor(); 
 
-
-        //Déplacements
-        // A REFFAIRE
-        if (qKey.isDown){
-            this.setVelocityX(-this.speed);
-            this.setFlipX(true); 
-        }
-        else if (dKey.isDown){
-            this.setVelocityX(this.speed);
-            this.setFlipX(false); 
-        }
-        else {
-            this.setVelocityX(0);
-        }
-
-       
-        //Reset onFloor
-        // A MODIF
-        if(isOnFloor){
-            this.jumpCount = 0;
-        }
         
-        //Saut et chute 
-        // A REFAIRE
-        if (isSpaceJustDown && (isOnFloor)){
-            this.setVelocityY(-this.jumpSpeed);
+        // Gestion States
+
+        if (this.currentState){
+            this.currentState.update(); // Mettre à jour l'état actuel
         }
-
-
-        //  if(isSpaceJustDown ){
-        //    this.respawn(); 
-        // }
-
 
     }
 

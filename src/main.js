@@ -47,6 +47,7 @@ const config = {
     default: 'arcade',
     arcade: {
         debug: true,
+        tileBias: 256
     }
   },
   fps: {

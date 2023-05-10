@@ -1,6 +1,7 @@
-class State {
-    constructor(player) {
+export default class State {
+    constructor(player, scene) {
       this.player = player;
+      this.scene = scene;
     }
   
     enter() {
