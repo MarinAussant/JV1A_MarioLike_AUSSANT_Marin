@@ -3,6 +3,14 @@ body
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: black;
+	background-color: white;
 	margin: auto;
 }
+
+canvas {
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: rgba(255, 0, 0, 0.5);
+	pointer-events: none;
+  }

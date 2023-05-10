@@ -23,7 +23,7 @@ import TestLevel from './scenes/TestLevel.js';
 
 const WIDTH = 1920;
 const HEIGHT = 1080;
-const ZOOM_FACTOR = 4; 
+const ZOOM_FACTOR = 1; 
 
 const SHARED_CONFIG = {
   width: WIDTH,
