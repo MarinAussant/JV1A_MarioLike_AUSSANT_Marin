@@ -1,4 +1,5 @@
 import State from "./State.js";
+import { getTimestamp } from "../extra/time.js";
 
 export default class RunState extends State {
   
@@ -25,10 +26,17 @@ export default class RunState extends State {
         const isSpaceJustDown = Phaser.Input.Keyboard.JustDown(this.cursors.space); 
 
         if(qKey.isDown && this.player.isOnFloor){
-            this.player.setVelocityX(-this.player.speed);
+            this.player.setVelocityX(this.player.body.velocity.x - this.player.acceleration);
+            if (this.player.body.velocity.x < -this.player.speed){
+                this.player.setVelocityX(-this.player.speed);
+            }
+            
         }
         else if(dKey.isDown && this.player.isOnFloor){
-            this.player.setVelocityX(this.player.speed);
+            this.player.setVelocityX(this.player.body.velocity.x + this.player.acceleration);
+            if (this.player.body.velocity.x > this.player.speed){
+                this.player.setVelocityX(this.player.speed);
+            }
         }
         else {
             this.player.setState("idle");

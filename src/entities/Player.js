@@ -28,7 +28,7 @@ class Player extends Phaser.Physics.Arcade.Sprite{
     init(){
         //Variables personnage
         this.gravity = 2000; 
-        this.speed = 300; 
+        this.speed = 400; 
 
         this.acceleration = 50;
         this.deceleration = 90;
@@ -43,7 +43,7 @@ class Player extends Phaser.Physics.Arcade.Sprite{
         this.jumpSpeed = 800;
         this.boostJumpSpeed = 1200; 
         this.timeToApex = 0.4;
-        this.jumpCutOff = 150;
+        this.jumpCutOff = 120;
 
         this.coyoteTime = 0.05;
         this.jumpBuffer = 0.1;
@@ -59,7 +59,7 @@ class Player extends Phaser.Physics.Arcade.Sprite{
 
         //Physique avec le monde
         this.body.setGravityY(this.gravity);
-        //this.body.maxVelocity.y = this.boostJumpSpeed;
+        this.body.maxVelocity.y = 1500;
         this.setDepth(1);  
         this.setCollideWorldBounds(true); 
         this.setSize(11,20);
