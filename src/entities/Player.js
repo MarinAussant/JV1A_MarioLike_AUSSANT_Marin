@@ -27,17 +27,14 @@ class Player extends Phaser.Physics.Arcade.Sprite{
 
     init(){
         //Variables personnage
+        
+        this.isOnFloor;
+
         this.gravity = 2000; 
         this.speed = 400; 
 
         this.acceleration = 50;
         this.deceleration = 40;
-
-        this.isOnFloor;
-
-        this.airAcceleration = 35;
-        this.ariDeceleration = 85;
-        this.airTurnSpeed = 80;
 
         this.jumpSpeed = 800;
         this.boostJumpSpeed = 1200; 
