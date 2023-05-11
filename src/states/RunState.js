@@ -4,7 +4,7 @@ import { getTimestamp } from "../extra/time.js";
 export default class RunState extends State {
   
     constructor(player, scene) {
-        super(player, scene);
+        super(player, scene, "run");
         this.cursors = this.scene.input.keyboard.createCursorKeys();
     }
   
@@ -39,11 +39,24 @@ export default class RunState extends State {
             }
         }
         else {
-            this.player.setState("idle");
+            if (this.player.body.velocity.x < 0){
+                this.player.setVelocityX(this.player.body.velocity.x + this.player.deceleration)
+                if(this.player.body.velocity.x > 10){
+                    this.player.setState("idle");
+                }
+            }
+            else if (this.player.body.velocity.x > 0){
+                this.player.setVelocityX(this.player.body.velocity.x - this.player.deceleration)
+                if(this.player.body.velocity.x < 10){
+                    this.player.setState("idle");
+                }
+            }
         }
 
-        if (isSpaceJustDown && (this.player.isOnFloor)){
-            this.player.setState("jump");
+        if (this.player.isOnFloor){
+            if (isSpaceJustDown || getTimestamp() - this.player.lastJumpBufferTime < this.player.jumpBufferTime ){
+                this.player.setState("jump");
+            }
         }
 
         if(!this.player.isOnFloor){

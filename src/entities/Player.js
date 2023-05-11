@@ -31,22 +31,22 @@ class Player extends Phaser.Physics.Arcade.Sprite{
         this.speed = 400; 
 
         this.acceleration = 50;
-        this.deceleration = 90;
-        this.turnSpeed = 50;
+        this.deceleration = 40;
 
         this.isOnFloor;
 
-        this.airAcceleration = 25;
-        this.ariDeceleration = 70;
+        this.airAcceleration = 35;
+        this.ariDeceleration = 85;
         this.airTurnSpeed = 80;
 
         this.jumpSpeed = 800;
         this.boostJumpSpeed = 1200; 
-        this.timeToApex = 0.4;
         this.jumpCutOff = 120;
 
-        this.coyoteTime = 0.05;
-        this.jumpBuffer = 0.1;
+        this.coyoteTime = 100;
+
+        this.jumpBufferTime = 100;
+        this.lastJumpBufferTime = 101;
 
         this.cursors = this.scene.input.keyboard.createCursorKeys();
         
@@ -55,6 +55,8 @@ class Player extends Phaser.Physics.Arcade.Sprite{
 
         this.lastSaveX = 0;
         this.lastSaveY = 0; 
+
+        this.displayState = this.scene.add.text(0,0,"",{ fontSize: 80, color: '#FF0000'}).setScrollFactor(0);
 
 
         //Physique avec le monde
@@ -77,6 +79,7 @@ class Player extends Phaser.Physics.Arcade.Sprite{
 
         this.currentState = null;
         this.states = {};
+        this.lastState = "idle";
 
         this.states["idle"] = new IdleState(this, this.scene);
         this.states["run"] = new RunState(this, this.scene);
@@ -87,13 +90,16 @@ class Player extends Phaser.Physics.Arcade.Sprite{
     }
 
     setState(stateName){
+
         if (this.currentState){
             this.currentState.exit();
+            this.lastState = this.currentState.name;
         }
 
         this.currentState = this.states[stateName];
 
         this.currentState.enter();
+        this.displayState.setText(stateName);
     }
 
     update(time, delta){
@@ -120,7 +126,6 @@ class Player extends Phaser.Physics.Arcade.Sprite{
         this.lastSaveX = point.x;
         this.lastSaveY = point.y;      
     }
-
 
     respawn(){
         this.disableBody();

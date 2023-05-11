@@ -1,7 +1,8 @@
 export default class State {
-    constructor(player, scene) {
+    constructor(player, scene, name) {
       this.player = player;
       this.scene = scene;
+      this.name = name;
     }
   
     enter() {
@@ -15,4 +16,5 @@ export default class State {
     update() {
       // code spécifique à l'état "saut" pour mettre à jour l'état du joueur pendant un saut
     }
+
 }

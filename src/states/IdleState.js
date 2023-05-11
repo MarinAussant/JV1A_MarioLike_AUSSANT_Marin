@@ -1,9 +1,10 @@
 import State from "./State.js";
+import { getTimestamp } from "../extra/time.js";
 
 export default class IdleState extends State {
   
     constructor(player, scene) {
-        super(player, scene);
+        super(player, scene, "idle");
         this.cursors = this.scene.input.keyboard.createCursorKeys();
     }
   
@@ -29,9 +30,13 @@ export default class IdleState extends State {
         if((qKey.isDown || dKey.isDown) && this.player.isOnFloor){
             this.player.setState("run");
         }
-        if (isSpaceJustDown && (this.player.isOnFloor)){
-            this.player.setState("jump");
+
+        if (this.player.isOnFloor){
+            if (isSpaceJustDown || getTimestamp() - this.player.lastJumpBufferTime < this.player.jumpBufferTime ){
+                this.player.setState("jump");
+            }
         }
+
         if(!this.player.isOnFloor){
             this.player.setState("fall");
         }
