@@ -62,7 +62,7 @@ export default class FallState extends State {
                 this.player.setVelocityX(0);
               }
           }
-        }    
+        }
 
         if (this.player.isOnFloor){
           if (this.player.body.velocity.x != 0){
@@ -71,6 +71,10 @@ export default class FallState extends State {
           else {
             this.player.setState("idle");
           }
+        }
+
+        if (this.player.body.blocked.right || this.player.body.blocked.left){
+          this.player.setState("wallSlide");
         }
 
     }

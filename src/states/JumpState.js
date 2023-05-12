@@ -65,6 +65,10 @@ export default class JumpState extends State {
       this.player.setVelocityY(0);
     }
 
+    if (this.player.body.blocked.right || this.player.body.blocked.left){
+      this.player.setState("wallSlide");
+    }
+
     if (this.player.body.velocity.y >= 0){
       this.player.setState("fall");
     }
