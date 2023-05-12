@@ -1,11 +1,11 @@
 
-class Preload extends Phaser.Scene{
+class Preload extends Phaser.Scene {
 
-    constructor(){
+    constructor() {
         super("PreloadScene");
     }
-    
-    preload(){
+
+    preload() {
         //Tilemap
         this.load.tilemapTiledJSON("testLevelJson", "levels/testLevel.json");
 
@@ -16,16 +16,16 @@ class Preload extends Phaser.Scene{
         this.load.image("back", "assets/back.JPG");
 
         //Player
-        
+
         this.load.spritesheet("tempSprite", "assets/tempSprite.png",
-        {frameWidth: 512, frameHeight: 1024});
-        
+            { frameWidth: 512, frameHeight: 1024 });
+
 
     }
 
-    create(){
-        this.scene.start("TestLevel",{
-            skyglow : ["ground","speed","air"],
+    create() {
+        this.scene.start("TestLevel", {
+            skyglow: ["ground", "speed", "air"],
         });
 
     }
