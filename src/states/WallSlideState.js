@@ -70,10 +70,9 @@ export default class WallSlideState extends State {
     if (!this.player.body.blocked.right && !this.player.body.blocked.left) {
       
       if(getTimestamp() - this.player.lastJumpBufferTime < this.player.jumpBufferTime){
-        this.player.setState("wallSlide");
+        this.player.setState("wallJump");
       }
       else {
-        console.log("y");
         this.player.setState("fall");
       }
     }
