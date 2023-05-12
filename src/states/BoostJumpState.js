@@ -1,10 +1,10 @@
 import State from "./State.js";
 import { getTimestamp } from "../extra/time.js";
 
-export default class WallSlideState extends State {
+export default class BoostJumpState extends State {
 
   constructor(player, scene) {
-    super(player, scene, "wallSlide");
+    super(player, scene, "boostJump");
     this.cursors = this.scene.input.keyboard.createCursorKeys();
   }
 
@@ -12,6 +12,9 @@ export default class WallSlideState extends State {
     // code pour entrer dans l'état "saut"
     // Jouer animation idle
     // Son jump ?
+    this.timeAtStartJump = getTimestamp();
+    this.player.setVelocityY(-this.player.boostJumpSpeed);
+
   }
 
   exit() {
@@ -22,26 +25,12 @@ export default class WallSlideState extends State {
     // code spécifique à l'état "saut" pour mettre à jour l'état du joueur pendant un saut
     const qKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
     const dKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+    const isSpaceDown = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     const isSpaceJustDown = Phaser.Input.Keyboard.JustDown(this.cursors.space);
 
-    if (this.player.body.blocked.right) {
-      this.player.lastWallDirection = "right";
-    }
-
-    if (this.player.body.blocked.left) {
-      this.player.lastWallDirection = "left";
-    }
-
-    // SI LE JOUEUR SAUT EN ETAT SUR LE MUR ALORS WALLJUMP
-    if (isSpaceJustDown || getTimestamp() - this.player.lastJumpBufferTime < this.player.jumpBufferTime) {
-      this.player.setState("wallJump");
-    }
-
-    if (this.player.body.velocity.y > 0) {
-      this.player.setVelocityY(this.player.body.velocity.y + this.player.wallSlideAcceleration);
-      if (this.player.body.velocity.y >= this.player.wallSlideSpeed) {
-        this.player.setVelocityY(this.player.wallSlideSpeed);
-      }
+    // INCREASE PLAYER JUMP BUFFER 
+    if (isSpaceJustDown) {
+      this.player.lastJumpBufferTime = getTimestamp();
     }
 
     if (qKey.isDown && !this.player.isOnFloor) {
@@ -57,17 +46,32 @@ export default class WallSlideState extends State {
         this.player.setVelocityX(this.player.speed);
       }
     }
-
-    if (this.player.isOnFloor) {
-      if (this.player.body.velocity.x != 0) {
-        this.player.setState("run");
+    else {
+      if (this.player.body.velocity.x < 0) {
+        this.player.setVelocityX(this.player.body.velocity.x + this.player.deceleration)
+        if (this.player.body.velocity.x > 10) {
+          this.player.setState("idle");
+        }
       }
-      else {
-        this.player.setState("idle");
+      else if (this.player.body.velocity.x > 0) {
+        this.player.setVelocityX(this.player.body.velocity.x - this.player.deceleration)
+        if (this.player.body.velocity.x < 10) {
+          this.player.setState("idle");
+        }
       }
     }
 
-    if (!this.player.body.blocked.right && !this.player.body.blocked.left && !(getTimestamp() - this.player.lastJumpBufferTime < this.player.jumpBufferTime)) {
+    if (!isSpaceDown.isDown && (getTimestamp() - this.timeAtStartJump > this.player.boostJumpCutOff)) {
+      this.player.setVelocityY(0);
+    }
+    
+    if (this.player.body.blocked.right || this.player.body.blocked.left) {
+      if (isSpaceJustDown) {
+        this.player.setState("wallJump");
+      }
+    }
+
+    if (this.player.body.velocity.y >= 0) {
       this.player.setState("fall");
     }
 

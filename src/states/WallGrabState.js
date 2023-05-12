@@ -1,10 +1,10 @@
 import State from "./State.js";
 import { getTimestamp } from "../extra/time.js";
 
-export default class WallSlideState extends State {
+export default class WallGrabState extends State {
 
   constructor(player, scene) {
-    super(player, scene, "wallSlide");
+    super(player, scene, "wallGrab");
     this.cursors = this.scene.input.keyboard.createCursorKeys();
   }
 

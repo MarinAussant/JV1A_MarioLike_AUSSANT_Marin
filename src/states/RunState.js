@@ -56,6 +56,7 @@ export default class RunState extends State {
         if (this.player.isOnFloor) {
             if (isSpaceJustDown || getTimestamp() - this.player.lastJumpBufferTime < this.player.jumpBufferTime) {
                 this.player.setState("jump");
+                //this.player.setState("boostJump");
             }
         }
 

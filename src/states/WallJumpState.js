@@ -15,10 +15,10 @@ export default class WallJumpState extends State {
         this.timeAtStartWallJump = getTimestamp();
         this.player.setVelocityY(-this.player.jumpSpeed);
         if (this.player.lastWallDirection == "right") {
-            this.player.setVelocityX(-this.player.speed)
+            this.player.setVelocityX(-this.player.speed*1.1);
         }
         if (this.player.lastWallDirection == "left") {
-            this.player.setVelocityX(this.player.speed)
+            this.player.setVelocityX(this.player.speed*1.1);
         }
 
     }
@@ -70,13 +70,12 @@ export default class WallJumpState extends State {
 
         }
         
-        if (!isSpaceDown.isDown && (getTimestamp() - this.timeAtStartWallJump > this.player.jumpCutOff)) {
-            this.player.setVelocityY(0);
-        }
-
-
         if (this.player.body.velocity.y >= 0) {
             this.player.setState("fall");
+        }
+
+        if (!isSpaceDown.isDown && (getTimestamp() - this.timeAtStartWallJump > this.player.jumpCutOff)) {
+            this.player.setVelocityY(0);
         }
 
     }

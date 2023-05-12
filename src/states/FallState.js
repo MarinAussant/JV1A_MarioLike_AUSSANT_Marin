@@ -14,6 +14,7 @@ export default class FallState extends State {
     // Son idle ?
     // Décélaration ?
     this.startFallTime = getTimestamp();
+    this.player.setVelocityY(0);
     
   }
 

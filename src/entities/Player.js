@@ -5,6 +5,8 @@ import RunState from "../states/RunState.js";
 import FallState from "../states/FallState.js";
 import WallSlideState from "../states/WallSlideState.js";
 import WallJumpState from "../states/WallJumpState.js";
+import BoostJumpState from "../states/BoostJumpState.js";
+
 
 
 // Class Player
@@ -31,9 +33,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         //Variables personnage
 
         this.isOnFloor;
+        this.isOnSpeed;
 
         this.gravity = 2000;
         this.speed = 400;
+        this.boostSpeed = 750;
         this.wallSlideSpeed = 300;
 
         this.acceleration = 50;
@@ -43,6 +47,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.jumpSpeed = 800;
         this.boostJumpSpeed = 1200;
         this.jumpCutOff = 120;
+        this.boostJumpCutOff = 350;
 
         this.lastWallDirection;
         this.wallJumpCutDirection = 300;
@@ -87,6 +92,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.states["idle"] = new IdleState(this, this.scene);
         this.states["run"] = new RunState(this, this.scene);
         this.states["jump"] = new JumpState(this, this.scene);
+        this.states["boostJump"] = new BoostJumpState(this, this.scene);
         this.states["fall"] = new FallState(this, this.scene);
         this.states["wallSlide"] = new WallSlideState(this, this.scene);
         this.states["wallJump"] = new WallJumpState(this, this.scene);

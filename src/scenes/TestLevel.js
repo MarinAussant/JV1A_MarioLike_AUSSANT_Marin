@@ -33,15 +33,10 @@ class TestLevel extends Phaser.Scene {
 
         //Creation joueur
         this.player = this.createPlayer(playerPoints);
-        console.log(this.player);
-
 
         //ajout colliders au joueur
         this.player.addCollider(layers.layer_plateformes);
         this.player.addOverlap(vide, this.player.respawn);
-
-        console.log(layers);
-
 
         //Limites monde et caméra
         this.cameras.main.setBounds(0, 0, this.MAP_WIDTH, this.MAP_HEIGHT - 48);
