@@ -26,8 +26,8 @@ class TestLevel extends Phaser.Scene {
 
         //Creation de la scene : map + layers
         const map = this.createMap();
-        const layers = this.createLayers(map);
-        const playerPoints = this.getPlayerPoints(layers.playerSpawn);
+        this.layers = this.createLayers(map);
+        const playerPoints = this.getPlayerPoints(this.layers.playerSpawn);
         const vide = this.createVoid();
 
 
@@ -35,7 +35,7 @@ class TestLevel extends Phaser.Scene {
         this.player = this.createPlayer(playerPoints);
 
         //ajout colliders au joueur
-        this.player.addCollider(layers.layer_plateformes);
+        this.player.addCollider(this.layers.layer_plateformes);
         this.player.addOverlap(vide, this.player.respawn);
 
         //Limites monde et caméra
@@ -69,6 +69,11 @@ class TestLevel extends Phaser.Scene {
     createPlayer(playerPoints) {
         //Recréé le joueur dans la scène en lui passant des propriétés qu'il garde de scène en scène (liste heros, hero actuel, hp)
         return new Player(this, playerPoints.start.x, playerPoints.start.y, this.skyglow).setSize(512, 1024);
+    }
+
+    createSkyglow(skyglow){
+        console.log(skyglow);
+        this.physics.add.collider(skyglow, this.layers.layer_plateformes);
     }
 
     getPlayerPoints(layer) {

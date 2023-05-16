@@ -7,6 +7,8 @@ import WallSlideState from "../states/WallSlideState.js";
 import WallJumpState from "../states/WallJumpState.js";
 import BoostJumpState from "../states/BoostJumpState.js";
 
+import Skyglow from "./Skyglow.js";
+
 
 
 // Class Player
@@ -60,12 +62,16 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.cursors = this.scene.input.keyboard.createCursorKeys();
 
         this.cantMove = false;
+        this.withJumpSkyglow = false;
 
         this.lastSaveX = 0;
         this.lastSaveY = 0;
 
         this.displayState = this.scene.add.text(0, 0, "", { fontSize: 80, color: '#FF0000' }).setScrollFactor(0);
 
+        this.skyglow;
+
+        this.shiftKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
 
         //Physique avec le monde
         this.body.setGravityY(this.gravity);
@@ -74,7 +80,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.setCollideWorldBounds(true);
         this.setSize(11, 20);
         this.setOffset(26, 28);
-
 
     }
 
@@ -115,6 +120,22 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     update(time, delta) {
 
+        console.log(this.withJumpSkyglow);
+
+        if(this.skyglow){
+            if(this.scene.physics.overlap(this, this.skyglow)){
+                this.withJumpSkyglow = true;
+            }
+            else{
+                this.withJumpSkyglow = false;
+            }
+        }
+        
+
+        this.isShiftJustDown = Phaser.Input.Keyboard.JustDown(this.cursors.shift);
+        this.isShiftJustUp = Phaser.Input.Keyboard.JustUp(this.cursors.shift);
+
+
         if (!this.active) { return; }
 
         if (this.cantMove) {
@@ -123,11 +144,22 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.isOnFloor = this.body.onFloor();
 
-
         // Gestion States
 
         if (this.currentState) {
             this.currentState.update(); // Mettre à jour l'état actuel
+        }
+
+        if(this.isShiftJustDown){
+            this.showSkyglow();
+        }
+
+        if(this.shiftKey.isDown){
+            this.moveSkyglow();
+        }
+
+        if(this.isShiftJustUp){
+            this.placeSkyglow();
         }
 
     }
@@ -161,6 +193,32 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }, this);
 
 
+    }
+
+    
+
+    showSkyglow(){
+        if(this.skyglow){
+            this.skyglow.destroy();
+        }
+        this.skyglow = new Skyglow(this.scene, this.x, this.y + 32);
+    }
+
+    moveSkyglow(){
+        
+        if(this.body.velocity.x >= 0){
+            this.skyglow.x = this.x + 192;
+        }
+        else {
+            this.skyglow.x = this.x - 192;
+        }
+        this.skyglow.y = this.y + 64;
+
+    }
+
+    placeSkyglow(){
+        this.skyglow.displace();
+        this.scene.createSkyglow(this.skyglow);
     }
 
 }

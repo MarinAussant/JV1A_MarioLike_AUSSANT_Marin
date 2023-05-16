@@ -30,7 +30,12 @@ export default class FallState extends State {
 
     // COYOTTE JUMP SI ETAIT AU SOL AVANT
     if (getTimestamp() - this.startFallTime < this.player.coyoteTime && isSpaceJustDown && this.player.lastState == "run") {
-      this.player.setState("jump");
+      if(this.player.withJumpSkyglow){
+        this.player.setState("boostJump");
+      }
+      else{
+          this.player.setState("jump");
+      }
     }
     if (getTimestamp() - this.startFallTime < this.player.coyoteTime * 1.5 && isSpaceJustDown && this.player.lastState == "wallSlide") {
       this.player.setState("wallJump");
