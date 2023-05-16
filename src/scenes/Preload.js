@@ -21,7 +21,11 @@ class Preload extends Phaser.Scene {
             { frameWidth: 512, frameHeight: 1024 });
 
         //Skyglow
-        this.load.spritesheet("skyglow", "assets/skyglow.png",
+        this.load.spritesheet("jumpSkyglow", "assets/skyglowJump.png",
+            { frameWidth: 128, frameHeight: 128 });
+        this.load.spritesheet("speedSkyglow", "assets/skyglowSpeed.png",
+            { frameWidth: 128, frameHeight: 128 });
+        this.load.spritesheet("glideSkyglow", "assets/skyglowGlide.png",
             { frameWidth: 128, frameHeight: 128 });
 
     }

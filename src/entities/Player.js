@@ -1,4 +1,5 @@
 import collidable from "../extra/makeCollidable.js";
+
 import JumpState from "../states/JumpState.js";
 import IdleState from "../states/IdleState.js";
 import RunState from "../states/RunState.js";
@@ -7,7 +8,8 @@ import WallSlideState from "../states/WallSlideState.js";
 import WallJumpState from "../states/WallJumpState.js";
 import BoostJumpState from "../states/BoostJumpState.js";
 
-import Skyglow from "./Skyglow.js";
+import JumpSkyglow from "./JumpSkyglow.js";
+import SpeedSkyglow from "./SpeedSkyglow.js";
 
 
 
@@ -36,6 +38,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.isOnFloor;
         this.isOnSpeed;
+        this.isOnDisplace = false;
 
         this.gravity = 2000;
         this.speed = 400;
@@ -63,6 +66,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.cantMove = false;
         this.withJumpSkyglow = false;
+        this.withSpeedSkyglow = false;
+        this.withGlideSkyglow = false;
 
         this.lastSaveX = 0;
         this.lastSaveY = 0;
@@ -72,6 +77,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.skyglow;
 
         this.shiftKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
+        this.zKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
+        this.sKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
 
         //Physique avec le monde
         this.body.setGravityY(this.gravity);
@@ -120,20 +127,34 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     update(time, delta) {
 
-        console.log(this.withJumpSkyglow);
+        this.isShiftJustDown = Phaser.Input.Keyboard.JustDown(this.cursors.shift);
+        this.isShiftJustUp = Phaser.Input.Keyboard.JustUp(this.cursors.shift);
+
+        this.isZJustDown = Phaser.Input.Keyboard.JustDown(this.zKey);
+        this.isZJustUp = Phaser.Input.Keyboard.JustUp(this.zKey);
+
+        this.isSJustDown = Phaser.Input.Keyboard.JustDown(this.sKey);
+        this.isSJustUp = Phaser.Input.Keyboard.JustUp(this.sKey);
+
 
         if(this.skyglow){
             if(this.scene.physics.overlap(this, this.skyglow)){
-                this.withJumpSkyglow = true;
+                if(this.skyglow.type == "jump"){
+                    this.withJumpSkyglow = true;
+                }
+                if(this.skyglow.type == "speed"){
+                    this.withSpeedSkyglow = true;
+                }
+                if(this.skyglow.type == "glide"){
+                    this.withGlideSkyglow = true;
+                }
             }
             else{
                 this.withJumpSkyglow = false;
+                this.withSpeedSkyglow = false;
+                this.withGlideSkyglow = false;
             }
         }
-        
-
-        this.isShiftJustDown = Phaser.Input.Keyboard.JustDown(this.cursors.shift);
-        this.isShiftJustUp = Phaser.Input.Keyboard.JustUp(this.cursors.shift);
 
 
         if (!this.active) { return; }
@@ -150,18 +171,59 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.currentState.update(); // Mettre à jour l'état actuel
         }
 
-        if(this.isShiftJustDown){
-            this.showSkyglow();
+        this.displaceSkyglow();
+
+    }
+
+    displaceSkyglow(){
+
+        // Select Jump Skyglow :
+
+        if(this.isShiftJustDown && !this.isOnDisplace){
+            this.isOnDisplace = true;
+            this.showJumpSkyglow();
         }
 
-        if(this.shiftKey.isDown){
-            this.moveSkyglow();
+        if(this.shiftKey.isDown && this.isOnDisplace){
+            this.moveJumpSkyglow();
         }
 
-        if(this.isShiftJustUp){
-            this.placeSkyglow();
+        if(this.isShiftJustUp && this.isOnDisplace){
+            this.placeJumpSkyglow();
+            this.isOnDisplace = false;
         }
 
+        // Select Speed Skyglow :
+
+        if(this.isSJustDown && !this.isOnDisplace){
+            this.isOnDisplace = true;
+            this.showSpeedSkyglow();
+        }
+
+        if(this.sKey.isDown && this.isOnDisplace){
+            this.moveSpeedSkyglow();
+        }
+
+        if(this.isSJustUp && this.isOnDisplace){
+            this.placeSpeedSkyglow();
+            this.isOnDisplace = false;
+        }
+
+        // Select Glide Skyglow :
+
+        if(this.isZJustDown && !this.isOnDisplace){
+            this.isOnDisplace = true;
+            this.showGlideSkyglow();
+        }
+
+        if(this.zKey.isDown && this.isOnDisplace){
+            this.moveGlideSkyglow();
+        }
+
+        if(this.isZJustUp && this.isOnDisplace){
+            this.placeGlideSkyglow();
+            this.isOnDisplace = false;
+        }
     }
 
 
@@ -192,19 +254,18 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         }, this);
 
-
     }
 
     
 
-    showSkyglow(){
+    showJumpSkyglow(){
         if(this.skyglow){
             this.skyglow.destroy();
         }
-        this.skyglow = new Skyglow(this.scene, this.x, this.y + 32);
+        this.skyglow = new JumpSkyglow(this.scene, this.x, this.y + 32);
     }
 
-    moveSkyglow(){
+    moveJumpSkyglow(){
         
         if(this.body.velocity.x >= 0){
             this.skyglow.x = this.x + 192;
@@ -216,7 +277,56 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     }
 
-    placeSkyglow(){
+    placeJumpSkyglow(){
+        this.skyglow.displace();
+        this.scene.createSkyglow(this.skyglow);
+    }
+
+    showSpeedSkyglow(){
+        if(this.skyglow){
+            this.skyglow.destroy();
+        }
+        this.skyglow = new SpeedSkyglow(this.scene, this.x, this.y + 32);
+    }
+
+    moveSpeedSkyglow(){
+        
+        if(this.body.velocity.x >= 0){
+            this.skyglow.x = this.x - 116;
+        }
+        else {
+            this.skyglow.x = this.x + 116;
+        }
+        this.skyglow.y = this.y + 64;
+
+    }
+
+    placeSpeedSkyglow(){
+        this.skyglow.displace(this);
+        this.scene.createSkyglow(this.skyglow);
+    }
+
+
+    showGlideSkyglow(){
+        if(this.skyglow){
+            this.skyglow.destroy();
+        }
+        this.skyglow = new JumpSkyglow(this.scene, this.x, this.y + -32);
+    }
+
+    moveGlideSkyglow(){
+        
+        if(this.body.velocity.x >= 0){
+            this.skyglow.x = this.x + 192;
+        }
+        else {
+            this.skyglow.x = this.x - 192;
+        }
+        this.skyglow.y = this.y - 256;
+
+    }
+
+    placeGlideSkyglow(){
         this.skyglow.displace();
         this.scene.createSkyglow(this.skyglow);
     }
