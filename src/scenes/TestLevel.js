@@ -15,8 +15,8 @@ class TestLevel extends Phaser.Scene {
 
         this.SCREEN_WIDTH = this.config.width;
         this.SCREEN_HEIGHT = this.config.height;
-        this.MAP_WIDTH = 6450 / 2;
-        this.MAP_HEIGHT = 3225 / 2;
+        this.MAP_WIDTH = (50 * 256) / 4;
+        this.MAP_HEIGHT = (25 * 256) / 4;
         this.zoom = this.config.zoomFactor;
         this.sceneName = this.add.systems.config;
 
