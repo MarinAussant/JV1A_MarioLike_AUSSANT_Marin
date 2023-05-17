@@ -14,6 +14,7 @@ class Preload extends Phaser.Scene {
 
         //Backs
         this.load.image("back", "assets/back.JPG");
+        this.load.image("front", "assets/testLevelPlace.png");
 
         //Player
 
@@ -27,6 +28,8 @@ class Preload extends Phaser.Scene {
             { frameWidth: 128, frameHeight: 128 });
         this.load.spritesheet("glideSkyglow", "assets/skyglowGlide.png",
             { frameWidth: 128, frameHeight: 128 });
+
+
 
     }
 

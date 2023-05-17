@@ -10,6 +10,7 @@ import BoostJumpState from "../states/BoostJumpState.js";
 
 import JumpSkyglow from "./JumpSkyglow.js";
 import SpeedSkyglow from "./SpeedSkyglow.js";
+import GlideSkyglow from "./GlideSkyglow.js";
 
 
 
@@ -307,7 +308,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         else {
             this.skyglow.x = this.x + 116;
         }
-        this.skyglow.y = this.y + 64;
+        this.skyglow.y = this.y;
 
     }
 
@@ -325,7 +326,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if(this.skyglow){
             this.skyglow.destroy();
         }
-        this.skyglow = new JumpSkyglow(this.scene, this.x, this.y + -32);
+        this.skyglow = new GlideSkyglow(this.scene, this.x, this.y + -32);
         this.skyglow.alpha = 0.5;
     }
 

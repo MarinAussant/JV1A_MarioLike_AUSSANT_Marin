@@ -25,7 +25,7 @@ class SpeedSkyglow extends Skyglow {
 
         this.isOnFloor = false;
         
-        this.gravity = 2000;
+        this.gravity = 0;
         this.speed = 400;
 
         this.acceleration = 10;
