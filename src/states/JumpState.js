@@ -14,6 +14,7 @@ export default class JumpState extends State {
     // Son jump ?
     this.timeAtStartJump = getTimestamp();
     this.player.setVelocityY(-this.player.jumpSpeed);
+
     this.player.jumpSpeed = this.player.constantJumpSpeed;
 
   }
@@ -63,7 +64,8 @@ export default class JumpState extends State {
     }
 
     if (!isSpaceDown.isDown && (getTimestamp() - this.timeAtStartJump > this.player.jumpCutOff)) {
-      this.player.setVelocityY(0);
+      this.player.setVelocityY(this.player.body.velocity.y + this.player.deceleration*4);
+
     }
     
     if (this.player.body.blocked.right || this.player.body.blocked.left) {

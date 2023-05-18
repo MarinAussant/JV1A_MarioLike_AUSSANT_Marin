@@ -72,13 +72,13 @@ export default class WallJumpState extends State {
 
         }
         
+        if (!isSpaceDown.isDown && (getTimestamp() - this.timeAtStartWallJump > this.player.jumpCutOff)) {
+            this.player.setVelocityY(this.player.body.velocity.y + this.player.deceleration*4);
+        }
+
         if (this.player.body.velocity.y >= 0) {
             this.player.setState("fall");
         }
-
-        if (!isSpaceDown.isDown && (getTimestamp() - this.timeAtStartWallJump > this.player.jumpCutOff)) {
-            this.player.setVelocityY(0);
-        }
-
+        
     }
 }
