@@ -14,6 +14,7 @@ export default class BoostJumpState extends State {
     // Son jump ?
     this.timeAtStartJump = getTimestamp();
     this.player.setVelocityY(-this.player.boostJumpSpeed);
+    this.player.jumpSpeed = this.player.constantJumpSpeed;
 
   }
 

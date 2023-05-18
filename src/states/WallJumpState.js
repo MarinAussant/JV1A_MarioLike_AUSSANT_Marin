@@ -21,6 +21,8 @@ export default class WallJumpState extends State {
             this.player.setVelocityX(this.player.speed*1.1);
         }
 
+        this.player.jumpSpeed = this.player.constantJumpSpeed;
+
     }
 
     exit() {

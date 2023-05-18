@@ -42,7 +42,7 @@ const initScenes = () => Scenes.map(createScene)
 const config = {
   type: Phaser.AUTO,
   ...SHARED_CONFIG,
-  pixelArt: true,
+  pixelArt: false,
   physics: {
     default: 'arcade',
     arcade: {
@@ -51,7 +51,7 @@ const config = {
     }
   },
   fps: {
-    target: 70,
+    target: 60,
     forceSetTimeOut: true
   },
   scene: initScenes()

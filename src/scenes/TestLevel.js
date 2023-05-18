@@ -62,7 +62,7 @@ class TestLevel extends Phaser.Scene {
         const tileset = map.getTileset("placeholder");
         const layer_plateformes = map.createLayer("Plateformes", tileset);
         layer_plateformes.setScale(0.25);
-        layer_plateformes.setAlpha(0);
+        //layer_plateformes.setAlpha(0);
         const playerSpawn = map.getObjectLayer('PlayerSpawn');
         layer_plateformes.setCollisionByExclusion(-1, true);
 
