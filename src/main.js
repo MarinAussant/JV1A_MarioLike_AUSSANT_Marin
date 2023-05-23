@@ -23,9 +23,10 @@ import TestLevel from './scenes/TestLevel.js';
 
 const WIDTH = 1920;
 const HEIGHT = 1080;
-const ZOOM_FACTOR = 1; 
+const ZOOM_FACTOR = 0.75; 
 
 const SHARED_CONFIG = {
+  mode: Phaser.Scale.FIT,
   width: WIDTH,
   height: HEIGHT,
   zoomFactor: ZOOM_FACTOR,
@@ -51,7 +52,7 @@ const config = {
     }
   },
   fps: {
-    target: 60,
+    target: 70,
     forceSetTimeOut: true
   },
   scene: initScenes()

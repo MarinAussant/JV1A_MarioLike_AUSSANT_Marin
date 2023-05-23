@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="50" height="25" tilewidth="256" tileheight="256" infinite="0" nextlayerid="11" nextobjectid="37">
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="50" height="25" tilewidth="256" tileheight="256" infinite="0" nextlayerid="11" nextobjectid="39">
  <editorsettings>
-  <export target="C:/Users/m.aussant/Documents/GitHub/JV1A_MarioLike_AUSSANT_Marin/levels/testLevel.json" format="json"/>
+  <export target="testLevel.json" format="json"/>
  </editorsettings>
- <tileset firstgid="1" source="../../../../../Bureau/Jeux vidéo 1stY/Infographie 2D/PS2/tileset/placeholder.tsx"/>
+ <tileset firstgid="1" source="placeholder.tsx"/>
  <layer id="1" name="Plateformes" width="50" height="25">
   <data encoding="csv">
 1,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
@@ -30,7 +30,7 @@
 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1,
 1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1,
 1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,1,1,1,1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1,
-1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1
 </data>
  </layer>
  <objectgroup id="3" name="Checkpoints_Zones">
@@ -71,12 +71,22 @@
     <property name="direction" value="down"/>
    </properties>
   </object>
+  <object id="37" gid="3" x="7168" y="2816" width="256" height="256" rotation="-90">
+   <properties>
+    <property name="direction" value="left"/>
+   </properties>
+  </object>
+  <object id="38" gid="3221225475" x="4864" y="2560" width="256" height="256" rotation="-90">
+   <properties>
+    <property name="direction" value="right"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="10" name="Checkpoints_Points">
   <object id="35" x="9984" y="1536">
    <point/>
   </object>
-  <object id="36" x="1536" y="5120">
+  <object id="36" x="1536" y="5376">
    <point/>
   </object>
  </objectgroup>

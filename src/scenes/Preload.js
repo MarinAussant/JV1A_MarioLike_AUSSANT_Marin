@@ -30,6 +30,9 @@ class Preload extends Phaser.Scene {
             { frameWidth: 128, frameHeight: 128 });
 
 
+        //Falling Platform
+        this.load.spritesheet("falling", "assets/fallingPlatform.png",
+            { frameWidth: 768, frameHeight: 1024 });
 
     }
 

@@ -1,4 +1,5 @@
 import Player from "../entities/Player.js";
+import FallingPlatform from "../entities/FallingPlatform.js";
 
 class TestLevel extends Phaser.Scene {
 
@@ -36,6 +37,7 @@ class TestLevel extends Phaser.Scene {
 
         //Creation joueur
         this.player = this.createPlayer(playerPoints);
+        this.player.savePosition(playerPoints.start);
 
         //Creation kill
         const kill = this.createKill(layers.kill);
@@ -47,12 +49,14 @@ class TestLevel extends Phaser.Scene {
         this.player.addCollider(layers.layer_plateformes);
         this.endOverlap = this.physics.add.overlap(this.player, endZone,this.endLevel, null, this); 
         this.player.addOverlap(vide, this.player.respawn);
+        this.player.addOverlap(kill, this.player.respawn);
 
         // Gestion des checkpoints
-        const myCheckpoints = this.createCheckpoint(layers.checkpoints); 
+        const myCheckpoints = this.createCheckpoint(layers.checkpoints, layers.checkpointsPoints); 
         this.physics.add.overlap(this.player, myCheckpoints, this.onCheckpointCollision);
 
-        this.physics.add.collider(this.player, this.fallingPlatforms, this.onFallingPlatform, null, this);
+        this.physics.add.collider(fallingPlatforms, layers.layer_plateformes);
+        this.physics.add.collider(this.player, fallingPlatforms, this.onFallingPlatform, null, this);
 
         //Limites monde et caméra
         this.cameras.main.setBounds(0, 0, this.MAP_WIDTH, this.MAP_HEIGHT - 48);
@@ -83,25 +87,21 @@ class TestLevel extends Phaser.Scene {
         const skyglows = map.getObjectLayer('Skyglows');
         const kill = map.getObjectLayer('Kill');
         const checkpoints = map.getObjectLayer('Checkpoints_Zones');
+        const checkpointsPoints = map.getObjectLayer('Checkpoints_Points');
         const fallingPlatforms = map.getObjectLayer('Falling_Plateformes');
         layer_plateformes.setCollisionByExclusion(-1, true);
 
-        return { layer_plateformes, spawn_end, skyglows, kill, checkpoints, fallingPlatforms };
+        return { layer_plateformes, spawn_end, skyglows, kill, checkpoints, fallingPlatforms, checkpointsPoints };
     }
 
     createPlayer(playerPoints) {
         //Recréé le joueur dans la scène en lui passant des propriétés qu'il garde de scène en scène (liste heros, hero actuel, hp)
-        //console.log(playerPoints.start.x,playerPoints.start.y);
         return new Player(this, playerPoints.start.x/4, playerPoints.start.y/4, this.skyglow).setSize(512, 1024);
     }
 
     createEnd(end){
 
-        console.log(end);
-
-        //TODO -> EVENTUELLEMENT MODIF POUR LA ZONE DE FIN DE NIVEAU
-
-        const endLevel = this.physics.add.sprite(end.x, end.y, 'none')
+        const endLevel = this.physics.add.sprite(end.x/4 + 32, end.y/4, 'none')
             .setOrigin(0,0)
             .setAlpha(0)
             .setSize(5, this.MAP_HEIGHT*2); 
@@ -159,7 +159,53 @@ class TestLevel extends Phaser.Scene {
 
     createKill(objectKill){
 
-        console.log(objectKill);
+        const groupKill = new Phaser.GameObjects.Group; 
+
+        objectKill.objects.forEach(kill => {
+
+            const direction = kill.properties[0].value;
+
+            switch(direction) {
+                case "up" :
+                    const leKillUp = this.physics.add.sprite(kill.x/4 + 17, kill.y/4 - 20, 'none');
+                    leKillUp.setOrigin(0,0);
+                    leKillUp.setAlpha(0);
+                    leKillUp.setSize(192/4, 8);
+
+                    groupKill.add(leKillUp);
+                    break;
+
+                case "down" :
+                    const leKillDown = this.physics.add.sprite(kill.x/4 + 17, kill.y/4 - 76, 'none');
+                    leKillDown.setOrigin(0,0);
+                    leKillDown.setAlpha(0);
+                    leKillDown.setSize(192/4, 8);
+
+                    groupKill.add(leKillDown);
+                    break;
+
+                case "left" :
+                    const leKillLeft = this.physics.add.sprite(kill.x/4 - 20, kill.y/4 - 48, 'none');
+                    leKillLeft.setOrigin(0,0);
+                    leKillLeft.setAlpha(0);
+                    leKillLeft.setSize(8, 192/4);
+
+                    groupKill.add(leKillLeft);
+                    break;
+
+                case "right" :
+                    const leKillRight = this.physics.add.sprite(kill.x/4 - 76, kill.y/4 - 48, 'none');
+                    leKillRight.setOrigin(0,0);
+                    leKillRight.setAlpha(0);
+                    leKillRight.setSize(8, 192/4);
+
+                    groupKill.add(leKillRight);
+                    break;
+            }
+
+        })
+
+        return groupKill;
 
         //TODO GERER L'APPARITION DES ZONE DE KILL GRACE AU CALQUE OBJECT (EN GERANT LA ROTATION)
 
@@ -173,21 +219,27 @@ class TestLevel extends Phaser.Scene {
         }
     }
 
-    createCheckpoint(layer){
-
-        console.log(layer);
-
-        //TODO -> GERER LA TAILLE ET L'EMPLACEMENT DES CHECKPOINT GRACE
-        //          AUX OBJETS ET TAILLE (SUREMENT EN LOADAND L'AUTRE CALQUE...)
+    createCheckpoint(layer,points){
 
         const groupCheckpoint = new Phaser.GameObjects.Group; 
 
         layer.objects.forEach(checkpoint => {
-            const cp = this.physics.add.sprite(checkpoint.x, checkpoint.y, 'none')
-            cp.setOrigin(0,0)
-            cp.setAlpha(0)
-            cp.setSize(5, 2000); 
-           
+            const cp = this.physics.add.sprite(checkpoint.x/4 + checkpoint.width/9, checkpoint.y/4 + checkpoint.height/9, 'none');
+            cp.setOrigin(0,0);
+            cp.setAlpha(0);
+            cp.setSize(checkpoint.width/4, checkpoint.height/4);
+
+            const pointValue = checkpoint.properties[0].value
+            const coord = {x : 0, y : 0};
+
+            points.objects.forEach(point => {
+                if(point.id == pointValue){
+                    coord.x = point.x; 
+                    coord.y = point.y;
+                }
+            })
+
+            cp.spawnPosition = coord;
 
             groupCheckpoint.add(cp); 
         })
@@ -196,31 +248,28 @@ class TestLevel extends Phaser.Scene {
     }
 
     onCheckpointCollision(player, checkpoint){
-        player.savePosition(checkpoint);
+        player.savePosition(checkpoint.spawnPosition);
     }
 
     createFallingPlatforms(layer){
 
-        console.log(layer);
-
-        //TODO -> CREATION DES PLATEFORMES QUI TOMBENT S'INSPIRER DES PLATEFORMES MOVABLE
-
         const platforms = new Phaser.GameObjects.Group; 
         
-        /*
         layer.objects.forEach(pltf => {
-            let platform = new MovingPlatform(this, pltf.x, pltf.y, pltf.properties[0].value, pltf.properties[1].value, pltf.properties[2].value);  
+            let platform = new FallingPlatform(this, pltf.x/4 + 96, pltf.y/4 + 64);  
+            platform.setScale(0.25);
             platforms.add(platform); 
             
         });
-        */
-
+        
         return platforms; 
     }
 
     onFallingPlatform(player,platform){
 
         console.log(platform);
+
+        platform.setActive();
 
         //TODO -> FAIRE EN SORTE QUE LA PLATEFORME TOMBE ECT...
 
@@ -236,6 +285,7 @@ class TestLevel extends Phaser.Scene {
 
     update() {
 
+        console.log(this.player.lastSaveX, this.player.lastSaveY)
 
     }
 

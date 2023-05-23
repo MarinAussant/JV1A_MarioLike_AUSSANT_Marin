@@ -202,8 +202,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     savePosition(point) {
-        this.lastSaveX = point.x;
-        this.lastSaveY = point.y;
+        this.lastSaveX = point.x/4;
+        this.lastSaveY = point.y/4;
     }
 
     respawn() {
