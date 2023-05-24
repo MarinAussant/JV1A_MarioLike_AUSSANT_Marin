@@ -69,8 +69,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.cursors = this.scene.input.keyboard.createCursorKeys();
 
         this.cantMove = false;
-        this.canSpeedBoost = true;
-        this.canJumpBoost = true;
+
+        this.canSpeedBoost = false;
+        this.canJumpBoost = false;
+        this.canGlide = false;
 
         this.lastSaveX = 0;
         this.lastSaveY = 0;
@@ -131,23 +133,21 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     update(time, delta) {
 
-        this.isShiftJustDown = Phaser.Input.Keyboard.JustDown(this.cursors.shift);
-        this.isShiftJustUp = Phaser.Input.Keyboard.JustUp(this.cursors.shift);
-
-        this.isZJustDown = Phaser.Input.Keyboard.JustDown(this.zKey);
-        this.isZJustUp = Phaser.Input.Keyboard.JustUp(this.zKey);
-
-        this.isSJustDown = Phaser.Input.Keyboard.JustDown(this.sKey);
-        this.isSJustUp = Phaser.Input.Keyboard.JustUp(this.sKey);
-
         if (!this.active) { return; }
 
         if (this.cantMove) {
             return;
         }
 
+        this.isShiftJustDown = Phaser.Input.Keyboard.JustDown(this.cursors.shift);
+        this.isShiftJustUp = Phaser.Input.Keyboard.JustUp(this.cursors.shift);
+
+        this.isZJustDown = Phaser.Input.Keyboard.JustDown(this.zKey);
+        this.isZJustUp = Phaser.Input.Keyboard.JustUp(this.zKey);
+
         this.isOnFloor = this.body.onFloor();
 
+        /*
         if(this.isShiftJustDown && this.canSpeedBoost){
             this.canSpeedBoost = false;
             this.startSpeedBoost();
@@ -169,13 +169,37 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.canJumpBoost = true;
             }, this);
         }
+        */
+
+        // Gestion Skyglow
+
+        if (this.isZJustDown && !this.canJumpBoost){
+            
+                const jumpSkyglow = this.listeSkyglow.find(skyglow => skyglow.type == "jump");
+                if (jumpSkyglow){
+                    
+                    this.scene.activeEvents.forEach(event => {
+                        if (event.skyglow = jumpSkyglow){
+                            this.scene.time.removeEvent(event);
+                            this.scene.activeEvents.splice(this.scene.activeEvents.indexOf(event),1);
+                        }
+                    })
+
+                    //Faire en sorte qu'il s'illumine en bleu 
+
+                    this.createPrepareJumpRoutine(jumpSkyglow);
+                    this.canJumpBoost = true;
+
+                }
+
+        }
+
 
         // Gestion States
 
         if (this.currentState) {
             this.currentState.update(); // Mettre à jour l'état actuel
         }
-
 
     }
 
@@ -217,6 +241,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     createFollowRoutine(skyglow){
 
+        this.scene.physics.moveTo(skyglow, this.x + Math.floor((Math.random()*100)-50), this.y + Math.floor((Math.random()*32)-16), 350, 350);
         const event = this.scene.time.addEvent({
             delay: 350,                
             callback: () => {
@@ -224,10 +249,37 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             },
             loop: true
         },this)
+
         event.type = "skyglowFollow";
+        event.skyglow = skyglow;
 
         this.scene.activeEvents.push(event);
         
+    }
+
+    createPrepareJumpRoutine(skyglow){
+
+        this.scene.tweens.add({
+            targets: skyglow,
+            scale: skyglow.sizeReal,
+            duration: 200,  // Durée de l'animation en millisecondes
+            ease: 'Linear', // Fonction d'interpolation pour l'animation
+        });
+
+        this.scene.physics.moveTo(skyglow, this.x + Math.floor((Math.random()*50)-25), this.y + 192 + Math.floor((Math.random()*32)-16), 350, 200);
+        const event = this.scene.time.addEvent({
+            delay: 200,                
+            callback: () => {
+                    this.scene.physics.moveTo(skyglow, this.x + Math.floor((Math.random()*50)-25), this.y + 192 + Math.floor((Math.random()*32)-16), 350, 200);
+            },
+            loop: true
+        },this)
+        
+        event.type = "skyglowPrepareJump";
+        event.skyglow = skyglow;
+
+        this.scene.activeEvents.push(event);
+
     }
 
     startSpeedBoost(){

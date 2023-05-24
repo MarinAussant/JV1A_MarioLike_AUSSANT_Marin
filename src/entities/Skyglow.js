@@ -34,14 +34,22 @@ class Skyglow extends Phaser.Physics.Arcade.Sprite {
     }
 
     putInventory(){
+
         this.inInventory = true;
-        this.inResizingDown = true;
+
+        this.scene.tweens.add({
+            targets: this,
+            scale: this.sizeInventory,
+            duration: 500,  // Durée de l'animation en millisecondes
+            ease: 'Linear', // Fonction d'interpolation pour l'animation
+          });
+
     }
 
     reset(){
    
         this.scene.activeEvents.forEach(event => {
-            if (event.type == "skyglowFollow"){
+            if (event.type == "skyglowFollow" || event.type == "skyglowPrepareJump" || event.type == "skyglowPrepareSpeed"){
                 
                 this.scene.time.removeEvent(event);
                 this.scene.activeEvents.splice(this.scene.activeEvents.indexOf(event),1);

@@ -31,8 +31,6 @@ class JumpSkyglow extends Skyglow {
         this.inInventory = false;
         this.sizeInventory = 0.3;
         this.sizeReal = 0.75;
-        this.inResizingDown = false;
-        this.inResizingUp = false;
 
         this.acceleration = 10;
         this.deceleration = 40;
@@ -57,16 +55,6 @@ class JumpSkyglow extends Skyglow {
 
 
     update(time, delta) {
-
-        if(this.inResizingDown){
-            if(this.scale > this.sizeInventory){
-                this.setScale(this.scale - 0.01);
-            }
-            else{
-                this.setScale(this.sizeInventory);
-                this.inResizingDown = false;
-            }
-        }
 
     }
 

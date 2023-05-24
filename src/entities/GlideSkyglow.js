@@ -57,7 +57,7 @@ class GlideSkyglow extends Skyglow {
 
 
     update(time, delta) {
-        //this.isOnFloor = this.body.onFloor();
+        
     }
 
     reset(){

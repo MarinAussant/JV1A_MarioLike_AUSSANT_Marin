@@ -33,7 +33,8 @@ export default class IdleState extends State {
 
         if (this.player.isOnFloor){
             if (isSpaceJustDown || getTimestamp() - this.player.lastJumpBufferTime < this.player.jumpBufferTime ){
-                if(this.player.withJumpSkyglow){
+                if(this.player.canJumpBoost){
+                    this.player.canJumpBoost = false;
                     this.player.setState("boostJump");
                 }
                 else{
