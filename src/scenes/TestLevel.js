@@ -1,5 +1,7 @@
 import Player from "../entities/Player.js";
 import FallingPlatform from "../entities/FallingPlatform.js";
+import JumpSkyglow from "../entities/JumpSkyglow.js";
+import SpeedSkyglow from "../entities/SpeedSkyglow.js";
 
 class TestLevel extends Phaser.Scene {
 
@@ -21,6 +23,8 @@ class TestLevel extends Phaser.Scene {
         this.zoom = this.config.zoomFactor;
         this.sceneName = this.add.systems.config;
 
+        this.activeEvents = [];
+
         //this.physics.add.sprite(0,0, "bg").setOrigin(0).setScrollFactor(0).setDepth(-10); 
 
         this.add.image(0, 0, "back").setOrigin(0, 0).setScale(1.5);
@@ -33,7 +37,7 @@ class TestLevel extends Phaser.Scene {
         const vide = this.createVoid();
 
         //Creation skyglows
-        const skyglows = this.createSkyglow(layers.skyglows);
+        this.skyglows = this.createSkyglow(layers.skyglows);
 
         //Creation joueur
         this.player = this.createPlayer(playerPoints);
@@ -43,20 +47,23 @@ class TestLevel extends Phaser.Scene {
         const kill = this.createKill(layers.kill);
 
         //Creation plateformes qui tombent
-        const fallingPlatforms = this.createFallingPlatforms(layers.fallingPlatforms);
+        this.fallingPlatforms = this.createFallingPlatforms(layers.fallingPlatforms);
 
         //ajout colliders au joueur
         this.player.addCollider(layers.layer_plateformes);
         this.endOverlap = this.physics.add.overlap(this.player, endZone,this.endLevel, null, this); 
         this.player.addOverlap(vide, this.player.respawn);
         this.player.addOverlap(kill, this.player.respawn);
+        this.player.addOverlap(this.skyglows, this.getSkyglow);
 
         // Gestion des checkpoints
         const myCheckpoints = this.createCheckpoint(layers.checkpoints, layers.checkpointsPoints); 
-        this.physics.add.overlap(this.player, myCheckpoints, this.onCheckpointCollision);
+        this.player.addOverlap(myCheckpoints, this.onCheckpointCollision);
+        //this.physics.add.overlap(this.player, myCheckpoints, this.onCheckpointCollision);
+        
 
-        this.physics.add.collider(fallingPlatforms, layers.layer_plateformes);
-        this.physics.add.collider(this.player, fallingPlatforms, this.onFallingPlatform, null, this);
+        this.physics.add.collider(this.fallingPlatforms, layers.layer_plateformes);
+        this.physics.add.collider(this.player, this.fallingPlatforms, this.onFallingPlatform, null, this);
 
         //Limites monde et caméra
         this.cameras.main.setBounds(0, 0, this.MAP_WIDTH, this.MAP_HEIGHT - 48);
@@ -120,42 +127,40 @@ class TestLevel extends Phaser.Scene {
 
     createSkyglow(objectSkyglow){
 
-        console.log(objectSkyglow);
+        const skyglows = new Phaser.GameObjects.Group; 
 
-        //TODO GERER L'APPARITION DES SKYGLOWS GRACE AU CALQUE OBJECT
-        // S'INSPIRER DE LA FONCTION JUSTE EN DESSOUS V
-    }
+        objectSkyglow.objects.forEach(spawn => {
+            let skyglow = null;
 
-    
-    createEnemies(layer, platformsLayer){
-        const enemies = new Phaser.GameObjects.Group; 
+            switch(spawn.type) {
+                case "Jump" :
+                    skyglow = new JumpSkyglow(this,spawn.x/4, spawn.y/4);
+                    break
 
-        
-        layer.objects.forEach(spawn => {
-            let enemy = null; 
-            if(spawn.type == "Tornado"){
-                enemy = new Tornado(this,spawn.x, spawn.y, spawn.properties[0].value, spawn.properties[1].value );  
-            }else if(spawn.type == "Cloud"){
-                enemy = new TCloud(this,spawn.x, spawn.y);
-                enemy.detectionBox.addOverlap(this.player, () => {enemy.setTarget(this.player), this});     
-                enemy.attackBox.addOverlap(this.player, this.onPlayerCollision);     
-            }else if(spawn.type == "StaticCloud"){
-                enemy = new STCloud(this,spawn.x, spawn.y);    
-                enemy.attackBox.addOverlap(this.player, this.onPlayerCollision);     
-            }else if(spawn.type == "Caster"){
-                enemy = new Caster(this,spawn.x, spawn.y, spawn.properties[0].value, spawn.properties[1].value, spawn.properties[2].value);     
-            }else if(spawn.type == "Protected"){
-                enemy = new ProtectedEnemy(this,spawn.x, spawn.y ,  spawn.properties[0].value, spawn.properties[1].value );    
-            }  
+                case "Speed" :
+                    skyglow = new SpeedSkyglow(this,spawn.x/4, spawn.y/4); 
+                    break
 
-            enemy.setPlatformColliders(platformsLayer); 
-            enemies.add(enemy); 
+                case "Glide" :
+                    break
+            }
+
+            skyglows.add(skyglow); 
             
         }); 
 
-        return enemies ; 
+        console.log(skyglows);
+        return skyglows ; 
+
     }
-    
+
+    getSkyglow(player,skyglow){
+        if (!skyglow.inInventory){
+            player.listeSkyglow.push(skyglow);
+            player.createFollowRoutine(skyglow);
+            skyglow.putInventory();
+        }
+    }
 
     createKill(objectKill){
 
@@ -266,12 +271,8 @@ class TestLevel extends Phaser.Scene {
     }
 
     onFallingPlatform(player,platform){
-
-        console.log(platform);
-
+        
         platform.setActive();
-
-        //TODO -> FAIRE EN SORTE QUE LA PLATEFORME TOMBE ECT...
 
     }
 
@@ -284,8 +285,6 @@ class TestLevel extends Phaser.Scene {
     }
 
     update() {
-
-        console.log(this.player.lastSaveX, this.player.lastSaveY)
 
     }
 

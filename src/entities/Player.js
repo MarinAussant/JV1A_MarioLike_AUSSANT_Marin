@@ -26,7 +26,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         Object.assign(this, collidable);
 
         //Propriétés à passer de scène en scène
-        this.listeSkyglow = skyglow;
 
         this.init();
         this.initEvents();
@@ -91,6 +90,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.setSize(11, 20);
         this.setOffset(26, 28);
 
+        this.listeSkyglow = [];
+
     }
 
     initEvents() {
@@ -139,28 +140,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.isSJustDown = Phaser.Input.Keyboard.JustDown(this.sKey);
         this.isSJustUp = Phaser.Input.Keyboard.JustUp(this.sKey);
 
-        /*
-        if(this.skyglow){
-            if(this.scene.physics.overlap(this, this.skyglow)){
-                if(this.skyglow.type == "jump"){
-                    this.withJumpSkyglow = true;
-                }
-                if(this.skyglow.type == "speed"){
-                    this.withSpeedSkyglow = true;
-                }
-                if(this.skyglow.type == "glide"){
-                    this.withGlideSkyglow = true;
-                }
-            }
-            else{
-                this.withJumpSkyglow = false;
-                //this.withSpeedSkyglow = false;
-                this.withGlideSkyglow = false;
-            }
-        }
-        */
-
-
         if (!this.active) { return; }
 
         if (this.cantMove) {
@@ -191,7 +170,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             }, this);
         }
 
-
         // Gestion States
 
         if (this.currentState) {
@@ -218,16 +196,38 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.setAlpha(1);
             this.body.reset(this.lastSaveX, this.lastSaveY);
 
-            /* // Pour reset les éléments bougeable à la mort du joueur 
-            this.scene.movingPlatforms.children.each(function(platform) {
-
-            platform.reset(); 
+             // Pour reset les éléments bougeable à la mort du joueur 
+            this.scene.fallingPlatforms.children.each(function(platform) {
+                
+                platform.reset(); 
    
-               }, this);
-            */
+            }, this);
+
+            this.scene.skyglows.children.each(function(skyglow) {
+                
+                skyglow.reset(); 
+   
+            }, this);
+
+            this.listeSkyglow = [];    
 
         }, this);
 
+    }
+
+    createFollowRoutine(skyglow){
+
+        const event = this.scene.time.addEvent({
+            delay: 350,                
+            callback: () => {
+                    this.scene.physics.moveTo(skyglow, this.x + Math.floor((Math.random()*100)-50), this.y + Math.floor((Math.random()*32)-16), 350, 350);
+            },
+            loop: true
+        },this)
+        event.type = "skyglowFollow";
+
+        this.scene.activeEvents.push(event);
+        
     }
 
     startSpeedBoost(){

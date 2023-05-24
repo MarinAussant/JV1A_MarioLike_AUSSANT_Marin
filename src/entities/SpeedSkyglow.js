@@ -12,6 +12,9 @@ class SpeedSkyglow extends Skyglow {
         //Mixins collisions
         Object.assign(this, collidable);
 
+        this.initX = x;
+        this.initY = y; 
+
         //Propriétés à passer de scène en scène
 
         this.init();
@@ -23,22 +26,22 @@ class SpeedSkyglow extends Skyglow {
 
         //Variables personnage
 
-        this.isOnFloor = false;
-        
-        this.gravity = 0;
         this.speed = 400;
+
+        this.inInventory = false;
+        this.sizeInventory = 0.3;
+        this.sizeReal = 0.75;
+        this.inResizingDown = false;
+        this.inResizingUp = false;
 
         this.acceleration = 10;
         this.deceleration = 40;
 
-        this.xToGo;
-        this.yToGo; 
-
         this.type = "speed";
 
         //Physique avec le monde
-        //this.body.maxVelocity.y = 1500;
-        this.setDepth(1);
+       
+        this.setDepth(2);
         this.setCollideWorldBounds(true);
         
         this.setSize(128, 128);
@@ -54,15 +57,16 @@ class SpeedSkyglow extends Skyglow {
 
 
     update(time, delta) {
-        //this.isOnFloor = this.body.onFloor();
-    }
-
-    displace(player){
-        this.setGravityY(this.gravity);
-
-        this.scene.time.delayedCall(200,() => {
-            this.scene.physics.moveTo(this,player.x,this.y,1000);
-        },[],this)
+        
+        if(this.inResizingDown){
+            if(this.scale > this.sizeInventory){
+                this.setScale(this.scale - 0.01);
+            }
+            else{
+                this.setScale(this.sizeInventory);
+                this.inResizingDown = false;
+            }
+        }
 
     }
 

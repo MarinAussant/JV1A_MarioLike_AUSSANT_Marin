@@ -12,6 +12,9 @@ class GlideSkyglow extends Skyglow {
         //Mixins collisions
         Object.assign(this, collidable);
 
+        this.initX = x;
+        this.initY = y; 
+
         //Propriétés à passer de scène en scène
 
         this.init();
@@ -57,8 +60,12 @@ class GlideSkyglow extends Skyglow {
         //this.isOnFloor = this.body.onFloor();
     }
 
-    displace(player){
-        this.setGravityY(this.gravity);
+    reset(){
+        this.body.allowGravity = false; 
+        this.active = false;
+
+        this.x = this.initX;
+        this.y = this.initY; 
     }
 
 }

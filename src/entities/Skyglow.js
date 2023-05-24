@@ -30,10 +30,37 @@ class Skyglow extends Phaser.Physics.Arcade.Sprite {
 
     update(time, delta) {
 
+
     }
 
-    displace(){
-         
+    putInventory(){
+        this.inInventory = true;
+        this.inResizingDown = true;
+    }
+
+    reset(){
+   
+        this.scene.activeEvents.forEach(event => {
+            if (event.type == "skyglowFollow"){
+                
+                this.scene.time.removeEvent(event);
+                this.scene.activeEvents.splice(this.scene.activeEvents.indexOf(event),1);
+            }
+        })
+
+        this.x = this.initX;
+        this.y = this.initY;
+
+        this.inInventory = false;
+
+        this.body.setVelocity(0,0);
+
+        this.inResizingDown = false;
+        this.inResizingUp = false;
+
+        this.setScale(this.sizeReal);
+
+        
     }
 
 }
