@@ -28,6 +28,10 @@ export default class IdleState extends State {
         this.player.setVelocityX(0);
 
         if((qKey.isDown || dKey.isDown) && this.player.isOnFloor){
+            if(this.player.canSpeedBoost){
+                this.player.canSpeedBoost = false;
+                this.player.activeSpeedRoutine();
+            }
             this.player.setState("run");
         }
 
@@ -35,6 +39,7 @@ export default class IdleState extends State {
             if (isSpaceJustDown || getTimestamp() - this.player.lastJumpBufferTime < this.player.jumpBufferTime ){
                 if(this.player.canJumpBoost){
                     this.player.canJumpBoost = false;
+                    this.player.activeJumpRoutine();
                     this.player.setState("boostJump");
                 }
                 else{

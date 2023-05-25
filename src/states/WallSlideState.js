@@ -34,7 +34,14 @@ export default class WallSlideState extends State {
 
     // SI LE JOUEUR SAUT EN ETAT SUR LE MUR ALORS WALLJUMP
     if (isSpaceJustDown || getTimestamp() - this.player.lastJumpBufferTime < this.player.jumpBufferTime) {
-      this.player.setState("wallJump");
+      if(this.player.canJumpBoost){
+        this.player.canJumpBoost = false;
+        this.player.activeJumpRoutine();
+        this.player.setState("wallBoostJump");
+    }
+    else{
+        this.player.setState("wallJump");
+    }
     }
 
     if (this.player.body.velocity.y > 0) {

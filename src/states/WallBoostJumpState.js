@@ -1,10 +1,10 @@
 import State from "./State.js";
 import { getTimestamp } from "../extra/time.js";
 
-export default class WallJumpState extends State {
+export default class WallBoostJumpState extends State {
 
     constructor(player, scene) {
-        super(player, scene, "wallJump");
+        super(player, scene, "wallBoostJump");
         this.cursors = this.scene.input.keyboard.createCursorKeys();
     }
 
@@ -13,7 +13,7 @@ export default class WallJumpState extends State {
         // Jouer animation idle
         // Son jump ?
         this.timeAtStartWallJump = getTimestamp();
-        this.player.setVelocityY(-this.player.jumpSpeed);
+        this.player.setVelocityY(-this.player.boostJumpSpeed);
         if (this.player.lastWallDirection == "right") {
             this.player.setVelocityX(-this.player.speed*1.1);
         }
@@ -80,7 +80,7 @@ export default class WallJumpState extends State {
 
         }
         
-        if (!isSpaceDown.isDown && (getTimestamp() - this.timeAtStartWallJump > this.player.jumpCutOff)) {
+        if (!isSpaceDown.isDown && (getTimestamp() - this.timeAtStartWallJump > this.player.boostJumpCutOff)) {
             this.player.setVelocityY(this.player.body.velocity.y + this.player.deceleration*4);
         }
 

@@ -31,6 +31,7 @@ class Skyglow extends Phaser.Physics.Arcade.Sprite {
     update(time, delta) {
 
 
+
     }
 
     putInventory(){
@@ -40,7 +41,7 @@ class Skyglow extends Phaser.Physics.Arcade.Sprite {
         this.scene.tweens.add({
             targets: this,
             scale: this.sizeInventory,
-            duration: 500,  // Durée de l'animation en millisecondes
+            duration: 300,  // Durée de l'animation en millisecondes
             ease: 'Linear', // Fonction d'interpolation pour l'animation
           });
 
@@ -49,24 +50,30 @@ class Skyglow extends Phaser.Physics.Arcade.Sprite {
     reset(){
    
         this.scene.activeEvents.forEach(event => {
-            if (event.type == "skyglowFollow" || event.type == "skyglowPrepareJump" || event.type == "skyglowPrepareSpeed"){
-                
+            if (event.skyglow == this){
                 this.scene.time.removeEvent(event);
                 this.scene.activeEvents.splice(this.scene.activeEvents.indexOf(event),1);
             }
         })
 
-        this.x = this.initX;
-        this.y = this.initY;
+        this.scene.tweens.add({
+            targets : this, 
+            x: this.initX,
+            y : this.initY,
+            scale: this.sizeReal,
+            duration: 300,  // Durée de l'animation en millisecondes
+            ease: 'Linear', // Fonction d'interpolation pour l'animation
+        });
 
-        this.inInventory = false;
+        this.scene.time.delayedCall(300, () => {
+            this.inInventory = false;
+            this.scene.player.canJumpBoost = false;
+            this.scene.player.canSpeedBoost = false;
+            this.scene.player.canGlide = false;
+            this.body.setVelocity(0,0);
+        }, this);
 
-        this.body.setVelocity(0,0);
-
-        this.inResizingDown = false;
-        this.inResizingUp = false;
-
-        this.setScale(this.sizeReal);
+        
 
         
     }

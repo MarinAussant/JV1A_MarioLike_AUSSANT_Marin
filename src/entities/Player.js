@@ -7,6 +7,7 @@ import FallState from "../states/FallState.js";
 import WallSlideState from "../states/WallSlideState.js";
 import WallJumpState from "../states/WallJumpState.js";
 import BoostJumpState from "../states/BoostJumpState.js";
+import WallBoostJumpState from "../states/WallBoostJumpState.js";
 
 import JumpSkyglow from "./JumpSkyglow.js";
 import SpeedSkyglow from "./SpeedSkyglow.js";
@@ -37,8 +38,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         //Variables personnage
 
         this.isOnFloor;
-        this.isOnSpeed;
-        this.isOnDisplace = false;
 
         this.gravity = 2000;
         this.speed = 400;
@@ -93,6 +92,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.setOffset(26, 28);
 
         this.listeSkyglow = [];
+        this.actualPrepareJump;
+        this.actualPrepareSpeed;
+        this.actualPrepareGlide;
 
     }
 
@@ -114,6 +116,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.states["fall"] = new FallState(this, this.scene);
         this.states["wallSlide"] = new WallSlideState(this, this.scene);
         this.states["wallJump"] = new WallJumpState(this, this.scene);
+        this.states["wallBoostJump"] = new WallBoostJumpState(this, this.scene);
 
         this.setState("idle")
     }
@@ -133,6 +136,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     update(time, delta) {
 
+        console.log(this.canSpeedBoost);
+
         if (!this.active) { return; }
 
         if (this.cantMove) {
@@ -147,53 +152,64 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.isOnFloor = this.body.onFloor();
 
-        /*
-        if(this.isShiftJustDown && this.canSpeedBoost){
-            this.canSpeedBoost = false;
-            this.startSpeedBoost();
-
-            this.scene.time.delayedCall(5000, () => {
-                this.canSpeedBoost = true;
-            }, this);
-
-        }
-        if (this.speedBoost){
-            this.checkResetSpeedBoost();
-        }
-
-        if(this.isZJustDown && this.canJumpBoost){
-            this.canJumpBoost = false;
-            this.jumpSpeed = this.boostJumpSpeed;
-
-            this.scene.time.delayedCall(5000, () => {
-                this.canJumpBoost = true;
-            }, this);
-        }
-        */
-
         // Gestion Skyglow
+
+        // Gestion Jump Skyglow
 
         if (this.isZJustDown && !this.canJumpBoost){
             
                 const jumpSkyglow = this.listeSkyglow.find(skyglow => skyglow.type == "jump");
+
                 if (jumpSkyglow){
                     
                     this.scene.activeEvents.forEach(event => {
-                        if (event.skyglow = jumpSkyglow){
+                        if (event.skyglow == jumpSkyglow && event.type == 'skyglowFollow'){
+
                             this.scene.time.removeEvent(event);
                             this.scene.activeEvents.splice(this.scene.activeEvents.indexOf(event),1);
+                            this.listeSkyglow.splice(this.listeSkyglow.indexOf(jumpSkyglow),1);
                         }
                     })
 
                     //Faire en sorte qu'il s'illumine en bleu 
 
-                    this.createPrepareJumpRoutine(jumpSkyglow);
                     this.canJumpBoost = true;
-
+                    this.createPrepareJumpRoutine(jumpSkyglow);
+                    
                 }
 
         }
 
+        // Gestion Speed Skyglow
+        
+        if (this.isShiftJustDown && !this.canSpeedBoost){
+            
+            const speedSkyglow = this.listeSkyglow.find(skyglow => skyglow.type == "speed");
+
+            this.listeSkyglow.splice(this.listeSkyglow.indexOf(speedSkyglow),1);
+
+            if (speedSkyglow){    
+
+                //Faire en sorte qu'il s'illumine en vert 
+
+                this.canSpeedBoost = true;
+                
+                this.actualPrepareSpeed = speedSkyglow;
+
+                this.scene.tweens.add({
+                    targets: speedSkyglow,
+                    scale: speedSkyglow.sizeReal,
+                    duration: 300,  // Durée de l'animation en millisecondes
+                    ease: 'Linear', // Fonction d'interpolation pour l'animation
+                });
+                
+            }
+
+        }
+
+        if (this.speedBoost){
+            this.checkResetSpeedBoost();
+        }
 
         // Gestion States
 
@@ -245,7 +261,16 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         const event = this.scene.time.addEvent({
             delay: 350,                
             callback: () => {
+                if (skyglow.type == "jump"){
                     this.scene.physics.moveTo(skyglow, this.x + Math.floor((Math.random()*100)-50), this.y + Math.floor((Math.random()*32)-16), 350, 350);
+                }
+                else if (skyglow.type == "speed"){
+                    this.scene.physics.moveTo(skyglow, this.x + Math.floor((Math.random()*100)-50) - (32 * Math.sign(this.body.velocity.x)), this.y + Math.floor((Math.random()*32)-16), 350, 350);
+                }
+                else if (skyglow.type == "glide"){
+                    this.scene.physics.moveTo(skyglow, this.x + Math.floor((Math.random()*100)-50), this.y - Math.floor((Math.random()*32)-16), 350, 350);
+                }
+                    
             },
             loop: true
         },this)
@@ -259,10 +284,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     createPrepareJumpRoutine(skyglow){
 
+        this.actualPrepareJump = skyglow;
+
         this.scene.tweens.add({
             targets: skyglow,
             scale: skyglow.sizeReal,
-            duration: 200,  // Durée de l'animation en millisecondes
+            duration: 300,  // Durée de l'animation en millisecondes
             ease: 'Linear', // Fonction d'interpolation pour l'animation
         });
 
@@ -282,14 +309,63 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     }
 
-    startSpeedBoost(){
-        this.scene.cameras.main.shake(100, .0015, true);
-        this.speed = this.boostSpeed;
+    activeJumpRoutine(){
 
-        this.scene.time.delayedCall(500, () => {
-            this.speedBoost = true;
+        this.scene.activeEvents.forEach(event => {
+
+            if (event.skyglow == this.actualPrepareJump){
+                this.scene.time.removeEvent(event);
+                this.scene.activeEvents.splice(this.scene.activeEvents.indexOf(event),1);
+            }
+
+        })
+
+        this.scene.tweens.add({
+            targets: this.actualPrepareJump,
+            x : this.x ,
+            y : this.y - 400,
+            duration: 300,
+            ease : "Ease.Out"  // Durée de l'animation en millisecondes
+        });
+
+        this.scene.time.delayedCall(400, () => {
+            this.actualPrepareJump.reset();
+            this.actualPrepareJump = false;
         }, this);
         
+    }
+
+    activeSpeedRoutine(){
+
+        this.scene.cameras.main.shake(100, .0015, true);
+        this.body.setVelocityX(this.boostSpeed * Math.sign(this.body.velocity.x));
+        this.speed = this.boostSpeed;
+
+        this.scene.activeEvents.forEach(event => {
+
+            if (event.skyglow == this.actualPrepareSpeed){
+                this.scene.time.removeEvent(event);
+                this.scene.activeEvents.splice(this.scene.activeEvents.indexOf(event),1);
+            }
+
+        })
+
+        this.scene.tweens.add({
+            targets: this.actualPrepareSpeed,
+            x : this.x + (500 * Math.sign(this.body.velocity.x)),
+            y : this.y ,
+            duration: 300,
+            ease : "Ease.Out"  // Durée de l'animation en millisecondes
+        });
+            
+        this.scene.time.delayedCall(300, () => {
+            this.actualPrepareSpeed.reset();
+            this.actualPrepareSpeed = false;
+        }, this);
+
+        this.canSpeedBoost = false;
+        this.speedBoost = true;
+
     }
 
     checkResetSpeedBoost(){

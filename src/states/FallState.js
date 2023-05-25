@@ -47,6 +47,10 @@ export default class FallState extends State {
     }
 
     if (qKey.isDown && !this.player.isOnFloor) {
+      if(this.player.canSpeedBoost){
+        this.player.canSpeedBoost = false;
+        this.player.activeSpeedRoutine();
+      }
       this.player.setVelocityX(this.player.body.velocity.x - this.player.acceleration);
       if (this.player.body.velocity.x < -this.player.speed) {
         this.player.setVelocityX(-this.player.speed);
@@ -54,6 +58,10 @@ export default class FallState extends State {
 
     }
     else if (dKey.isDown && !this.player.isOnFloor) {
+      if(this.player.canSpeedBoost){
+        this.player.canSpeedBoost = false;
+        this.player.activeSpeedRoutine();
+      }
       this.player.setVelocityX(this.player.body.velocity.x + this.player.acceleration);
       if (this.player.body.velocity.x > this.player.speed) {
         this.player.setVelocityX(this.player.speed);
