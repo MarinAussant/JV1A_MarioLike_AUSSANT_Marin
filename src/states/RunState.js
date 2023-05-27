@@ -11,6 +11,7 @@ export default class RunState extends State {
     enter() {
         // code pour entrer dans l'état "idle"
         // Jouer animation idle
+        this.player.anims.play("run", true);
         // Son idle ?
         // Décélaration ?
     }
@@ -49,7 +50,7 @@ export default class RunState extends State {
         else {
             if (this.player.body.velocity.x < 0) {
                 this.player.setVelocityX(this.player.body.velocity.x + this.player.deceleration)
-                if (this.player.body.velocity.x > 10) {
+                if (this.player.body.velocity.x > -10) {
                     this.player.setState("idle");
                 }
             }

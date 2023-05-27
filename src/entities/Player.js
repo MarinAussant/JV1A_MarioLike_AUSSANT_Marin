@@ -19,7 +19,7 @@ import GlideSkyglow from "./GlideSkyglow.js";
 class Player extends Phaser.Physics.Arcade.Sprite {
 
     constructor(scene, x, y, skyglow) {
-        super(scene, x, y, "tempSprite").setScale(0.25);
+        super(scene, x, y, "runSprite").setScale(0.3);
         scene.add.existing(this); //Ajoute l'objet à la scène 
         scene.physics.add.existing(this); //Donne un physic body à l'objet
 
@@ -86,15 +86,60 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         //Physique avec le monde
         this.body.setGravityY(this.gravity);
         this.body.maxVelocity.y = 1500;
-        this.setDepth(1);
+        this.setDepth(0);
         this.setCollideWorldBounds(true);
-        this.setSize(11, 20);
-        this.setOffset(26, 28);
 
         this.listeSkyglow = [];
         this.actualPrepareJump;
         this.actualPrepareSpeed;
         this.actualPrepareGlide;
+
+
+        // Animations
+        /*
+        this.scene.anims.create({
+            key: "idle",
+            frames: this.scene.anims.generateFrameNumbers("rain_spritesheet", {start: 0, end: 1}),
+            frameRate: 2,
+            repeat: -1
+        });
+        */
+        this.scene.anims.create({
+            key: "idle",
+            frames: this.scene.anims.generateFrameNumbers("idleSprite", {start: 0, end: 19}),
+            frameRate: 20,
+            repeat: -1
+        });
+        this.scene.anims.create({
+            key: "run",
+            frames: this.scene.anims.generateFrameNumbers("runSprite", {start: 0, end: 24}),
+            frameRate: 30,
+            repeat: -1
+        });
+        this.scene.anims.create({
+            key: "boostJump",
+            frames: this.scene.anims.generateFrameNumbers("jumpSprite", {start: 0, end: 13}),
+            frameRate: 42,
+            repeat: 0
+        });
+        this.scene.anims.create({
+            key: "jump",
+            frames: this.scene.anims.generateFrameNumbers("jumpSprite", {start: 0, end: 13}),
+            frameRate: 63,
+            repeat: 0
+        });
+        this.scene.anims.create({
+            key: "fall",
+            frames: this.scene.anims.generateFrameNumbers("jumpSprite", {start: 14, end: 26}),
+            frameRate: 39,
+            repeat: 0
+        });
+        this.scene.anims.create({
+            key: "wallSlide",
+            frames: this.scene.anims.generateFrameNumbers("wallSlideSprite", {start: 0, end: 23}),
+            frameRate: 5,
+            repeat: -1
+        });
 
     }
 
@@ -132,16 +177,22 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.currentState.enter();
         this.displayState.setText(stateName);
+
     }
 
     update(time, delta) {
-
-        console.log(this.canSpeedBoost);
 
         if (!this.active) { return; }
 
         if (this.cantMove) {
             return;
+        }
+
+        if(this.body.velocity.x > 10){
+            this.flipX = false;
+        }
+        else if(this.body.velocity.x < -10){
+            this.flipX = true;
         }
 
         this.isShiftJustDown = Phaser.Input.Keyboard.JustDown(this.cursors.shift);

@@ -11,6 +11,7 @@ export default class FallState extends State {
   enter() {
     // code pour entrer dans l'état "idle"
     // Jouer animation idle
+    this.player.anims.play("fall", false);
     // Son idle ?
     // Décélaration ?
     this.startFallTime = getTimestamp();
@@ -30,9 +31,11 @@ export default class FallState extends State {
 
     // COYOTTE JUMP SI ETAIT AU SOL AVANT
     if (getTimestamp() - this.startFallTime < this.player.coyoteTime && isSpaceJustDown && this.player.lastState == "run") {
-      if(this.player.withJumpSkyglow){
+      if(this.player.canJumpBoost){
+        this.player.canJumpBoost = false;
+        this.player.activeJumpRoutine();
         this.player.setState("boostJump");
-      }
+    }
       else{
           this.player.setState("jump");
       }

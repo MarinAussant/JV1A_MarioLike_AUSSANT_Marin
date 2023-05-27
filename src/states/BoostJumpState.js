@@ -11,6 +11,7 @@ export default class BoostJumpState extends State {
   enter() {
     // code pour entrer dans l'état "saut"
     // Jouer animation idle
+    this.player.anims.play("boostJump", false);
     // Son jump ?
     this.timeAtStartJump = getTimestamp();
     this.player.setVelocityY(-this.player.boostJumpSpeed);

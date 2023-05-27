@@ -11,6 +11,7 @@ export default class WallJumpState extends State {
     enter() {
         // code pour entrer dans l'état "saut"
         // Jouer animation idle
+        this.player.anims.play("jump", false);
         // Son jump ?
         this.timeAtStartWallJump = getTimestamp();
         this.player.setVelocityY(-this.player.jumpSpeed);

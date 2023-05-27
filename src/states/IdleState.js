@@ -11,6 +11,7 @@ export default class IdleState extends State {
     enter() {
       // code pour entrer dans l'état "idle"
       // Jouer animation idle
+      this.player.anims.play("idle", true);
       // Son idle ?
       // Décélaration ?
     }

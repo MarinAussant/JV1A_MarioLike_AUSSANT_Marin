@@ -17,6 +17,14 @@ class Preload extends Phaser.Scene {
         this.load.image("front", "assets/testLevelPlace.png");
 
         //Player
+        this.load.spritesheet("idleSprite", "assets/anims/idleSprite2.png",
+        {frameWidth: 1000, frameHeight: 1200});
+        this.load.spritesheet("runSprite", "assets/anims/runSprite2.png",
+        {frameWidth: 1000, frameHeight: 1200});
+        this.load.spritesheet("jumpSprite", "assets/anims/jumpSprite2.png",
+        {frameWidth: 1000, frameHeight: 1200});
+        this.load.spritesheet("wallSlideSprite", "assets/anims/wallSlideSprite2.png",
+        {frameWidth: 1000, frameHeight: 1200});
 
         this.load.spritesheet("tempSprite", "assets/tempSprite.png",
             { frameWidth: 512, frameHeight: 1024 });

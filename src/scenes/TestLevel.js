@@ -103,7 +103,9 @@ class TestLevel extends Phaser.Scene {
 
     createPlayer(playerPoints) {
         //Recréé le joueur dans la scène en lui passant des propriétés qu'il garde de scène en scène (liste heros, hero actuel, hp)
-        return new Player(this, playerPoints.start.x/4, playerPoints.start.y/4, this.skyglow).setSize(512, 1024);
+        const player = new Player(this, playerPoints.start.x/4, playerPoints.start.y/4, this.skyglow);
+        player.setSize(250, 575).setOffset(375,610);
+        return player;
     }
 
     createEnd(end){
@@ -149,7 +151,6 @@ class TestLevel extends Phaser.Scene {
             
         }); 
 
-        console.log(skyglows);
         return skyglows ; 
 
     }

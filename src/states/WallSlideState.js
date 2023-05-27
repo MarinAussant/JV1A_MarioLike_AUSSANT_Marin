@@ -11,6 +11,7 @@ export default class WallSlideState extends State {
   enter() {
     // code pour entrer dans l'état "saut"
     // Jouer animation idle
+    this.player.anims.play("wallSlide", true);
     // Son jump ?
   }
 
