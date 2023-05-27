@@ -67,9 +67,17 @@ class Skyglow extends Phaser.Physics.Arcade.Sprite {
 
         this.scene.time.delayedCall(300, () => {
             this.inInventory = false;
-            this.scene.player.canJumpBoost = false;
-            this.scene.player.canSpeedBoost = false;
-            this.scene.player.canGlide = false;
+            switch (this.type){
+                case "speed" :
+                    this.scene.player.canSpeedBoost = false;
+                    break;
+                case "jump" :
+                    this.scene.player.canJumpBoost = false;
+                    break;
+                case "glide" :
+                    this.scene.player.canGlide = false;
+                    break;
+            }
             this.body.setVelocity(0,0);
         }, this);
 

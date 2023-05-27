@@ -5,7 +5,7 @@ import collidable from "../extra/makeCollidable.js";
 class JumpSkyglow extends Skyglow {
 
     constructor(scene, x, y) {
-        super(scene, x, y, "jumpSkyglow").setScale(0.75);
+        super(scene, x, y, "jumpSkyglow").setScale(0.3);
         scene.add.existing(this); //Ajoute l'objet à la scène 
         scene.physics.add.existing(this); //Donne un physic body à l'objet
 
@@ -29,8 +29,8 @@ class JumpSkyglow extends Skyglow {
         this.speed = 400;
 
         this.inInventory = false;
-        this.sizeInventory = 0.3;
-        this.sizeReal = 0.75;
+        this.sizeInventory = 0.15;
+        this.sizeReal = 0.3;
 
         this.acceleration = 10;
         this.deceleration = 40;
@@ -42,8 +42,17 @@ class JumpSkyglow extends Skyglow {
         this.setDepth(2);
         this.setCollideWorldBounds(true);
         
-        this.setSize(128, 128);
-        this.setOffset(0, 0);
+        this.setSize(400, 400);
+        this.setOffset(80, 100);
+
+        this.scene.anims.create({
+            key: "idleJumpSkyglow",
+            frames: this.scene.anims.generateFrameNumbers("jumpSkyglow", {start: 0, end: 32}),
+            frameRate: 35,
+            repeat: -1
+        });
+
+        this.anims.play("idleJumpSkyglow", true);
 
 
     }

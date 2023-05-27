@@ -50,15 +50,18 @@ export default class RunState extends State {
         else {
             if (this.player.body.velocity.x < 0) {
                 this.player.setVelocityX(this.player.body.velocity.x + this.player.deceleration)
-                if (this.player.body.velocity.x > -10) {
+                if (this.player.body.velocity.x > -20) {
                     this.player.setState("idle");
                 }
             }
             else if (this.player.body.velocity.x > 0) {
                 this.player.setVelocityX(this.player.body.velocity.x - this.player.deceleration)
-                if (this.player.body.velocity.x < 10) {
+                if (this.player.body.velocity.x < 20) {
                     this.player.setState("idle");
                 }
+            }
+            else {
+                this.player.setState("idle");
             }
         }
 
