@@ -167,7 +167,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     setState(stateName) {
-
         if (this.currentState) {
             this.currentState.exit();
             this.lastState = this.currentState.name;
@@ -181,8 +180,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     update(time, delta) {
-
-        console.log(this.body.velocity.x);
 
         if (!this.active) { return; }
 
@@ -310,20 +307,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     createFollowRoutine(skyglow){
 
-        this.scene.physics.moveTo(skyglow, this.x + Math.floor((Math.random()*100)-50), this.y + Math.floor((Math.random()*32)-16), 350, 350);
+        this.scene.physics.moveTo(skyglow, this.x + Math.floor((Math.random()*100)-50), this.y + 50 + Math.floor((Math.random()*32)-16), 350, 350);
         const event = this.scene.time.addEvent({
             delay: 350,                
             callback: () => {
-                if (skyglow.type == "jump"){
-                    this.scene.physics.moveTo(skyglow, this.x + Math.floor((Math.random()*100)-50), this.y + Math.floor((Math.random()*32)-16), 350, 350);
-                }
-                else if (skyglow.type == "speed"){
-                    this.scene.physics.moveTo(skyglow, this.x + Math.floor((Math.random()*100)-50) - (32 * Math.sign(this.body.velocity.x)), this.y + Math.floor((Math.random()*32)-16), 350, 350);
-                }
-                else if (skyglow.type == "glide"){
-                    this.scene.physics.moveTo(skyglow, this.x + Math.floor((Math.random()*100)-50), this.y - Math.floor((Math.random()*32)-16), 350, 350);
-                }
-                    
+             
+                this.scene.physics.moveTo(skyglow, this.x + Math.floor((Math.random()*100)-50), this.y + 50 + Math.floor((Math.random()*32)-16), 350, 350);
+       
             },
             loop: true
         },this)

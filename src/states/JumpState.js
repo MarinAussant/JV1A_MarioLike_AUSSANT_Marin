@@ -60,15 +60,11 @@ export default class JumpState extends State {
     else {
       if (this.player.body.velocity.x < 0) {
         this.player.setVelocityX(this.player.body.velocity.x + this.player.deceleration)
-        if (this.player.body.velocity.x > 10) {
-          this.player.setState("idle");
-        }
+        
       }
       else if (this.player.body.velocity.x > 0) {
         this.player.setVelocityX(this.player.body.velocity.x - this.player.deceleration)
-        if (this.player.body.velocity.x < 10) {
-          this.player.setState("idle");
-        }
+        
       }
     }
 
