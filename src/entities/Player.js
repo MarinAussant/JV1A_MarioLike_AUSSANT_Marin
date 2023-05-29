@@ -213,7 +213,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 const jumpSkyglow = this.listeSkyglow.find(skyglow => skyglow.type == "jump");
 
                 if (jumpSkyglow){
-                    console.log(this.scene.jumpParticles);
                     this.scene.jumpParticles.start();
                     this.canJumpBoost = true;
                     jumpSkyglow.skyglowLight.setVisible(true);

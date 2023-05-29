@@ -20,6 +20,7 @@ import EndScene from './scenes/EndScene.js';
 import PreloadScene from './scenes/Preload.js';
 import TestLevel from './scenes/TestLevel.js';
 import Level00 from './scenes/Level00.js';
+import Level01 from './scenes/Level01.js';
 
 
 const WIDTH = 1920;
@@ -37,7 +38,7 @@ const SHARED_CONFIG = {
   }
 }
 
-const Scenes = [PreloadScene, TestLevel, Level00];
+const Scenes = [PreloadScene, TestLevel, Level00, Level01];
 const createScene = Scene => new Scene(SHARED_CONFIG) //A voir
 const initScenes = () => Scenes.map(createScene) 
 

@@ -163,7 +163,7 @@ class TestLevel extends Phaser.Scene {
     }
 
     endLevel(player, endPoint){ 
-        console.log(this.time);
+        
         this.speedParticles.destroy();
         this.jumpParticles.destroy();
         player.scene.scene.start(endPoint.nextZone);  

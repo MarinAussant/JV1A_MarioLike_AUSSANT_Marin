@@ -109,7 +109,7 @@
                         {
                          "name":"NextLevel",
                          "type":"string",
-                         "value":"Level_00"
+                         "value":"Level_01"
                         }],
                  "rotation":0,
                  "type":"",
@@ -340,7 +340,7 @@
  "nextobjectid":39,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.10.1",
+ "tiledversion":"1.8.4",
  "tileheight":256,
  "tilesets":[
         {
@@ -386,6 +386,6 @@
         }],
  "tilewidth":256,
  "type":"map",
- "version":"1.10",
+ "version":"1.8",
  "width":50
 }
