@@ -398,18 +398,6 @@
                 {
                  "gid":3,
                  "height":256,
-                 "id":19,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":256,
-                 "x":16896,
-                 "y":6912
-                }, 
-                {
-                 "gid":3,
-                 "height":256,
                  "id":20,
                  "name":"",
                  "properties":[

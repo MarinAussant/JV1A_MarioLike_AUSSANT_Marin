@@ -36,6 +36,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     init() {
         //Variables personnage
+        this.playerLightUp = this.scene.lights.addLight(this.x, this.y, 1200, 0xffffff, 0.25);
+        this.playerLightDown = this.scene.lights.addLight(this.x, this.y+120, 1200, 0xffffff, 0.25);
 
         this.isOnFloor;
 
@@ -86,7 +88,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         //Physique avec le monde
         this.body.setGravityY(this.gravity);
         this.body.maxVelocity.y = 1500;
-        this.setDepth(0);
+        this.setDepth(0.1);
         this.setCollideWorldBounds(true);
 
         this.listeSkyglow = [];
@@ -94,16 +96,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.actualPrepareSpeed;
         this.actualPrepareGlide;
 
-
         // Animations
-        /*
-        this.scene.anims.create({
-            key: "idle",
-            frames: this.scene.anims.generateFrameNumbers("rain_spritesheet", {start: 0, end: 1}),
-            frameRate: 2,
-            repeat: -1
-        });
-        */
+    
         this.scene.anims.create({
             key: "idle",
             frames: this.scene.anims.generateFrameNumbers("idleSprite", {start: 0, end: 19}),
@@ -187,12 +181,20 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             return;
         }
 
+        // Gestion direction
+
         if(this.body.velocity.x > 20){
             this.flipX = false;
         }
         else if(this.body.velocity.x < -20){
             this.flipX = true;
-        }
+        }   
+
+        // gestion des lights
+
+        this.manageLights();
+
+        // Gestion des inputs
 
         this.isShiftJustDown = Phaser.Input.Keyboard.JustDown(this.cursors.shift);
         this.isShiftJustUp = Phaser.Input.Keyboard.JustUp(this.cursors.shift);
@@ -211,21 +213,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 const jumpSkyglow = this.listeSkyglow.find(skyglow => skyglow.type == "jump");
 
                 if (jumpSkyglow){
-                    
+                    console.log(this.scene.jumpParticles);
+                    this.scene.jumpParticles.start();
                     this.canJumpBoost = true;
-                    this.scene.activeEvents.forEach(event => {
-                        if (event.skyglow == jumpSkyglow && event.type == 'skyglowFollow'){
-
-                            this.scene.time.removeEvent(event);
-                            this.scene.activeEvents.splice(this.scene.activeEvents.indexOf(event),1);
-                            this.listeSkyglow.splice(this.listeSkyglow.indexOf(jumpSkyglow),1);
-                        }
-                    })
-
-                    //Faire en sorte qu'il s'illumine en bleu 
-
-                    this.createPrepareJumpRoutine(jumpSkyglow);
-                    
+                    jumpSkyglow.skyglowLight.setVisible(true);
+                    this.actualPrepareJump = jumpSkyglow;
+                    this.listeSkyglow.splice(this.listeSkyglow.indexOf(jumpSkyglow),1);
                 }
 
         }
@@ -236,22 +229,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             
             const speedSkyglow = this.listeSkyglow.find(skyglow => skyglow.type == "speed");
 
-            this.listeSkyglow.splice(this.listeSkyglow.indexOf(speedSkyglow),1);
-
             if (speedSkyglow){    
 
-                //Faire en sorte qu'il s'illumine en vert 
-
                 this.canSpeedBoost = true;
-                
+                speedSkyglow.skyglowLight.setVisible(true);
                 this.actualPrepareSpeed = speedSkyglow;
-
-                this.scene.tweens.add({
-                    targets: speedSkyglow,
-                    scale: speedSkyglow.sizeReal,
-                    duration: 300,  // Durée de l'animation en millisecondes
-                    ease: 'Linear', // Fonction d'interpolation pour l'animation
-                });
+                this.listeSkyglow.splice(this.listeSkyglow.indexOf(speedSkyglow),1);       
                 
             }
 
@@ -267,6 +250,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.currentState.update(); // Mettre à jour l'état actuel
         }
 
+    }
+
+    manageLights(){
+        this.playerLightUp.x = this.x;
+        this.playerLightUp.y = this.y;
+        this.playerLightDown.x = this.x;
+        this.playerLightDown.y = this.y + 120;
     }
 
     savePosition(point) {
@@ -307,12 +297,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     createFollowRoutine(skyglow){
 
-        this.scene.physics.moveTo(skyglow, this.x + Math.floor((Math.random()*100)-50), this.y + 50 + Math.floor((Math.random()*32)-16), 350, 350);
+        this.scene.physics.moveTo(skyglow, this.x + Math.floor((Math.random()*100)-50), this.y + 50 + Math.floor((Math.random()*32)-16), 350, skyglow.speed);
         const event = this.scene.time.addEvent({
-            delay: 350,                
+            delay: 150,                
             callback: () => {
              
-                this.scene.physics.moveTo(skyglow, this.x + Math.floor((Math.random()*100)-50), this.y + 50 + Math.floor((Math.random()*32)-16), 350, 350);
+                this.scene.physics.moveTo(skyglow, this.x + Math.floor((Math.random()*100)-50), this.y + 50 + Math.floor((Math.random()*32)-16), 350, skyglow.speed);
        
             },
             loop: true
@@ -325,34 +315,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         
     }
 
-    createPrepareJumpRoutine(skyglow){
-
-        this.actualPrepareJump = skyglow;
-
-        this.scene.tweens.add({
-            targets: skyglow,
-            scale: skyglow.sizeReal,
-            duration: 300,  // Durée de l'animation en millisecondes
-            ease: 'Linear', // Fonction d'interpolation pour l'animation
-        });
-
-        this.scene.physics.moveTo(skyglow, this.x + Math.floor((Math.random()*50)-25), this.y + 192 + Math.floor((Math.random()*32)-16), 350, 200);
-        const event = this.scene.time.addEvent({
-            delay: 200,                
-            callback: () => {
-                    this.scene.physics.moveTo(skyglow, this.x + Math.floor((Math.random()*50)-25), this.y + 192 + Math.floor((Math.random()*32)-16), 350, 200);
-            },
-            loop: true
-        },this)
-        
-        event.type = "skyglowPrepareJump";
-        event.skyglow = skyglow;
-
-        this.scene.activeEvents.push(event);
-
-    }
-
     activeJumpRoutine(){
+
+        this.scene.jumpParticles.stop(false);
+
+        this.scene.cameras.main.shake(100, .0015, true);
+
+        this.actualPrepareJump.skyglowLight.setVisible(false);
 
         this.scene.activeEvents.forEach(event => {
 
@@ -363,15 +332,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         })
 
-        this.scene.tweens.add({
-            targets: this.actualPrepareJump,
-            x : this.x ,
-            y : this.y - 400,
-            duration: 300,
-            ease : "Ease.Out"  // Durée de l'animation en millisecondes
-        });
-
-        this.scene.time.delayedCall(400, () => {
+        this.scene.time.delayedCall(100, () => {
             this.actualPrepareJump.reset();
             this.actualPrepareJump = false;
         }, this);
@@ -379,33 +340,19 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     activeSpeedRoutine(){
+        
+        this.scene.speedParticles.speedX = 1000 * Math.sign(this.body.velocity.x);
+        if(this.body.velocity.x < 0 ){this.scene.speedParticles.particleRotate = 180;}
+        else{this.scene.speedParticles.particleRotate = 0;}
+        this.scene.speedParticles.start();
 
         this.scene.cameras.main.shake(100, .0015, true);
+
         this.body.setVelocityX(this.boostSpeed * Math.sign(this.body.velocity.x));
         this.speed = this.boostSpeed;
 
-        this.scene.activeEvents.forEach(event => {
-
-            if (event.skyglow == this.actualPrepareSpeed){
-                this.scene.time.removeEvent(event);
-                this.scene.activeEvents.splice(this.scene.activeEvents.indexOf(event),1);
-            }
-
-        })
-
-        this.scene.tweens.add({
-            targets: this.actualPrepareSpeed,
-            x : this.x + (500 * Math.sign(this.body.velocity.x)),
-            y : this.y ,
-            duration: 300,
-            ease : "Ease.Out"  // Durée de l'animation en millisecondes
-        });
+        this.actualPrepareSpeed.speed = this.actualPrepareSpeed.boostSpeed;
             
-        this.scene.time.delayedCall(300, () => {
-            this.actualPrepareSpeed.reset();
-            this.actualPrepareSpeed = false;
-        }, this);
-
         this.canSpeedBoost = false;
         this.speedBoost = true;
 
@@ -414,8 +361,17 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     checkResetSpeedBoost(){
         const distanceVitesse = Math.abs(0-this.body.velocity.x);
         if(distanceVitesse < this.speed - 40){
+
+            this.scene.speedParticles.stop(false);
+
             this.speed = this.constantSpeed;
             this.speedBoost = false;
+
+            this.scene.time.delayedCall(100, () => {
+                this.actualPrepareSpeed.speed = this.actualPrepareSpeed.constantSpeed;
+                this.actualPrepareSpeed.reset();
+                this.actualPrepareSpeed = false;
+            }, this);
         }
     }
 

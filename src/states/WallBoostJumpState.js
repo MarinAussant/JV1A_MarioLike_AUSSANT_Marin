@@ -76,6 +76,19 @@ export default class WallBoostJumpState extends State {
             }
 
         }
+
+        if (dKey.isDown && this.player.lastWallDirection == "right"){
+            if(this.player.canSpeedBoost){
+                this.player.canSpeedBoost = false;
+                this.player.activeSpeedRoutine();
+            }
+        }
+        else if (qKey.isDown && this.player.lastWallDirection == "left"){
+            if(this.player.canSpeedBoost){
+                this.player.canSpeedBoost = false;
+                this.player.activeSpeedRoutine();
+            }
+        }
         
         if (!isSpaceDown.isDown && (getTimestamp() - this.timeAtStartWallJump > this.player.boostJumpCutOff)) {
             this.player.setVelocityY(this.player.body.velocity.y + this.player.deceleration*4);

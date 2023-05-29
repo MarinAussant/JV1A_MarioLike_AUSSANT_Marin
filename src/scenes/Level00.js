@@ -3,10 +3,10 @@ import FallingPlatform from "../entities/FallingPlatform.js";
 import JumpSkyglow from "../entities/JumpSkyglow.js";
 import SpeedSkyglow from "../entities/SpeedSkyglow.js";
 
-class TestLevel extends Phaser.Scene {
+class Level00 extends Phaser.Scene {
 
     constructor(config) {
-        super("TestLevel");
+        super("Level_00");
         this.config = config;
     }
 
@@ -18,8 +18,8 @@ class TestLevel extends Phaser.Scene {
 
         this.SCREEN_WIDTH = this.config.width;
         this.SCREEN_HEIGHT = this.config.height;
-        this.MAP_WIDTH = (50 * 256) / 4;
-        this.MAP_HEIGHT = (25 * 256) / 4;
+        this.MAP_WIDTH = (192 * 256) / 4;
+        this.MAP_HEIGHT = (50 * 256) / 4;
         this.zoom = this.config.zoomFactor;
         this.sceneName = this.add.systems.config;
 
@@ -113,14 +113,11 @@ class TestLevel extends Phaser.Scene {
         this.speedParticles.setDepth(0);
         this.speedParticles.startFollow(this.player);
 
-
-        this.add.image(0, 0, "front").setOrigin(0, 0).setScale(0.25);
-
     }
 
     //Creation de la map
     createMap() {
-        const map = this.make.tilemap({ key: "testLevelJson" });
+        const map = this.make.tilemap({ key: "level00" });
         map.addTilesetImage("placeholder", "tileset");
         return map;
     }
@@ -163,12 +160,10 @@ class TestLevel extends Phaser.Scene {
     }
 
     endLevel(player, endPoint){ 
-        console.log(this.time);
-        this.speedParticles.destroy();
-        this.jumpParticles.destroy();
-        player.scene.scene.start(endPoint.nextZone);  
-        this.endOverlap.active = false; 
 
+        player.scene.scene.start(endPoint.nextZone);  
+     
+        this.endOverlap.active = false; 
     }
 
     createSkyglow(objectSkyglow){
@@ -212,7 +207,6 @@ class TestLevel extends Phaser.Scene {
         const groupKill = new Phaser.GameObjects.Group; 
 
         objectKill.objects.forEach(kill => {
-
             const direction = kill.properties[0].value;
 
             switch(direction) {
@@ -332,8 +326,9 @@ class TestLevel extends Phaser.Scene {
     update() {
         
         this.soleil.x = this.player.x - 15000;
+
     }
 
 }
 
-export default TestLevel;
+export default Level00;

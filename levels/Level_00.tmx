@@ -118,7 +118,6 @@
     <property name="direction" value="up"/>
    </properties>
   </object>
-  <object id="19" gid="3" x="16896" y="6912" width="256" height="256"/>
   <object id="20" gid="3" x="16896" y="6912" width="256" height="256">
    <properties>
     <property name="direction" value="up"/>

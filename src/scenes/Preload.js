@@ -8,6 +8,7 @@ class Preload extends Phaser.Scene {
     preload() {
         //Tilemap
         this.load.tilemapTiledJSON("testLevelJson", "levels/testLevel.json");
+        this.load.tilemapTiledJSON("level00", "levels/Level_00.json");
 
         //Tileset
         this.load.image("tileset", "assets/placeholder.png");
@@ -25,6 +26,10 @@ class Preload extends Phaser.Scene {
         {frameWidth: 1000, frameHeight: 1200});
         this.load.spritesheet("wallSlideSprite", "assets/anims/wallSlideSprite2.png",
         {frameWidth: 1000, frameHeight: 1200});
+
+        // Skills
+        this.load.image("jumpParticles", "assets/particles/jumpParticles.png")
+        this.load.image("speedParticles", "assets/particles/speedParticles.png")
 
         //Skyglow
         this.load.spritesheet("jumpSkyglow", "assets/anims/jumpSkyglow.png",

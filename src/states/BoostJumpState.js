@@ -36,38 +36,34 @@ export default class BoostJumpState extends State {
     }
 
     if (qKey.isDown && !this.player.isOnFloor) {
-      if(this.player.canSpeedBoost){
-        this.player.canSpeedBoost = false;
-        this.player.activeSpeedRoutine();
-      }
       this.player.setVelocityX(this.player.body.velocity.x - this.player.acceleration);
       if (this.player.body.velocity.x < -this.player.speed) {
         this.player.setVelocityX(-this.player.speed);
       }
-
-    }
-    else if (dKey.isDown && !this.player.isOnFloor) {
       if(this.player.canSpeedBoost){
         this.player.canSpeedBoost = false;
         this.player.activeSpeedRoutine();
       }
+
+    }
+    else if (dKey.isDown && !this.player.isOnFloor) {
       this.player.setVelocityX(this.player.body.velocity.x + this.player.acceleration);
       if (this.player.body.velocity.x > this.player.speed) {
         this.player.setVelocityX(this.player.speed);
+      }
+      if(this.player.canSpeedBoost){
+        this.player.canSpeedBoost = false;
+        this.player.activeSpeedRoutine();
       }
     }
     else {
       if (this.player.body.velocity.x < 0) {
         this.player.setVelocityX(this.player.body.velocity.x + this.player.deceleration)
-        if (this.player.body.velocity.x > 10) {
-          this.player.setState("idle");
-        }
+        
       }
       else if (this.player.body.velocity.x > 0) {
         this.player.setVelocityX(this.player.body.velocity.x - this.player.deceleration)
-        if (this.player.body.velocity.x < 10) {
-          this.player.setState("idle");
-        }
+        
       }
     }
 

@@ -25,8 +25,13 @@ class SpeedSkyglow extends Skyglow {
     init() {
 
         //Variables personnage
+        this.skyglowLight = this.scene.lights.addLight(this.x, this.y, 150, 0x10c40a, 0.75);
+        this.skyglowLight.setVisible(false);
+        this.setPipeline('Light2D');
 
-        this.speed = 400;
+        this.speed = 350;
+        this.constantSpeed = 350;
+        this.boostSpeed = 150;
 
         this.inInventory = false;
         this.sizeInventory = 0.15;
@@ -63,7 +68,8 @@ class SpeedSkyglow extends Skyglow {
 
 
     update(time, delta) {
-
+        this.skyglowLight.x = this.x;
+        this.skyglowLight.y = this.y;
     }
 
 }
