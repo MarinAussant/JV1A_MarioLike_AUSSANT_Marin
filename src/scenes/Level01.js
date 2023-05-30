@@ -32,7 +32,7 @@ class Level01 extends Phaser.Scene {
         // Activation des lights
 
         this.lights.enable();
-        this.soleil = this.lights.addLight(0, -15000, 50000, 0xfffbe5, 400);
+        this.soleil = this.lights.addLight(0, -15000, 50000, 0xfffbe5, 450);
 
         //Creation de la scene : map + layers
         const map = this.createMap();
