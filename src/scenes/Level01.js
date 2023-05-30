@@ -32,7 +32,7 @@ class Level01 extends Phaser.Scene {
         // Activation des lights
 
         this.lights.enable();
-        this.soleil = this.lights.addLight(0, -15000, 50000, 0xfffbe5, 450);
+        this.soleil = this.lights.addLight(0, -15000, 50000, 0xffffff, 400);
 
         //Creation de la scene : map + layers
         const map = this.createMap();
@@ -130,7 +130,7 @@ class Level01 extends Phaser.Scene {
         const layer_plateformes = map.createLayer("Plateformes", tileset);
         layer_plateformes.setScale(0.25);
         layer_plateformes.setPipeline('Light2D');
-        //layer_plateformes.setAlpha(0);
+        layer_plateformes.setAlpha(0);
         const spawn_end = map.getObjectLayer('Spawn_End');
         const skyglows = map.getObjectLayer('Skyglows');
         const kill = map.getObjectLayer('Kill');
