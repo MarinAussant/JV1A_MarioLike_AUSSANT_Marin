@@ -62,10 +62,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.lastWallDirection;
         this.wallJumpCutDirection = 300;
 
-        this.coyoteTime = 100;
+        this.coyoteTime = 150;
 
-        this.jumpBufferTime = 100;
-        this.lastJumpBufferTime = 101;
+        this.jumpBufferTime = 125;
+      
+        this.lastJumpBufferTime = 201;
 
         this.cursors = this.scene.input.keyboard.createCursorKeys();
 
