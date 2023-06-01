@@ -27,8 +27,8 @@ class TestLevel extends Phaser.Scene {
 
         //this.physics.add.sprite(0,0, "bg").setOrigin(0).setScrollFactor(0).setDepth(-10); 
 
-        this.add.image(0, 0, "back").setOrigin(0, 0).setScale(1.5);
-
+        this.add.image(0,- Math.abs(4000 - this.MAP_HEIGHT),"background").setOrigin(0,0).setScale(1).setScrollFactor(0,0);
+  
         // Activation des lights
 
         this.lights.enable();

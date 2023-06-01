@@ -17,9 +17,13 @@ class Preload extends Phaser.Scene {
 
 
         //Backs
-        this.load.image("back", "assets/back.JPG");
+        this.load.image("sky", "assets/levels/sky.png");
+        this.load.image("background", "assets/levels/background.png");
+        this.load.image("backgroundBackground", "assets/levels/backgroundBackground.png");
+        this.load.image("filtre", "assets/levels/filtre.png");
+
         this.load.image("front", "assets/testLevelPlace.png");
-        this.load.image("blueBack", "assets/blueBack.png");
+        this.load.image("sky", "assets/blueBack.png");
         
         this.load.image("backLevel01", "assets/levels/Level_01_back.png");
 
@@ -56,7 +60,7 @@ class Preload extends Phaser.Scene {
     }
 
     create() {
-        this.scene.start("TestLevel", {
+        this.scene.start("Level_01", {
             skyglow: ["ground", "speed", "air"],
         });
 

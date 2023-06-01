@@ -23,16 +23,25 @@ class Level01 extends Phaser.Scene {
         this.zoom = this.config.zoomFactor;
         this.sceneName = this.add.systems.config;
 
-        this.activeEvents = [];
+        console.log(this.MAP_WIDTH);
 
-        //this.physics.add.sprite(0,0, "bg").setOrigin(0).setScrollFactor(0).setDepth(-10); 
-        this.add.image(0, 0, "blueBack").setOrigin(0, 0).setScale(1);
+        this.activeEvents = [];
+        
+        for (let i = -300; i < this.MAP_WIDTH; i += (5263/4)*3){
+            console.log(i);
+            this.add.image(i,- Math.abs(3000 - this.MAP_HEIGHT),"sky").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.25,0.25);
+            this.add.image(i,- Math.abs(2750 - this.MAP_HEIGHT),"backgroundBackground").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.25,0.25);
+            this.add.image(i,- Math.abs(3000 - this.MAP_HEIGHT),"filtre").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.25,0.25).setAlpha(0.25);
+            this.add.image(i,- Math.abs(3000 - this.MAP_HEIGHT),"background").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.45,0.6);
+            this.add.image(i,- Math.abs(3000 - this.MAP_HEIGHT),"filtre").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.45,0.6).setAlpha(0.1);
+        }
+
         this.add.image(0, 0, "backLevel01").setOrigin(0, 0).setScale(1).setPipeline('Light2D');
 
         // Activation des lights
 
-        this.lights.enable();
-        this.soleil = this.lights.addLight(0, -15000, 50000, 0xffffff, 400);
+        this.lights.enable().setAmbientColor(0xeeeeee); ;
+        //this.soleil = this.lights.addLight(0, -10000, 50000, 0xffffff, 250);
 
         //Creation de la scene : map + layers
         const map = this.createMap();
@@ -327,7 +336,7 @@ class Level01 extends Phaser.Scene {
 
     update() {
         
-        this.soleil.x = this.player.x - 15000;
+        //this.soleil.x = this.player.x - 15000;
 
     }
 

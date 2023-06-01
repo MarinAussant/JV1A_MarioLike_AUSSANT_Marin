@@ -36,8 +36,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     init() {
         //Variables personnage
-        this.playerLightUp = this.scene.lights.addLight(this.x, this.y, 1200, 0xffffff, 0.25);
-        this.playerLightDown = this.scene.lights.addLight(this.x, this.y+120, 1200, 0xffffff, 0.25);
+        this.playerLightUp = this.scene.lights.addLight(this.x, this.y, 1200, 0xd5bc70, 0.20);
+        this.playerLightDown = this.scene.lights.addLight(this.x, this.y+120, 1200, 0xd5bc70, 0.20);
 
         this.isOnFloor;
 
