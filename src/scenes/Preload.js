@@ -17,21 +17,26 @@ class Preload extends Phaser.Scene {
 
 
         //Backs
-        this.load.image("sky", "assets/levels/sky.png");
-        this.load.image("background", "assets/levels/background.png");
-        this.load.image("backgroundBackground", "assets/levels/backgroundBackground.png");
-        this.load.image("filtre", "assets/levels/filtre.png");
+        this.load.image("sky", "assets/levels/extra/sky.png");
+        this.load.image("background", "assets/levels/extra/background.png");
+        this.load.image("backgroundBackground", "assets/levels/extra/backgroundBackground.png");
+        this.load.image("filtre", "assets/levels/extra/filtre.png");
+        this.load.image("sky", "assets/levels/extra/sky.png");
+        this.load.image("nuage1", "assets/levels/extra/nuage1.png");
+        this.load.image("nuage2", "assets/levels/extra/nuage2.png");
+        this.load.image("nuage3", "assets/levels/extra/nuage3.png");
 
-        this.load.image("front", "assets/testLevelPlace.png");
-        this.load.image("sky", "assets/blueBack.png");
         
         this.load.image("backLevel01", "assets/levels/Level_01_back.png");
 
         //Fronts
+        this.load.image("front", "assets/testLevelPlace.png");
+
+
         this.load.image("frontLevel01", "assets/levels/Level_01_front.png");
 
         //Player
-        this.load.spritesheet("idleSprite", "assets/anims/idleSprite2.png",
+        this.load.spritesheet("idleSprite", "assets/anims/idleSprite3.png",
         {frameWidth: 1000, frameHeight: 1200});
         this.load.spritesheet("runSprite", "assets/anims/runSprite2.png",
         {frameWidth: 1000, frameHeight: 1200});

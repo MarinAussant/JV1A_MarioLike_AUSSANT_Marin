@@ -23,18 +23,32 @@ class Level01 extends Phaser.Scene {
         this.zoom = this.config.zoomFactor;
         this.sceneName = this.add.systems.config;
 
-        console.log(this.MAP_WIDTH);
-
         this.activeEvents = [];
         
+
+        // Chargement des backgrounds + parralax
         for (let i = -300; i < this.MAP_WIDTH; i += (5263/4)*3){
-            console.log(i);
-            this.add.image(i,- Math.abs(3000 - this.MAP_HEIGHT),"sky").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.25,0.25);
-            this.add.image(i,- Math.abs(2750 - this.MAP_HEIGHT),"backgroundBackground").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.25,0.25);
-            this.add.image(i,- Math.abs(3000 - this.MAP_HEIGHT),"filtre").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.25,0.25).setAlpha(0.25);
-            this.add.image(i,- Math.abs(3000 - this.MAP_HEIGHT),"background").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.45,0.6);
-            this.add.image(i,- Math.abs(3000 - this.MAP_HEIGHT),"filtre").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.45,0.6).setAlpha(0.1);
+            this.add.image(i,- Math.abs(3000 - this.MAP_HEIGHT),"sky").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.25,0.25).setDepth(-1);
+            this.add.image(i,- Math.abs(2750 - this.MAP_HEIGHT),"backgroundBackground").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.25,0.25).setDepth(-0.5);
+            this.add.image(i,- Math.abs(3000 - this.MAP_HEIGHT),"filtre").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.25,0.25).setAlpha(0.25).setDepth(-0.5);
+            this.add.image(i,- Math.abs(3000 - this.MAP_HEIGHT),"background").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.45,0.6).setDepth(-0.20);
+            this.add.image(i,- Math.abs(3000 - this.MAP_HEIGHT),"filtre").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.45,0.6).setAlpha(0.1).setDepth(-0.20);
         }
+
+        // Chargement des nuages
+        this.nuage1Back = this.physics.add.image(3000, 225,"nuage1").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.25,0.25).setDepth(-0.75).setAlpha(0.5);
+        this.nuage1Back.body.setVelocityX(-20);
+        this.nuage2Back = this.physics.add.image(0, -75,"nuage2").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.25,0.25).setDepth(-0.75).setAlpha(0.5);
+        this.nuage2Back.body.setVelocityX(30);
+        this.nuage3Front = this.physics.add.image(1000, 100,"nuage3").setOrigin(0, 0).setScale(0.25).setScrollFactor(0.45,0.6).setDepth(-0.25).setAlpha(0.75);
+        this.nuage3Front.body.setVelocityX(60);
+        this.nuage3Front2 = this.physics.add.image(3000, 400,"nuage3").setOrigin(0, 0).setScale(0.25).setScrollFactor(0.45,0.6).setDepth(-0.25).setAlpha(0.75);
+        this.nuage3Front2.body.setVelocityX(-50);
+        this.nuage2Front = this.physics.add.image(2500, 300,"nuage2").setOrigin(0, 0).setScale(0.25).setScrollFactor(0.45,0.6).setDepth(-0.25).setAlpha(0.75);
+        this.nuage2Front.body.setVelocityX(-40);
+        this.nuage1Front = this.physics.add.image(0, 200,"nuage1").setOrigin(0, 0).setScale(0.25).setScrollFactor(0.45,0.6).setDepth(-0.25).setAlpha(0.75);
+        this.nuage1Front.body.setVelocityX(-35);
+        
 
         this.add.image(0, 0, "backLevel01").setOrigin(0, 0).setScale(1).setPipeline('Light2D');
 
@@ -222,37 +236,37 @@ class Level01 extends Phaser.Scene {
 
             switch(direction) {
                 case "up" :
-                    const leKillUp = this.physics.add.sprite(kill.x/4 + 17, kill.y/4 - 20, 'none');
+                    const leKillUp = this.physics.add.sprite(kill.x/4 + 17, kill.y/4 - 28, 'none');
                     leKillUp.setOrigin(0,0);
                     leKillUp.setAlpha(0);
-                    leKillUp.setSize(192/4, 8);
+                    leKillUp.setSize(192/4, 24);
 
                     groupKill.add(leKillUp);
                     break;
 
                 case "down" :
-                    const leKillDown = this.physics.add.sprite(kill.x/4 + 17, kill.y/4 - 76, 'none');
+                    const leKillDown = this.physics.add.sprite(kill.x/4 - 48, kill.y/4 - 4, 'none');
                     leKillDown.setOrigin(0,0);
                     leKillDown.setAlpha(0);
-                    leKillDown.setSize(192/4, 8);
+                    leKillDown.setSize(192/4, 24);
 
                     groupKill.add(leKillDown);
                     break;
 
                 case "left" :
-                    const leKillLeft = this.physics.add.sprite(kill.x/4 - 20, kill.y/4 - 48, 'none');
+                    const leKillLeft = this.physics.add.sprite(kill.x/4 - 28, kill.y/4 - 48, 'none');
                     leKillLeft.setOrigin(0,0);
                     leKillLeft.setAlpha(0);
-                    leKillLeft.setSize(8, 192/4);
+                    leKillLeft.setSize(24, 192/4);
 
                     groupKill.add(leKillLeft);
                     break;
 
                 case "right" :
-                    const leKillRight = this.physics.add.sprite(kill.x/4 - 76, kill.y/4 - 48, 'none');
+                    const leKillRight = this.physics.add.sprite(kill.x/4 - 68, kill.y/4 - 48, 'none');
                     leKillRight.setOrigin(0,0);
                     leKillRight.setAlpha(0);
-                    leKillRight.setSize(8, 192/4);
+                    leKillRight.setSize(24, 192/4);
 
                     groupKill.add(leKillRight);
                     break;
@@ -306,6 +320,35 @@ class Level01 extends Phaser.Scene {
         player.savePosition(checkpoint.spawnPosition);
     }
 
+    gestionNuage(){
+
+        // Nuage 1 back
+        if(this.nuage1Back.x + this.nuage1Back.width < - 100){
+            this.nuage1Back.x = this.MAP_WIDTH + this.nuage1Back.width;
+        }
+        // Nuage 2 back
+        if(this.nuage1Back.x > this.MAP_WIDTH){
+            this.nuage1Back.x = 0 - this.nuage1Back.width;
+        }
+        // Nuage 3 front
+        if(this.nuage3Front.x > this.MAP_WIDTH){
+            this.nuage3Front.x = 0 - this.nuage3Front.width;
+        }
+        // Nuage 3 front 2
+        if(this.nuage3Front2.x + this.nuage3Front2.width < - 100){
+            this.nuage3Front2.x = this.MAP_WIDTH + this.nuage3Front2.width;
+        }
+        // Nuage 2 front
+        if(this.nuage2Front.x + this.nuage2Front.width < - 100){
+            this.nuage2Front.x = this.MAP_WIDTH + this.nuage2Front.width;
+        }
+        // Nuage 2 front
+        if(this.nuage1Front.x + this.nuage1Front.width < - 100){
+            this.nuage1Front.x = this.MAP_WIDTH + this.nuage1Front.width;
+        }
+
+    }
+
     createFallingPlatforms(layer){
 
         const platforms = new Phaser.GameObjects.Group; 
@@ -336,7 +379,7 @@ class Level01 extends Phaser.Scene {
 
     update() {
         
-        //this.soleil.x = this.player.x - 15000;
+        this.gestionNuage();
 
     }
 

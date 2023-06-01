@@ -12,11 +12,14 @@ export default class WallSlideState extends State {
     // code pour entrer dans l'état "saut"
     // Jouer animation idle
     this.player.anims.play("wallSlide", true);
+    this.player.body.setGravityY(0);
+    //this.player.body.setVelocityY(0);
     // Son jump ?
   }
 
   exit() {
     // code pour sortir de l'état "saut"
+    this.player.body.setGravityY(2000);
   }
 
   update() {
@@ -45,7 +48,7 @@ export default class WallSlideState extends State {
     }
     }
 
-    if (this.player.body.velocity.y > 0) {
+    if (this.player.body.velocity.y >= 0) {
       this.player.setVelocityY(this.player.body.velocity.y + this.player.wallSlideAcceleration);
       if (this.player.body.velocity.y >= this.player.wallSlideSpeed) {
         this.player.setVelocityY(this.player.wallSlideSpeed);

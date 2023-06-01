@@ -217,37 +217,37 @@ class TestLevel extends Phaser.Scene {
 
             switch(direction) {
                 case "up" :
-                    const leKillUp = this.physics.add.sprite(kill.x/4 + 17, kill.y/4 - 20, 'none');
+                    const leKillUp = this.physics.add.sprite(kill.x/4 + 17, kill.y/4 - 28, 'none');
                     leKillUp.setOrigin(0,0);
                     leKillUp.setAlpha(0);
-                    leKillUp.setSize(192/4, 8);
+                    leKillUp.setSize(192/4, 24);
 
                     groupKill.add(leKillUp);
                     break;
 
                 case "down" :
-                    const leKillDown = this.physics.add.sprite(kill.x/4 + 17, kill.y/4 - 76, 'none');
+                    const leKillDown = this.physics.add.sprite(kill.x/4 + 17, kill.y/4 - 68, 'none');
                     leKillDown.setOrigin(0,0);
                     leKillDown.setAlpha(0);
-                    leKillDown.setSize(192/4, 8);
+                    leKillDown.setSize(192/4, 24);
 
                     groupKill.add(leKillDown);
                     break;
 
                 case "left" :
-                    const leKillLeft = this.physics.add.sprite(kill.x/4 - 20, kill.y/4 - 48, 'none');
+                    const leKillLeft = this.physics.add.sprite(kill.x/4 - 28, kill.y/4 - 48, 'none');
                     leKillLeft.setOrigin(0,0);
                     leKillLeft.setAlpha(0);
-                    leKillLeft.setSize(8, 192/4);
+                    leKillLeft.setSize(24, 192/4);
 
                     groupKill.add(leKillLeft);
                     break;
 
                 case "right" :
-                    const leKillRight = this.physics.add.sprite(kill.x/4 - 76, kill.y/4 - 48, 'none');
+                    const leKillRight = this.physics.add.sprite(kill.x/4 - 68, kill.y/4 - 48, 'none');
                     leKillRight.setOrigin(0,0);
                     leKillRight.setAlpha(0);
-                    leKillRight.setSize(8, 192/4);
+                    leKillRight.setSize(24, 192/4);
 
                     groupKill.add(leKillRight);
                     break;
