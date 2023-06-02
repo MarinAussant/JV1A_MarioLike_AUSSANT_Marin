@@ -57,7 +57,7 @@
   <object id="1" gid="4" x="256" y="6144" width="256" height="256"/>
   <object id="2" gid="5" x="25344" y="3584" width="256" height="256">
    <properties>
-    <property name="NextLevel" value="level_02"/>
+    <property name="NextLevel" value="Level_02"/>
    </properties>
   </object>
  </objectgroup>

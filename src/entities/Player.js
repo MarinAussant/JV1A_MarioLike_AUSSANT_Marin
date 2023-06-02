@@ -79,7 +79,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.lastSaveX = 0;
         this.lastSaveY = 0;
 
-        this.displayState = this.scene.add.text(0, 0, "", { fontSize: 80, color: '#FF0000' }).setScrollFactor(0);
+        //this.displayState = this.scene.add.text(0, 0, "", { fontSize: 80, color: '#FF0000' }).setScrollFactor(0);
 
         this.shiftKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
         this.zKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
@@ -170,7 +170,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.currentState = this.states[stateName];
 
         this.currentState.enter();
-        this.displayState.setText(stateName);
+        //this.displayState.setText(stateName);
 
     }
 
