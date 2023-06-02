@@ -11,7 +11,7 @@ class Level02 extends Phaser.Scene {
     }
 
     init(data) {
-  
+        this.gamepad = data.gamepad;
     }
 
     create() {
@@ -71,6 +71,9 @@ class Level02 extends Phaser.Scene {
         this.player = this.createPlayer(playerPoints);
         this.player.savePosition(playerPoints.start);
         this.player.setPipeline('Light2D');
+        if(this.gamepad){
+            this.player.gamepadEventConnect();
+        }
 
         //Creation kill
         const kill = this.createKill(layers.kill);

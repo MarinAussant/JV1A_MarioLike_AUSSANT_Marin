@@ -9,12 +9,6 @@ import WallJumpState from "../states/WallJumpState.js";
 import BoostJumpState from "../states/BoostJumpState.js";
 import WallBoostJumpState from "../states/WallBoostJumpState.js";
 
-import JumpSkyglow from "./JumpSkyglow.js";
-import SpeedSkyglow from "./SpeedSkyglow.js";
-import GlideSkyglow from "./GlideSkyglow.js";
-
-
-
 // Class Player
 class Player extends Phaser.Physics.Arcade.Sprite {
 
@@ -81,15 +75,31 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         //this.displayState = this.scene.add.text(0, 0, "", { fontSize: 80, color: '#FF0000' }).setScrollFactor(0);
 
+        // Control Keyboard 
         this.shiftKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
         this.zKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
-
         this.sKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+
+        // Control Controller
+        // gamepad controls
+		this.inputPad = {
+			left: false,
+			right: false,
+			a: false,
+			aOnce: false,
+            l1: false,
+			l1Once: false,
+            r1: false,
+			r1Once: false,
+		};
+
+        this.scene.input.gamepad.on('connected', this.gamepadEventConnect, this);
+        this.scene.input.gamepad.on('disconnected', this.gamepadEventDisconnect, this);
 
         //Physique avec le monde
         this.body.setGravityY(this.gravity);
         this.body.maxVelocity.y = 1500;
-        this.setDepth(0.1);
+        this.setDepth(0.2);
         this.setCollideWorldBounds(true);
 
         this.listeSkyglow = [];
@@ -198,11 +208,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         // Gestion des inputs
 
-        this.isShiftJustDown = Phaser.Input.Keyboard.JustDown(this.cursors.shift);
-        this.isShiftJustUp = Phaser.Input.Keyboard.JustUp(this.cursors.shift);
+        this.isShiftJustDown = Phaser.Input.Keyboard.JustDown(this.sKey);
 
         this.isZJustDown = Phaser.Input.Keyboard.JustDown(this.zKey);
-        this.isZJustUp = Phaser.Input.Keyboard.JustUp(this.zKey);
+
+        this.handleGamepadAxis()
+
+
 
         this.isOnFloor = this.body.onFloor();
 
@@ -210,7 +222,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         // Gestion Jump Skyglow
 
-        if (this.isZJustDown && !this.canJumpBoost){
+        if ((this.isZJustDown || this.inputPad.l1Once) && !this.canJumpBoost){
             
                 const jumpSkyglow = this.listeSkyglow.find(skyglow => skyglow.type == "jump");
 
@@ -226,7 +238,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         // Gestion Speed Skyglow
         
-        if (this.isShiftJustDown && !this.canSpeedBoost){
+        if ((this.isShiftJustDown || this.inputPad.r1Once) && !this.canSpeedBoost){
             
             const speedSkyglow = this.listeSkyglow.find(skyglow => skyglow.type == "speed");
 
@@ -250,6 +262,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if (this.currentState) {
             this.currentState.update(); // Mettre à jour l'état actuel
         }
+
+        this.inputPad.aOnce = false;
+        this.inputPad.l1Once = false;
+        this.inputPad.r1Once = false;
 
     }
 
@@ -375,6 +391,92 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             }, this);
         }
     }
+
+    gamepadEventConnect() {
+		if (this.scene == undefined){
+			this.gamepad = false;
+			this.resetGamepad();
+			return;
+		} else {
+			console.log("Controller connected!");
+			this.gamepad = this.scene.input.gamepad.pad1;
+
+			// setup events
+			this.gamepad.on("down", () => {
+				this.handleGamepadButtons("down");
+			});
+			this.gamepad.on("up", () => {
+				this.handleGamepadButtons("up");
+			});
+		}
+
+	}
+
+    gamepadEventDisconnect(){
+        console.log("Controller disconnected!");
+
+        // clear the gamepad
+        this.gamepad = null;
+        // resets inputs when disconnected
+        this.resetGamepad();
+    }
+
+    resetGamepad(){
+		// avoid ghost inputs when disconnecting gamepad
+		this.inputPad = {
+			left: false,
+			right: false,
+			a: false,
+			aOnce: false,
+            l1: false,
+			l1Once: false,
+            r1: false,
+			r1Once: false,
+		};
+	}
+
+    handleGamepadButtons(event){
+		if (this.gamepad){
+			const buttonA = this.gamepad.A;
+			this.inputPad.a = buttonA;
+            const buttonL1 = this.gamepad.L1;
+			this.inputPad.l1 = buttonL1;
+            const buttonR1 = this.gamepad.R1;
+			this.inputPad.r1 = buttonR1;
+
+			// aOnce and xOnce are true during 1 frame even when holding a or x
+			if (event == "down") {
+				if (buttonA)
+					this.inputPad.aOnce = buttonA;
+                if (buttonL1)
+					this.inputPad.l1Once = buttonL1;
+                if (buttonR1)
+					this.inputPad.r1Once = buttonR1;
+			}
+		}
+	}
+
+    handleGamepadAxis(){
+		if (this.gamepad){
+			// get axis values
+            
+			const horizAxis = this.gamepad.leftStick;
+
+			// set input values according to axis/dpad values
+			if (horizAxis.x < -0.1){
+				this.inputPad.right = false;
+				this.inputPad.left = true;
+			} else if (horizAxis.x > 0.1) {
+				this.inputPad.right = true;
+				this.inputPad.left = false;
+			}
+            else{
+                this.inputPad.right = false;
+				this.inputPad.left = false;
+            }
+        
+		}
+	}
 
 }
 

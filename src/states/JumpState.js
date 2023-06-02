@@ -32,11 +32,11 @@ export default class JumpState extends State {
     const isSpaceJustDown = Phaser.Input.Keyboard.JustDown(this.cursors.space);
 
     // INCREASE PLAYER JUMP BUFFER 
-    if (isSpaceJustDown) {
+    if (isSpaceJustDown || this.player.inputPad.aOnce) {
       this.player.lastJumpBufferTime = getTimestamp();
     }
 
-    if (qKey.isDown && !this.player.isOnFloor) {
+    if ((qKey.isDown || this.player.inputPad.left) && !this.player.isOnFloor) {
       this.player.setVelocityX(this.player.body.velocity.x - this.player.acceleration);
       if (this.player.body.velocity.x < -this.player.speed) {
         this.player.setVelocityX(-this.player.speed);
@@ -47,7 +47,7 @@ export default class JumpState extends State {
       }
 
     }
-    else if (dKey.isDown && !this.player.isOnFloor) {
+    else if ((dKey.isDown || this.player.inputPad.right) && !this.player.isOnFloor) {
       this.player.setVelocityX(this.player.body.velocity.x + this.player.acceleration);
       if (this.player.body.velocity.x > this.player.speed) {
         this.player.setVelocityX(this.player.speed);
@@ -68,13 +68,13 @@ export default class JumpState extends State {
       }
     }
 
-    if (!isSpaceDown.isDown && (getTimestamp() - this.timeAtStartJump > this.player.jumpCutOff)) {
+    if ((!isSpaceDown.isDown && !this.player.inputPad.a) && (getTimestamp() - this.timeAtStartJump > this.player.jumpCutOff)) {
       this.player.setVelocityY(this.player.body.velocity.y + this.player.deceleration*4);
 
     }
     
     if (this.player.body.blocked.right || this.player.body.blocked.left) {
-      if (isSpaceJustDown) {
+      if (isSpaceJustDown || this.player.inputPad.aOnce) {
         this.player.setState("wallJump");
       }
     }

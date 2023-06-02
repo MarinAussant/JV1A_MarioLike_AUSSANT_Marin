@@ -28,12 +28,12 @@ export default class IdleState extends State {
 
         this.player.setVelocityX(0);
 
-        if((qKey.isDown || dKey.isDown) && this.player.isOnFloor){
+        if((qKey.isDown || dKey.isDown || this.player.inputPad.left || this.player.inputPad.right) && this.player.isOnFloor){
             this.player.setState("run");
         }
 
         if (this.player.isOnFloor){
-            if (isSpaceJustDown || getTimestamp() - this.player.lastJumpBufferTime < this.player.jumpBufferTime ){
+            if ((isSpaceJustDown || this.player.inputPad.aOnce) || getTimestamp() - this.player.lastJumpBufferTime < this.player.jumpBufferTime ){
                 if(this.player.canJumpBoost){
                     this.player.canJumpBoost = false;
                     this.player.activeJumpRoutine();

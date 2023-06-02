@@ -30,7 +30,7 @@ export default class FallState extends State {
     const isSpaceJustDown = Phaser.Input.Keyboard.JustDown(this.cursors.space);
 
     // COYOTTE JUMP SI ETAIT AU SOL AVANT
-    if (getTimestamp() - this.startFallTime < this.player.coyoteTime && isSpaceJustDown && this.player.lastState == "run") {
+    if (getTimestamp() - this.startFallTime < this.player.coyoteTime && (isSpaceJustDown || this.player.inputPad.aOnce) && this.player.lastState == "run") {
       if(this.player.canJumpBoost){
         this.player.canJumpBoost = false;
         this.player.activeJumpRoutine();
@@ -40,16 +40,16 @@ export default class FallState extends State {
         this.player.setState("jump");
       }
     }
-    if (getTimestamp() - this.startFallTime < this.player.coyoteTime * 1.5 && isSpaceJustDown && this.player.lastState == "wallSlide") {
+    if (getTimestamp() - this.startFallTime < this.player.coyoteTime * 1.5 && (isSpaceJustDown || this.player.inputPad.aOnce) && this.player.lastState == "wallSlide") {
       this.player.setState("wallJump");
     }
 
     // INCREASE PLAYER JUMP BUFFER 
-    if (isSpaceJustDown) {
+    if (isSpaceJustDown || this.player.inputPad.aOnce) {
       this.player.lastJumpBufferTime = getTimestamp();
     }
 
-    if (qKey.isDown && !this.player.isOnFloor) {
+    if ((qKey.isDown || this.player.inputPad.left) && !this.player.isOnFloor) {
       this.player.setVelocityX(this.player.body.velocity.x - this.player.acceleration);
       if (this.player.body.velocity.x < -this.player.speed) {
         this.player.setVelocityX(-this.player.speed);
@@ -59,7 +59,7 @@ export default class FallState extends State {
         this.player.activeSpeedRoutine();
       }
     }
-    else if (dKey.isDown && !this.player.isOnFloor) {
+    else if ((dKey.isDown || this.player.inputPad.right) && !this.player.isOnFloor) {
       this.player.setVelocityX(this.player.body.velocity.x + this.player.acceleration);
       if (this.player.body.velocity.x > this.player.speed) {
         this.player.setVelocityX(this.player.speed);

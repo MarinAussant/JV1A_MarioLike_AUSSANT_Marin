@@ -66,6 +66,9 @@ const config = {
     target: 70,
     forceSetTimeOut: true
   },
+  input : {
+    gamepad : true
+  },
   scene: initScenes()
 }
 

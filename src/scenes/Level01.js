@@ -11,7 +11,7 @@ class Level01 extends Phaser.Scene {
     }
 
     init(data) {
-        this.skyglow = data.skyglow;
+        this.gamepad = data.gamepad;
     }
 
     create() {
@@ -71,6 +71,9 @@ class Level01 extends Phaser.Scene {
         this.player = this.createPlayer(playerPoints);
         this.player.savePosition(playerPoints.start);
         this.player.setPipeline('Light2D');
+        if(this.gamepad){
+            this.player.gamepadEventConnect();
+        }
 
         //Creation kill
         const kill = this.createKill(layers.kill);
@@ -186,7 +189,15 @@ class Level01 extends Phaser.Scene {
 
     endLevel(player, endPoint){ 
 
-        player.scene.scene.start(endPoint.nextZone);  
+        let haveGamepad = false;
+        if(player.gamepad){
+            haveGamepad = true;
+        }
+        else{
+            haveGamepad = false;
+        }
+
+        player.scene.scene.start(endPoint.nextZone, {gamepad : haveGamepad});  
      
         this.endOverlap.active = false; 
     }

@@ -38,12 +38,12 @@ export default class WallBoostJumpState extends State {
         const isSpaceJustDown = Phaser.Input.Keyboard.JustDown(this.cursors.space);
 
         // INCREASE PLAYER JUMP BUFFER 
-        if (isSpaceJustDown) {
+        if (isSpaceJustDown || this.player.inputPad.aOnce) {
             this.player.lastJumpBufferTime = getTimestamp();
         }
 
         if (getTimestamp() - this.timeAtStartWallJump >= this.player.wallJumpCutDirection){
-            if (qKey.isDown && !this.player.isOnFloor) {
+            if ((qKey.isDown || this.player.inputPad.left) && !this.player.isOnFloor) {
                 if(this.player.canSpeedBoost){
                     this.player.canSpeedBoost = false;
                     this.player.activeSpeedRoutine();
@@ -54,7 +54,7 @@ export default class WallBoostJumpState extends State {
                 }
 
             }
-            else if (dKey.isDown && !this.player.isOnFloor) {
+            else if ((dKey.isDown || this.player.inputPad.right) && !this.player.isOnFloor) {
                 if(this.player.canSpeedBoost){
                     this.player.canSpeedBoost = false;
                     this.player.activeSpeedRoutine();
@@ -77,20 +77,20 @@ export default class WallBoostJumpState extends State {
 
         }
 
-        if (dKey.isDown && this.player.lastWallDirection == "right"){
+        if ((dKey.isDown || this.player.inputPad.right) && this.player.lastWallDirection == "right"){
             if(this.player.canSpeedBoost){
                 this.player.canSpeedBoost = false;
                 this.player.activeSpeedRoutine();
             }
         }
-        else if (qKey.isDown && this.player.lastWallDirection == "left"){
+        else if ((qKey.isDown || this.player.inputPad.left) && this.player.lastWallDirection == "left"){
             if(this.player.canSpeedBoost){
                 this.player.canSpeedBoost = false;
                 this.player.activeSpeedRoutine();
             }
         }
         
-        if (!isSpaceDown.isDown && (getTimestamp() - this.timeAtStartWallJump > this.player.boostJumpCutOff)) {
+        if ((!isSpaceDown.isDown && !this.player.inputPad.a) && (getTimestamp() - this.timeAtStartWallJump > this.player.boostJumpCutOff)) {
             this.player.setVelocityY(this.player.body.velocity.y + this.player.deceleration*4);
         }
 

@@ -26,7 +26,7 @@ export default class RunState extends State {
         const dKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         const isSpaceJustDown = Phaser.Input.Keyboard.JustDown(this.cursors.space);
 
-        if (qKey.isDown && this.player.isOnFloor) {
+        if ((qKey.isDown || this.player.inputPad.left) && this.player.isOnFloor) {
             this.player.setVelocityX(this.player.body.velocity.x - this.player.acceleration);
             if (this.player.body.velocity.x < -this.player.speed) {
                 this.player.setVelocityX(-this.player.speed);
@@ -37,7 +37,7 @@ export default class RunState extends State {
             }
 
         }
-        else if (dKey.isDown && this.player.isOnFloor) {
+        else if ((dKey.isDown || this.player.inputPad.right) && this.player.isOnFloor) {
             this.player.setVelocityX(this.player.body.velocity.x + this.player.acceleration);
             if (this.player.body.velocity.x > this.player.speed) {
                 this.player.setVelocityX(this.player.speed);
@@ -66,7 +66,7 @@ export default class RunState extends State {
         }
 
         if (this.player.isOnFloor) {
-            if (isSpaceJustDown || getTimestamp() - this.player.lastJumpBufferTime < this.player.jumpBufferTime) {
+            if ((isSpaceJustDown || this.player.inputPad.aOnce) || getTimestamp() - this.player.lastJumpBufferTime < this.player.jumpBufferTime) {
                 if(this.player.canJumpBoost){
                     this.player.canJumpBoost = false;
                     this.player.activeJumpRoutine();

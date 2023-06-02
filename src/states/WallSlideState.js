@@ -37,7 +37,7 @@ export default class WallSlideState extends State {
     }
 
     // SI LE JOUEUR SAUT EN ETAT SUR LE MUR ALORS WALLJUMP
-    if (isSpaceJustDown || getTimestamp() - this.player.lastJumpBufferTime < this.player.jumpBufferTime) {
+    if ((isSpaceJustDown || this.player.inputPad.aOnce) || getTimestamp() - this.player.lastJumpBufferTime < this.player.jumpBufferTime) {
       if(this.player.canJumpBoost){
         this.player.canJumpBoost = false;
         this.player.activeJumpRoutine();
@@ -55,14 +55,14 @@ export default class WallSlideState extends State {
       }
     }
 
-    if (qKey.isDown && !this.player.isOnFloor) {
+    if ((qKey.isDown || this.player.inputPad.left) && !this.player.isOnFloor) {
       this.player.setVelocityX(this.player.body.velocity.x - this.player.acceleration);
       if (this.player.body.velocity.x < -this.player.speed) {
         this.player.setVelocityX(-this.player.speed);
       }
 
     }
-    else if (dKey.isDown && !this.player.isOnFloor) {
+    else if ((dKey.isDown || this.player.inputPad.right) && !this.player.isOnFloor) {
       this.player.setVelocityX(this.player.body.velocity.x + this.player.acceleration);
       if (this.player.body.velocity.x > this.player.speed) {
         this.player.setVelocityX(this.player.speed);
