@@ -66,7 +66,7 @@ class Preload extends Phaser.Scene {
     }
 
     create() {
-        this.scene.start("Level_02");
+        this.scene.start("Level_01");
 
     }
 

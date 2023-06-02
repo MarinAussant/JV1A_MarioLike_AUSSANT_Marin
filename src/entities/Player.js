@@ -176,8 +176,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     update(time, delta) {
 
-        console.log(this.x);
-
 
         if (!this.active) { return; }
 
@@ -217,7 +215,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 const jumpSkyglow = this.listeSkyglow.find(skyglow => skyglow.type == "jump");
 
                 if (jumpSkyglow){
-                    console.log(this.scene.jumpParticles);
                     this.scene.jumpParticles.start();
                     this.canJumpBoost = true;
                     jumpSkyglow.skyglowLight.setVisible(true);
@@ -323,7 +320,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.scene.jumpParticles.stop(false);
 
-        this.scene.cameras.main.shake(100, .0015, true);
+        this.scene.cameras.main.shake(100, .0025, true);
 
         this.actualPrepareJump.skyglowLight.setVisible(false);
 
@@ -350,7 +347,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         else{this.scene.speedParticles.particleRotate = 0;}
         this.scene.speedParticles.start();
 
-        this.scene.cameras.main.shake(100, .0015, true);
+        this.scene.cameras.main.shake(100, .0025, true);
 
         this.body.setVelocityX(this.boostSpeed * Math.sign(this.body.velocity.x));
         this.speed = this.boostSpeed;

@@ -149,8 +149,8 @@
                  "type":"",
                  "visible":true,
                  "width":256,
-                 "x":4096,
-                 "y":6656
+                 "x":256,
+                 "y":11776
                 }, 
                 {
                  "gid":5,
@@ -1789,7 +1789,7 @@
  "nextobjectid":136,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.10.1",
+ "tiledversion":"1.8.4",
  "tileheight":256,
  "tilesets":[
         {
@@ -1817,6 +1817,6 @@
         }],
  "tilewidth":256,
  "type":"map",
- "version":"1.10",
+ "version":"1.8",
  "width":80
 }

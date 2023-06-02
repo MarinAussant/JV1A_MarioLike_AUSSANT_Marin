@@ -78,7 +78,6 @@ class TestLevel extends Phaser.Scene {
         this.physics.world.setBounds(0, 0, this.MAP_WIDTH, this.MAP_HEIGHT);
 
         // Particules de Saut
-        console.log(this.player.x,this.player.y);
         this.jumpParticles = this.add.particles(this.player.x - 190, this.player.y,'jumpParticles', {
             emitZone:{
                 source : new Phaser.Geom.Rectangle(this.player.x - 260, this.player.y - 225, this.player.x + -50, this.player.y + 50),

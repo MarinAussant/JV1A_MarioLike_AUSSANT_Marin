@@ -94,15 +94,14 @@ class Level02 extends Phaser.Scene {
 
         //Limites monde et caméra
         this.cameras.main.setBounds(0, 0, this.MAP_WIDTH, this.MAP_HEIGHT - 48);
-        //this.cameras.main.setZoom(this.zoom);
-        this.cameras.main.setZoom(0.2);
+        this.cameras.main.setZoom(this.zoom);
         this.cameras.main.startFollow(this.player);
         this.cameras.main.followOffset.y = 100;
 
         this.physics.world.setBounds(0, 0, this.MAP_WIDTH, this.MAP_HEIGHT);
 
         // Particules de Saut
-        this.jumpParticles = this.add.particles(this.player.x - 190, this.player.y,'jumpParticles', {
+        this.jumpParticles = this.add.particles(this.player.x + 25,this.player.y - 5600,'jumpParticles', {
             emitZone:{
                 source : new Phaser.Geom.Rectangle(this.player.x - 260, this.player.y - 225, 210, 275),
                 type: "random",
@@ -114,7 +113,7 @@ class Level02 extends Phaser.Scene {
             frequency: 125, // Fréquence d'émission en particules par seconde
 
         });
-        //this.jumpParticles.stop(true);
+        this.jumpParticles.stop(true);
         this.jumpParticles.setDepth(0.1);
         this.jumpParticles.startFollow(this.player);
         
@@ -123,7 +122,7 @@ class Level02 extends Phaser.Scene {
         
         // Particules de Speed
 
-        this.speedParticles = this.add.particles(this.player.x - 190, this.player.y,'speedParticles', {
+        this.speedParticles = this.add.particles(this.player.x + 25, this.player.y - 5700,'speedParticles', {
             emitZone:{
                 source : new Phaser.Geom.Rectangle(this.player.x - 260, this.player.y - 225, 210, 275),
                 type: "random",
@@ -134,11 +133,10 @@ class Level02 extends Phaser.Scene {
             quantity: 0.5, // Nombre de particules à émettre
             frequency: 125, // Fréquence d'émission en particules par seconde
 
-        });
-        //this.speedParticles.stop(true);
+        },this);
+        this.speedParticles.stop(true);
         this.speedParticles.setDepth(0.1);
         this.speedParticles.startFollow(this.player);
-
 
     }
 
@@ -171,6 +169,8 @@ class Level02 extends Phaser.Scene {
         //Recréé le joueur dans la scène en lui passant des propriétés qu'il garde de scène en scène (liste heros, hero actuel, hp)
         const player = new Player(this, playerPoints.start.x/4, playerPoints.start.y/4);
         player.setSize(250, 575).setOffset(375,610);
+        player.lastSaveX = playerPoints.start.x/4;
+        player.lastSaveY = playerPoints.start.y/4;
         return player;
     }
 
