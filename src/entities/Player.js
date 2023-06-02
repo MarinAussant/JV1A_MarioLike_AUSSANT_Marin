@@ -437,22 +437,25 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     handleGamepadButtons(event){
 		if (this.gamepad){
-			const buttonA = this.gamepad.A;
-			this.inputPad.a = buttonA;
-            const buttonL1 = this.gamepad.L1;
-			this.inputPad.l1 = buttonL1;
-            const buttonR1 = this.gamepad.R1;
-			this.inputPad.r1 = buttonR1;
 
-			// aOnce and xOnce are true during 1 frame even when holding a or x
+            const buttonA = this.gamepad.A;
+            const buttonL1 = this.gamepad.L1;
+            const buttonR1 = this.gamepad.R1;
+
+            // aOnce and xOnce are true during 1 frame even when holding a or x
 			if (event == "down") {
-				if (buttonA)
+				if (buttonA && !this.inputPad.a)
 					this.inputPad.aOnce = buttonA;
-                if (buttonL1)
+                if (buttonL1 && !this.inputPad.l1)
 					this.inputPad.l1Once = buttonL1;
-                if (buttonR1)
+                if (buttonR1 && !this.inputPad.r1)
 					this.inputPad.r1Once = buttonR1;
 			}
+
+			this.inputPad.a = buttonA;
+			this.inputPad.l1 = buttonL1;
+			this.inputPad.r1 = buttonR1;
+
 		}
 	}
 
