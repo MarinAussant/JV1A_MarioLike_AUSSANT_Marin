@@ -47,7 +47,7 @@ const SHARED_CONFIG = {
   }
 }
 
-const Scenes = [PreloadScene, TestLevel, Level00, Level01, Level02];
+const Scenes = [PreloadScene, Level02, TestLevel, Level00, Level01];
 const createScene = Scene => new Scene(SHARED_CONFIG) //A voir
 const initScenes = () => Scenes.map(createScene) 
 

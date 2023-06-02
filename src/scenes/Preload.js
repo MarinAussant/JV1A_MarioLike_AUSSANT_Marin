@@ -66,9 +66,7 @@ class Preload extends Phaser.Scene {
     }
 
     create() {
-        this.scene.start("Level_01", {
-            skyglow: ["ground", "speed", "air"],
-        });
+        this.scene.start("Level_02");
 
     }
 

@@ -11,7 +11,7 @@ class TestLevel extends Phaser.Scene {
     }
 
     init(data) {
-        this.skyglow = data.skyglow;
+    
     }
 
     create() {
@@ -31,8 +31,8 @@ class TestLevel extends Phaser.Scene {
   
         // Activation des lights
 
-        this.lights.enable();
-        this.soleil = this.lights.addLight(0, -15000, 50000, 0xfffbe5, 400);
+        this.lights.enable().setAmbientColor(0xeeeeee);
+        //this.soleil = this.lights.addLight(0, -15000, 50000, 0xfffbe5, 400);
 
         //Creation de la scene : map + layers
         const map = this.createMap();
@@ -78,7 +78,7 @@ class TestLevel extends Phaser.Scene {
         this.physics.world.setBounds(0, 0, this.MAP_WIDTH, this.MAP_HEIGHT);
 
         // Particules de Saut
-
+        console.log(this.player.x,this.player.y);
         this.jumpParticles = this.add.particles(this.player.x - 190, this.player.y,'jumpParticles', {
             emitZone:{
                 source : new Phaser.Geom.Rectangle(this.player.x - 260, this.player.y - 225, this.player.x + -50, this.player.y + 50),
@@ -91,7 +91,7 @@ class TestLevel extends Phaser.Scene {
             frequency: 125, // Fréquence d'émission en particules par seconde
 
         });
-        this.jumpParticles.stop(true);
+        //this.jumpParticles.stop(true);
         this.jumpParticles.setDepth(0);
         this.jumpParticles.startFollow(this.player);
 
@@ -145,7 +145,7 @@ class TestLevel extends Phaser.Scene {
 
     createPlayer(playerPoints) {
         //Recréé le joueur dans la scène en lui passant des propriétés qu'il garde de scène en scène (liste heros, hero actuel, hp)
-        const player = new Player(this, playerPoints.start.x/4, playerPoints.start.y/4, this.skyglow);
+        const player = new Player(this, playerPoints.start.x/4, playerPoints.start.y/4);
         player.setSize(250, 575).setOffset(375,610);
         return player;
     }
@@ -164,9 +164,8 @@ class TestLevel extends Phaser.Scene {
 
     endLevel(player, endPoint){ 
         
-        this.speedParticles.destroy();
-        this.jumpParticles.destroy();
         player.scene.scene.start(endPoint.nextZone);  
+
         this.endOverlap.active = false; 
 
     }
@@ -257,8 +256,6 @@ class TestLevel extends Phaser.Scene {
 
         return groupKill;
 
-        //TODO GERER L'APPARITION DES ZONE DE KILL GRACE AU CALQUE OBJECT (EN GERANT LA ROTATION)
-
     }
 
     getPlayerPoints(layer) {
@@ -331,7 +328,7 @@ class TestLevel extends Phaser.Scene {
 
     update() {
         
-        this.soleil.x = this.player.x - 15000;
+        //this.soleil.x = this.player.x - 15000;
     }
 
 }

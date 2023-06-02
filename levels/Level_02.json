@@ -149,8 +149,8 @@
                  "type":"",
                  "visible":true,
                  "width":256,
-                 "x":256,
-                 "y":11776
+                 "x":4096,
+                 "y":6656
                 }, 
                 {
                  "gid":5,
@@ -1789,13 +1789,13 @@
  "nextobjectid":136,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.8.4",
+ "tiledversion":"1.10.1",
  "tileheight":256,
  "tilesets":[
         {
          "columns":8,
          "firstgid":1,
-         "image":"..\/..\/..\/..\/..\/Bureau\/Jeux vid\u00e9o 1stY\/Infographie 2D\/PS2\/tileset\/placeholder.png",
+         "image":"placeholder.png",
          "imageheight":512,
          "imagewidth":2048,
          "margin":0,
@@ -1812,29 +1812,11 @@
                          "type":"bool",
                          "value":true
                         }]
-                }, 
-                {
-                 "id":2,
-                 "properties":[
-                        {
-                         "name":"direction",
-                         "type":"string",
-                         "value":""
-                        }]
-                }, 
-                {
-                 "id":4,
-                 "properties":[
-                        {
-                         "name":"NextLevel",
-                         "type":"string",
-                         "value":""
-                        }]
                 }],
          "tilewidth":256
         }],
  "tilewidth":256,
  "type":"map",
- "version":"1.8",
+ "version":"1.10",
  "width":80
 }

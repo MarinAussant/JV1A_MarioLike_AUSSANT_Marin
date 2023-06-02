@@ -18,7 +18,7 @@ import GlideSkyglow from "./GlideSkyglow.js";
 // Class Player
 class Player extends Phaser.Physics.Arcade.Sprite {
 
-    constructor(scene, x, y, skyglow) {
+    constructor(scene, x, y) {
         super(scene, x, y, "idleSprite").setScale(0.3);
         scene.add.existing(this); //Ajoute l'objet à la scène 
         scene.physics.add.existing(this); //Donne un physic body à l'objet
@@ -176,6 +176,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     update(time, delta) {
 
+        console.log(this.x);
+
+
         if (!this.active) { return; }
 
         if (this.cantMove) {
@@ -214,6 +217,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 const jumpSkyglow = this.listeSkyglow.find(skyglow => skyglow.type == "jump");
 
                 if (jumpSkyglow){
+                    console.log(this.scene.jumpParticles);
                     this.scene.jumpParticles.start();
                     this.canJumpBoost = true;
                     jumpSkyglow.skyglowLight.setVisible(true);
