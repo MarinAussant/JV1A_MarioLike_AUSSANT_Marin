@@ -19,6 +19,8 @@ class Preload extends Phaser.Scene {
         this.load.image("logo", "assets/levels/extra/logo.png");
         this.load.image("play", "assets/levels/extra/play.png");
         this.load.image("playSelected", "assets/levels/extra/playSelected.png");
+        this.load.image("quit", "assets/levels/extra/quit.png");
+        this.load.image("quitSelected", "assets/levels/extra/quitSelected.png");
 
         this.load.image("backgroundBlur", "assets/levels/extra/backgroundBlur.png");
         this.load.image("backgroundBackgroundBlur", "assets/levels/extra/backgroundBackgroundBlur.png");

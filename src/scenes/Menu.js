@@ -42,7 +42,8 @@ class Menu extends Phaser.Scene {
         this.add.image(50,-350,"logo").setOrigin(0,0);
         this.selectedPlayButton = this.add.image(350,600,"playSelected").setOrigin(0,0).setAlpha(0);
         this.playButton = this.add.image(350,600,"play").setOrigin(0,0).setAlpha(1).setInteractive();
-        
+        this.selectedQuitButton = this.add.image(950,600,"quitSelected").setOrigin(0,0).setAlpha(0);
+        this.quitButton = this.add.image(950,600,"quit").setOrigin(0,0).setAlpha(1).setInteractive();
         
 
         this.playHover = false;
@@ -50,7 +51,8 @@ class Menu extends Phaser.Scene {
 
             if (!this.playHover){
                 this.playHover = true;
-                this.tweens.killAll();
+                this.tweens.killTweensOf(this.playButton);
+                //this.tweens.killAll();
                 this.tweens.add({
                     targets: this.playButton,
                     alpha: 0,
@@ -71,7 +73,7 @@ class Menu extends Phaser.Scene {
 
             if(this.playHover){
                 this.playHover = false;
-                this.tweens.killAll();
+                this.tweens.killTweensOf(this.playButton);
                 this.tweens.add({
                     targets: this.playButton,
                     alpha: 1,
@@ -89,11 +91,64 @@ class Menu extends Phaser.Scene {
             
         });
 
+        this.quitHover = false;
+        this.quitButton.on('pointerover', () => {
+
+            if (!this.quitHover){
+                this.quitHover = true;
+                this.tweens.killTweensOf(this.quitButton);
+                this.tweens.add({
+                    targets: this.quitButton,
+                    alpha: 0,
+                    duration: 200,  // Durée de l'animation en millisecondes
+                    ease: 'Linear', // Fonction d'interpolation pour l'animation
+                });
+
+                this.tweens.add({
+                    targets: this.selectedQuitButton,
+                    alpha: 1,
+                    duration: 200,  // Durée de l'animation en millisecondes
+                    ease: 'Linear', // Fonction d'interpolation pour l'animation
+                });
+            }
+
+        });
+        this.quitButton.on('pointerout', () => {
+
+            if(this.quitHover){
+                this.quitHover = false;
+                this.tweens.killTweensOf(this.quitButton);
+                this.tweens.add({
+                    targets: this.quitButton,
+                    alpha: 1,
+                    duration: 200,  // Durée de l'animation en millisecondes
+                    ease: 'Linear', // Fonction d'interpolation pour l'animation
+                });
+
+                this.tweens.add({
+                    targets: this.selectedQuitButton,
+                    alpha: 0,
+                    duration: 200,  // Durée de l'animation en millisecondes
+                    ease: 'Linear', // Fonction d'interpolation pour l'animation
+                });
+            }
+            
+        });
+
         this.playButton.on('pointerup', () => {
 
             this.cameras.main.fadeOut(1000, 34, 27, 29);
             this.time.delayedCall(1000, () => {
 				this.scene.start("Level_01");
+            })
+            
+        });
+
+        this.quitButton.on('pointerup', () => {
+
+            this.cameras.main.fadeOut(1000, 34, 27, 29);
+            this.time.delayedCall(1000, () => {
+				this.game.destroy();
             })
             
         });
