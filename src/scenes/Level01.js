@@ -12,6 +12,7 @@ class Level01 extends Phaser.Scene {
 
     init(data) {
         this.gamepad = data.gamepad;
+        this.cameras.main.fadeIn(1000, 34, 27, 29);
     }
 
     create() {
@@ -197,8 +198,11 @@ class Level01 extends Phaser.Scene {
             haveGamepad = false;
         }
 
-        player.scene.scene.start(endPoint.nextZone, {gamepad : haveGamepad});  
-     
+        this.cameras.main.fadeOut(400, 34, 27, 29);
+        this.time.delayedCall(400, () => {
+				player.scene.scene.start(endPoint.nextZone, {gamepad : haveGamepad});  
+        })
+
         this.endOverlap.active = false; 
     }
 
@@ -338,8 +342,8 @@ class Level01 extends Phaser.Scene {
             this.nuage1Back.x = this.MAP_WIDTH + this.nuage1Back.width;
         }
         // Nuage 2 back
-        if(this.nuage1Back.x > this.MAP_WIDTH){
-            this.nuage1Back.x = 0 - this.nuage1Back.width;
+        if(this.nuage2Back.x > this.MAP_WIDTH){
+            this.nuage2Back.x = 0 - this.nuage2Back.width;
         }
         // Nuage 3 front
         if(this.nuage3Front.x > this.MAP_WIDTH){

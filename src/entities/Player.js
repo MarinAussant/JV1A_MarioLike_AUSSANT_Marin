@@ -461,8 +461,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     handleGamepadAxis(){
 		if (this.gamepad){
-			// get axis values
             
+			// get axis values
 			const horizAxis = this.gamepad.leftStick;
 
 			// set input values according to axis/dpad values

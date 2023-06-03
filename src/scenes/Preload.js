@@ -15,7 +15,13 @@ class Preload extends Phaser.Scene {
         //Tileset
         this.load.image("tileset", "assets/placeholder.png");
 
+        //Menu
+        this.load.image("logo", "assets/levels/extra/logo.png");
+        this.load.image("play", "assets/levels/extra/play.png");
+        this.load.image("playSelected", "assets/levels/extra/playSelected.png");
 
+        this.load.image("backgroundBlur", "assets/levels/extra/backgroundBlur.png");
+        this.load.image("backgroundBackgroundBlur", "assets/levels/extra/backgroundBackgroundBlur.png");
 
         //Backs
         this.load.image("sky", "assets/levels/extra/sky.png");
@@ -23,6 +29,7 @@ class Preload extends Phaser.Scene {
         this.load.image("backgroundBackground", "assets/levels/extra/backgroundBackground.png");
         this.load.image("filtre", "assets/levels/extra/filtre.png");
         this.load.image("sky", "assets/levels/extra/sky.png");
+
         this.load.image("nuage1", "assets/levels/extra/nuage1.png");
         this.load.image("nuage2", "assets/levels/extra/nuage2.png");
         this.load.image("nuage3", "assets/levels/extra/nuage3.png");
@@ -66,7 +73,7 @@ class Preload extends Phaser.Scene {
     }
 
     create() {
-        this.scene.start("Level_01");
+        this.scene.start("Menu");
 
     }
 
