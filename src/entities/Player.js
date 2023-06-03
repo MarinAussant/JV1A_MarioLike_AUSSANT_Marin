@@ -466,10 +466,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 			const horizAxis = this.gamepad.leftStick;
 
 			// set input values according to axis/dpad values
-			if (horizAxis.x < -0.1){
+			if (horizAxis.x < -0.4){
 				this.inputPad.right = false;
 				this.inputPad.left = true;
-			} else if (horizAxis.x > 0.1) {
+			} else if (horizAxis.x > 0.4) {
 				this.inputPad.right = true;
 				this.inputPad.left = false;
 			}
