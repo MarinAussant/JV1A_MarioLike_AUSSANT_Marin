@@ -6,3 +6,8 @@ body
 	background-color: white;
 	margin: auto;
 }
+
+@font-face {
+    font-family: Vestovia;
+    src: url('./assets/font/Vestovia.otf');
+}

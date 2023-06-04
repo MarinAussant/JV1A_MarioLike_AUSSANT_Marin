@@ -39,9 +39,11 @@ const HEIGHT = 1080;
 const ZOOM_FACTOR = 0.75; 
 
 const SHARED_CONFIG = {
-  mode: Phaser.Scale.FIT,
-  width: WIDTH,
-  height: HEIGHT,
+  scale: {
+    mode: Phaser.Scale.FIT,
+    width: WIDTH,
+    height: HEIGHT
+  },
   zoomFactor: ZOOM_FACTOR,
   leftTopCorner: {
     x: (WIDTH - (WIDTH / ZOOM_FACTOR)) / 2,
@@ -60,7 +62,7 @@ const config = {
   physics: {
     default: 'arcade',
     arcade: {
-        debug: true,
+        debug: false,
         tileBias: 128
     }
   },

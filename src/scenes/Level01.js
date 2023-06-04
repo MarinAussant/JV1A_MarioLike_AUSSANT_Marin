@@ -65,6 +65,10 @@ class Level01 extends Phaser.Scene {
         const endZone = this.createEnd(playerPoints.end); 
         const vide = this.createVoid();
 
+        //Création image aide
+
+        this.add.image(600,900,"moveJumpHelp").setOrigin(0,0);
+
         //Creation skyglows
         this.skyglows = this.createSkyglow(layers.skyglows);
 
