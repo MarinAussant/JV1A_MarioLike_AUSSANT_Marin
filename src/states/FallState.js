@@ -35,13 +35,20 @@ export default class FallState extends State {
         this.player.canJumpBoost = false;
         this.player.activeJumpRoutine();
         this.player.setState("boostJump");
-    }
+      }
       else{  
         this.player.setState("jump");
       }
     }
     if (getTimestamp() - this.startFallTime < this.player.coyoteTime * 1.5 && (isSpaceJustDown || this.player.inputPad.aOnce) && this.player.lastState == "wallSlide") {
-      this.player.setState("wallJump");
+      if(this.player.canJumpBoost){
+        this.player.canJumpBoost = false;
+        this.player.activeJumpRoutine();
+        this.player.setState("wallBoostJump");
+      }
+      else{  
+        this.player.setState("wallJump");
+      }
     }
 
     // INCREASE PLAYER JUMP BUFFER 

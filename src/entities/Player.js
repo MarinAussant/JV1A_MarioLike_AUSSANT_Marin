@@ -186,7 +186,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     update(time, delta) {
 
-
         if (!this.active) { return; }
 
         if (this.cantMove) {

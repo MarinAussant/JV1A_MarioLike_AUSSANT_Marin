@@ -107,6 +107,7 @@ class Level01 extends Phaser.Scene {
         this.cameras.main.followOffset.y = 100;
 
         this.physics.world.setBounds(0, 0, this.MAP_WIDTH, this.MAP_HEIGHT);
+        this.physics.world.setBoundsCollision(true, true, false, false);
 
         // Particules de Saut
 
@@ -176,7 +177,7 @@ class Level01 extends Phaser.Scene {
     createPlayer(playerPoints) {
         //Recréé le joueur dans la scène en lui passant des propriétés qu'il garde de scène en scène (liste heros, hero actuel, hp)
         const player = new Player(this, playerPoints.start.x/4, playerPoints.start.y/4, this.skyglow);
-        player.setSize(250, 575).setOffset(375,610);
+        player.setSize(250, 550).setOffset(375,630);
         return player;
     }
 

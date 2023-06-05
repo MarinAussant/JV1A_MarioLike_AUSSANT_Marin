@@ -3,10 +3,10 @@ import FallingPlatform from "../entities/FallingPlatform.js";
 import JumpSkyglow from "../entities/JumpSkyglow.js";
 import SpeedSkyglow from "../entities/SpeedSkyglow.js";
 
-class Level02 extends Phaser.Scene {
+class Level03 extends Phaser.Scene {
 
     constructor(config) {
-        super("Level_02");
+        super("Level_03");
         this.config = config;
     }
 
@@ -19,8 +19,8 @@ class Level02 extends Phaser.Scene {
 
         this.SCREEN_WIDTH = this.config.width;
         this.SCREEN_HEIGHT = this.config.height;
-        this.MAP_WIDTH = (80 * 256) / 4;
-        this.MAP_HEIGHT = (60 * 256) / 4;
+        this.MAP_WIDTH = (100 * 256) / 4;
+        this.MAP_HEIGHT = (50 * 256) / 4;
         this.zoom = this.config.zoomFactor;
         this.sceneName = this.add.systems.config;
 
@@ -29,29 +29,29 @@ class Level02 extends Phaser.Scene {
 
         // Chargement des backgrounds + parralax
         for (let i = -300; i < this.MAP_WIDTH; i += (5263/4)*3){
-            this.add.image(i,3000 - this.MAP_HEIGHT,"sky").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.25,0.25).setDepth(-1);
-            this.add.image(i,3500 - this.MAP_HEIGHT,"backgroundBackground").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.25,0.25).setDepth(-0.5);
-            this.add.image(i,3000 - this.MAP_HEIGHT,"filtre").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.25,0.25).setAlpha(0.25).setDepth(-0.5);
-            this.add.image(i,4000 - this.MAP_HEIGHT,"background").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.45,0.6).setDepth(-0.20);
-            this.add.image(i,4000 - this.MAP_HEIGHT,"filtre").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.45,0.6).setAlpha(0.1).setDepth(-0.20);
+            this.add.image(i,2500 - this.MAP_HEIGHT,"sky").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.25,0.25).setDepth(-1);
+            this.add.image(i,2500 - this.MAP_HEIGHT,"backgroundBackground").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.25,0.25).setDepth(-0.5);
+            this.add.image(i,2500 - this.MAP_HEIGHT,"filtre").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.25,0.25).setAlpha(0.25).setDepth(-0.5);
+            this.add.image(i,3000 - this.MAP_HEIGHT,"background").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.45,0.6).setDepth(-0.20);
+            this.add.image(i,3000 - this.MAP_HEIGHT,"filtre").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.45,0.6).setAlpha(0.1).setDepth(-0.20);
         }
 
         // Chargement des nuages
-        this.nuage1Back = this.physics.add.image(3000, 500,"nuage1").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.25,0.25).setDepth(-0.75).setAlpha(0.5);
+        this.nuage1Back = this.physics.add.image(3000, 300,"nuage1").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.25,0.25).setDepth(-0.75).setAlpha(0.5);
         this.nuage1Back.body.setVelocityX(-20);
-        this.nuage2Back = this.physics.add.image(0, 200,"nuage2").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.25,0.25).setDepth(-0.75).setAlpha(0.5);
+        this.nuage2Back = this.physics.add.image(0, 50,"nuage2").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.25,0.25).setDepth(-0.75).setAlpha(0.5);
         this.nuage2Back.body.setVelocityX(30);
         this.nuage3Front = this.physics.add.image(1000, 500,"nuage3").setOrigin(0, 0).setScale(0.25).setScrollFactor(0.45,0.6).setDepth(-0.25).setAlpha(0.75);
         this.nuage3Front.body.setVelocityX(60);
-        this.nuage3Front2 = this.physics.add.image(2000, 2000,"nuage3").setOrigin(0, 0).setScale(0.25).setScrollFactor(0.45,0.6).setDepth(-0.25).setAlpha(0.75);
+        this.nuage3Front2 = this.physics.add.image(2000, 1200,"nuage3").setOrigin(0, 0).setScale(0.25).setScrollFactor(0.45,0.6).setDepth(-0.25).setAlpha(0.75);
         this.nuage3Front2.body.setVelocityX(-50);
-        this.nuage2Front = this.physics.add.image(3000, 1500,"nuage2").setOrigin(0, 0).setScale(0.25).setScrollFactor(0.45,0.6).setDepth(-0.25).setAlpha(0.75);
+        this.nuage2Front = this.physics.add.image(3000, 1000,"nuage2").setOrigin(0, 0).setScale(0.25).setScrollFactor(0.45,0.6).setDepth(-0.25).setAlpha(0.75);
         this.nuage2Front.body.setVelocityX(-40);
-        this.nuage1Front = this.physics.add.image(0, 1000,"nuage1").setOrigin(0, 0).setScale(0.25).setScrollFactor(0.45,0.6).setDepth(-0.25).setAlpha(0.75);
+        this.nuage1Front = this.physics.add.image(0, 800,"nuage1").setOrigin(0, 0).setScale(0.25).setScrollFactor(0.45,0.6).setDepth(-0.25).setAlpha(0.75);
         this.nuage1Front.body.setVelocityX(-35);
         
 
-        this.add.image(0, 0, "backLevel02").setOrigin(0, 0).setScale(1).setPipeline('Light2D');
+        //this.add.image(0, 0, "backLevel02").setOrigin(0, 0).setScale(1).setPipeline('Light2D');
 
         // Activation des lights
 
@@ -66,8 +66,8 @@ class Level02 extends Phaser.Scene {
         const vide = this.createVoid();
 
         //Création de l'aide skyglow
-        this.helpImage = this.add.image(1300,2000,"firstSkyglowHelp").setOrigin(0,0).setAlpha(0);
-        this.premierSkyglow = true;
+        //this.helpImage = this.add.image(1300,2000,"firstSkyglowHelp").setOrigin(0,0).setAlpha(0);
+        //this.premierSkyglow = true;
 
         //Creation skyglows
         this.skyglows = this.createSkyglow(layers.skyglows);
@@ -110,7 +110,7 @@ class Level02 extends Phaser.Scene {
         this.physics.world.setBoundsCollision(true, true, false, false);
 
         // Particules de Saut
-        this.jumpParticles = this.add.particles(this.player.x + 25,this.player.y - 5600,'jumpParticles', {
+        this.jumpParticles = this.add.particles(this.player.x + 32,this.player.y - 200,'jumpParticles', {
             emitZone:{
                 source : new Phaser.Geom.Rectangle(this.player.x - 260, this.player.y - 225, 210, 275),
                 type: "random",
@@ -127,11 +127,11 @@ class Level02 extends Phaser.Scene {
         this.jumpParticles.startFollow(this.player);
         
 
-        this.add.image(0, 0, "frontLevel02").setOrigin(0, 0).setScale(1).setDepth(2).setPipeline('Light2D');
+        //this.add.image(0, 0, "frontLevel02").setOrigin(0, 0).setScale(1).setDepth(2).setPipeline('Light2D');
         
         // Particules de Speed
 
-        this.speedParticles = this.add.particles(this.player.x + 25, this.player.y - 5700,'speedParticles', {
+        this.speedParticles = this.add.particles(this.player.x + 32,this.player.y - 250,'speedParticles', {
             emitZone:{
                 source : new Phaser.Geom.Rectangle(this.player.x - 260, this.player.y - 225, 210, 275),
                 type: "random",
@@ -151,7 +151,7 @@ class Level02 extends Phaser.Scene {
 
     //Creation de la map
     createMap() {
-        const map = this.make.tilemap({ key: "level02" });
+        const map = this.make.tilemap({ key: "level03" });
         map.addTilesetImage("placeholder", "tileset");
         return map;
     }
@@ -162,7 +162,7 @@ class Level02 extends Phaser.Scene {
         const layer_plateformes = map.createLayer("Plateformes", tileset);
         layer_plateformes.setScale(0.25);
         layer_plateformes.setPipeline('Light2D');
-        layer_plateformes.setAlpha(0);
+        //layer_plateformes.setAlpha(0);
         const spawn_end = map.getObjectLayer('Spawn_End');
         const skyglows = map.getObjectLayer('Skyglows');
         const kill = map.getObjectLayer('Kill');
@@ -416,4 +416,4 @@ class Level02 extends Phaser.Scene {
 
 }
 
-export default Level02;
+export default Level03;
