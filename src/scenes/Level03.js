@@ -49,9 +49,8 @@ class Level03 extends Phaser.Scene {
         this.nuage2Front.body.setVelocityX(-40);
         this.nuage1Front = this.physics.add.image(0, 800,"nuage1").setOrigin(0, 0).setScale(0.25).setScrollFactor(0.45,0.6).setDepth(-0.25).setAlpha(0.75);
         this.nuage1Front.body.setVelocityX(-35);
-        
 
-        //this.add.image(0, 0, "backLevel02").setOrigin(0, 0).setScale(1).setPipeline('Light2D');
+        this.add.image(0, 0, "backLevel03").setOrigin(0, 0).setScale(1).setPipeline('Light2D');
 
         // Activation des lights
 
@@ -64,10 +63,6 @@ class Level03 extends Phaser.Scene {
         const playerPoints = this.getPlayerPoints(layers.spawn_end);
         const endZone = this.createEnd(playerPoints.end); 
         const vide = this.createVoid();
-
-        //Création de l'aide skyglow
-        //this.helpImage = this.add.image(1300,2000,"firstSkyglowHelp").setOrigin(0,0).setAlpha(0);
-        //this.premierSkyglow = true;
 
         //Creation skyglows
         this.skyglows = this.createSkyglow(layers.skyglows);
@@ -127,7 +122,12 @@ class Level03 extends Phaser.Scene {
         this.jumpParticles.startFollow(this.player);
         
 
-        //this.add.image(0, 0, "frontLevel02").setOrigin(0, 0).setScale(1).setDepth(2).setPipeline('Light2D');
+        this.add.image(0, 0, "frontLevel03").setOrigin(0, 0).setScale(1).setDepth(2).setPipeline('Light2D');
+
+        //Création de l'aide skyglow
+        this.helpImage = this.add.image(1000,1525,"secondSkyglowHelp").setOrigin(0,0).setAlpha(0);
+        this.helpImage.setDepth(3);
+        this.premierSpeedSkyglow = true;
         
         // Particules de Speed
 
@@ -162,7 +162,7 @@ class Level03 extends Phaser.Scene {
         const layer_plateformes = map.createLayer("Plateformes", tileset);
         layer_plateformes.setScale(0.25);
         layer_plateformes.setPipeline('Light2D');
-        //layer_plateformes.setAlpha(0);
+        layer_plateformes.setAlpha(0);
         const spawn_end = map.getObjectLayer('Spawn_End');
         const skyglows = map.getObjectLayer('Skyglows');
         const kill = map.getObjectLayer('Kill');
@@ -243,8 +243,8 @@ class Level03 extends Phaser.Scene {
 
     getSkyglow(player,skyglow){
         
-        if(player.scene.premierSkyglow){
-            player.scene.premierSkyglow = false;
+        if(player.scene.premierSpeedSkyglow && skyglow.type == "speed"){
+            player.scene.premierSpeedSkyglow = false;
             player.scene.tweens.add({
                 targets: player.scene.helpImage,
                 alpha: 1,

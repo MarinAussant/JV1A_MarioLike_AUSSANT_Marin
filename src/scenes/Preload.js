@@ -12,6 +12,9 @@ class Preload extends Phaser.Scene {
         this.load.tilemapTiledJSON("level01", "levels/Level_01.json");
         this.load.tilemapTiledJSON("level02", "levels/Level_02.json");
         this.load.tilemapTiledJSON("level03", "levels/Level_03.json");
+        this.load.tilemapTiledJSON("level04", "levels/Level_04.json");
+        this.load.tilemapTiledJSON("level05", "levels/Level_05.json");
+        this.load.tilemapTiledJSON("level06", "levels/Level_06.json");
 
         //Tileset
         this.load.image("tileset", "assets/placeholder.png");
@@ -29,6 +32,7 @@ class Preload extends Phaser.Scene {
         //Help
         this.load.image("moveJumpHelp", "assets/levels/extra/firstHelp.png");
         this.load.image("firstSkyglowHelp", "assets/levels/extra/secondHelp.png");
+        this.load.image("secondSkyglowHelp", "assets/levels/extra/troisHelp.png");
 
         //Backs
         this.load.image("sky", "assets/levels/extra/sky.png");
@@ -44,6 +48,7 @@ class Preload extends Phaser.Scene {
         
         this.load.image("backLevel01", "assets/levels/Level_01_back.png");
         this.load.image("backLevel02", "assets/levels/Level_02_back.png");
+        this.load.image("backLevel03", "assets/levels/Level_03_back.png");
 
         //Fronts
         this.load.image("front", "assets/testLevelPlace.png");
@@ -51,6 +56,7 @@ class Preload extends Phaser.Scene {
 
         this.load.image("frontLevel01", "assets/levels/Level_01_front.png");
         this.load.image("frontLevel02", "assets/levels/Level_02_front.png");
+        this.load.image("frontLevel03", "assets/levels/Level_03_front.png");
 
         //Player
         this.load.spritesheet("idleSprite", "assets/anims/idleSprite3.png",
@@ -76,8 +82,8 @@ class Preload extends Phaser.Scene {
 
 
         //Falling Platform
-        this.load.spritesheet("falling", "assets/fallingPlatform.png",
-            { frameWidth: 768, frameHeight: 1024 });
+        this.load.spritesheet("falling", "assets/anims/fallingPlatform.png",
+            { frameWidth: 212, frameHeight: 276 });
 
     }
 

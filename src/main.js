@@ -24,12 +24,11 @@ import Menu from './scenes/Menu.js';
 
 import Level01 from './scenes/Level01.js';
 import Level02 from './scenes/Level02.js';
-
 import Level03 from './scenes/Level03.js';
-/*
 import Level04 from './scenes/Level04.js';
 import Level05 from './scenes/Level05.js';
 import Level06 from './scenes/Level06.js';
+/*
 import Level07 from './scenes/Level07.js';
 import Level08 from './scenes/Level08.js';
 */
@@ -52,7 +51,7 @@ const SHARED_CONFIG = {
   }
 }
 
-const Scenes = [PreloadScene, Menu, TestLevel, Level01, Level02, Level03];
+const Scenes = [PreloadScene, Menu, TestLevel, Level01, Level02, Level03, Level04, Level05, Level06];
 const createScene = Scene => new Scene(SHARED_CONFIG) //A voir
 const initScenes = () => Scenes.map(createScene) 
 
@@ -63,7 +62,7 @@ const config = {
   physics: {
     default: 'arcade',
     arcade: {
-        debug: true,
+        debug: false,
         tileBias: 128
     }
   },

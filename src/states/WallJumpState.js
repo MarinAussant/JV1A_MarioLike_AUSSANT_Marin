@@ -15,6 +15,7 @@ export default class WallJumpState extends State {
         // Son jump ?
         this.timeAtStartWallJump = getTimestamp();
         this.player.setVelocityY(-this.player.jumpSpeed);
+
         if (this.player.lastWallDirection == "right") {
             this.player.setVelocityX(-this.player.speed*1.1);
         }
@@ -67,13 +68,13 @@ export default class WallJumpState extends State {
 
         }
 
-        if ((dKey.isDown || this.player.inputPad.right) && this.player.lastWallDirection == "right"){
+        if ((dKey.isDown || this.player.inputPad.right) && this.player.lastWallDirection == "left"){
             if(this.player.canSpeedBoost){
                 this.player.canSpeedBoost = false;
                 this.player.activeSpeedRoutine();
             }
         }
-        else if ((qKey.isDown || this.player.inputPad.left) && this.player.lastWallDirection == "left"){
+        else if ((qKey.isDown || this.player.inputPad.left) && this.player.lastWallDirection == "right"){
             if(this.player.canSpeedBoost){
                 this.player.canSpeedBoost = false;
                 this.player.activeSpeedRoutine();
@@ -84,7 +85,7 @@ export default class WallJumpState extends State {
             this.player.setVelocityY(this.player.body.velocity.y + this.player.deceleration*4);
         }
 
-        if (this.player.body.velocity.y >= 0) {
+        if (this.player.body.velocity.y > 0) {
             this.player.setState("fall");
         }
         

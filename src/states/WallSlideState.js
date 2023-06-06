@@ -28,24 +28,22 @@ export default class WallSlideState extends State {
     const dKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
     const isSpaceJustDown = Phaser.Input.Keyboard.JustDown(this.cursors.space);
 
-    if (this.player.body.blocked.right) {
-      this.player.lastWallDirection = "right";
-    }
-
-    if (this.player.body.blocked.left) {
-      this.player.lastWallDirection = "left";
-    }
+    
 
     // SI LE JOUEUR SAUT EN ETAT SUR LE MUR ALORS WALLJUMP
     if ((isSpaceJustDown || this.player.inputPad.aOnce) || getTimestamp() - this.player.lastJumpBufferTime < this.player.jumpBufferTime) {
+      if(this.player.canSpeedBoost){
+        this.player.canSpeedBoost = false;
+        this.player.activeSpeedRoutine();
+      }
       if(this.player.canJumpBoost){
         this.player.canJumpBoost = false;
         this.player.activeJumpRoutine();
         this.player.setState("wallBoostJump");
-    }
-    else{
-        this.player.setState("wallJump");
-    }
+      }
+      else{
+          this.player.setState("wallJump");
+      }
     }
 
     if (this.player.body.velocity.y >= 0) {

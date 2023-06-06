@@ -15,6 +15,11 @@ class FallingPlatform extends Phaser.Physics.Arcade.Sprite{
 
     init(){
         this.gravity = 2000; 
+
+        this.setScale(0.96);
+        this.body.setSize(190,260);
+        this.body.setOffset(11,2);
+
         //this.setImmovable(true); 
         this.beenActive = false; 
         this.onAir = false;
@@ -41,7 +46,7 @@ class FallingPlatform extends Phaser.Physics.Arcade.Sprite{
             }
         }
 
-        if (this.body.blocked.down){
+        if (this.body.blocked.down || this.y > this.scene.MAP_HEIGHT + 1000){
             this.setInactive();
         }
 
@@ -51,7 +56,7 @@ class FallingPlatform extends Phaser.Physics.Arcade.Sprite{
         if (!this.beenActive){
             this.beenActive = true;
             this.scene.cameras.main.shake(350, .0010, true);
-            this.scene.time.delayedCall(300, () => {
+            this.scene.time.delayedCall(400, () => {
                 this.body.allowGravity = true; 
                 this.onAir = true;
             }, this);
@@ -62,12 +67,13 @@ class FallingPlatform extends Phaser.Physics.Arcade.Sprite{
     setInactive(){
         this.scene.cameras.main.shake(100, .0020, true);
         this.onAir = false;
-        this.body.setVelocityY(0);
         this.body.allowGravity = false;
+        this.body.setVelocityY(0);
+        
     }
 
     reset(){
-        this.body.allowGravity = false; 
+        this.setInactive();
         this.active = false;
         this.beenActive = false; 
 

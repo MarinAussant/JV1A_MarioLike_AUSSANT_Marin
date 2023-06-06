@@ -172,6 +172,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     setState(stateName) {
+
         if (this.currentState) {
             this.currentState.exit();
             this.lastState = this.currentState.name;
@@ -199,7 +200,17 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
         else if(this.body.velocity.x < -20){
             this.flipX = true;
-        }   
+        }
+
+        // Gestion last wall
+
+        if (this.body.blocked.right) {
+            this.lastWallDirection = "right";
+        }
+      
+        if (this.body.blocked.left) {
+            this.lastWallDirection = "left";
+        }
 
         // gestion des lights
 
