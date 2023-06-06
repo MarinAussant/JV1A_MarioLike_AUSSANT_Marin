@@ -14,6 +14,9 @@ class FallingPlatform extends Phaser.Physics.Arcade.Sprite{
     }
 
     init(){
+
+        this.setPipeline('Light2D')
+
         this.gravity = 2000; 
 
         this.setScale(0.96);

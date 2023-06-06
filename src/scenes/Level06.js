@@ -29,12 +29,13 @@ class Level06 extends Phaser.Scene {
 
         // Chargement des backgrounds + parralax
         for (let i = -300; i < this.MAP_WIDTH; i += (5263/4)*3){
-            this.add.image(i,4500 - this.MAP_HEIGHT,"sky").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.25,0.25).setDepth(-1);
-            this.add.image(i,4500 - this.MAP_HEIGHT,"backgroundBackground").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.25,0.25).setDepth(-0.5);
-            this.add.image(i,4500 - this.MAP_HEIGHT,"filtre").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.25,0.25).setAlpha(0.25).setDepth(-0.5);
-            this.add.image(i,4500 - this.MAP_HEIGHT,"background").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.45,0.6).setDepth(-0.20);
-            this.add.image(i,4500 - this.MAP_HEIGHT,"filtre").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.45,0.6).setAlpha(0.1).setDepth(-0.20);
+            this.add.image(i,4900 - this.MAP_HEIGHT,"sky").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.25,0.25).setDepth(-1);
+            this.add.image(i,4900 - this.MAP_HEIGHT,"backgroundBackground").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.25,0.25).setDepth(-0.5);
+            this.add.image(i,4900 - this.MAP_HEIGHT,"filtre").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.25,0.25).setAlpha(0.25).setDepth(-0.5);
+            this.add.image(i,5700 - this.MAP_HEIGHT,"background").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.45,0.6).setDepth(-0.20);
+            this.add.image(i,5700 - this.MAP_HEIGHT,"filtre").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.45,0.6).setAlpha(0.1).setDepth(-0.20);
         }
+            this.add.image(-300, 2700 - this.MAP_HEIGHT,"filtre").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.45,0.6).setAlpha(0.1).setDepth(-0.20);
 
         // Chargement des nuages
         this.nuage1Back = this.physics.add.image(3000, 300,"nuage1").setOrigin(0, 0).setScale(0.75).setScrollFactor(0.25,0.25).setDepth(-0.75).setAlpha(0.5);
@@ -51,7 +52,7 @@ class Level06 extends Phaser.Scene {
         this.nuage1Front.body.setVelocityX(-35);
         
 
-        //this.add.image(0, 0, "backLevel02").setOrigin(0, 0).setScale(1).setPipeline('Light2D');
+        this.add.image(0, 0, "backLevel06").setOrigin(0, 0).setScale(1).setPipeline('Light2D');
 
         // Activation des lights
 
@@ -106,7 +107,7 @@ class Level06 extends Phaser.Scene {
         this.physics.world.setBoundsCollision(true, true, false, false);
 
         // Particules de Saut
-        this.jumpParticles = this.add.particles(this.player.x + 32,this.player.y -1400,'jumpParticles', {
+        this.jumpParticles = this.add.particles(this.player.x + 32,this.player.y -8950,'jumpParticles', {
             emitZone:{
                 source : new Phaser.Geom.Rectangle(this.player.x - 260, this.player.y - 225, 210, 275),
                 type: "random",
@@ -123,11 +124,11 @@ class Level06 extends Phaser.Scene {
         this.jumpParticles.startFollow(this.player);
         
 
-        //this.add.image(0, 0, "frontLevel02").setOrigin(0, 0).setScale(1).setDepth(2).setPipeline('Light2D');
+        this.add.image(0, 0, "frontLevel06").setOrigin(0, 0).setScale(1).setDepth(2).setPipeline('Light2D');
         
         // Particules de Speed
 
-        this.speedParticles = this.add.particles(this.player.x + 32,this.player.y - 1500,'speedParticles', {
+        this.speedParticles = this.add.particles(this.player.x + 32,this.player.y - 8950,'speedParticles', {
             emitZone:{
                 source : new Phaser.Geom.Rectangle(this.player.x - 260, this.player.y - 225, 210, 275),
                 type: "random",
@@ -158,7 +159,7 @@ class Level06 extends Phaser.Scene {
         const layer_plateformes = map.createLayer("Plateformes", tileset);
         layer_plateformes.setScale(0.25);
         layer_plateformes.setPipeline('Light2D');
-        //layer_plateformes.setAlpha(0);
+        layer_plateformes.setAlpha(0);
         const spawn_end = map.getObjectLayer('Spawn_End');
         const skyglows = map.getObjectLayer('Skyglows');
         const kill = map.getObjectLayer('Kill');

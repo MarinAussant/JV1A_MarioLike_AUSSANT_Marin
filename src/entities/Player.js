@@ -368,7 +368,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     activeSpeedRoutine(){
         
-        this.scene.speedParticles.speedX = 1000 * Math.sign(this.body.velocity.x);
+        this.scene.speedParticles.speedX = 500 * Math.sign(this.body.velocity.x);
         if(this.body.velocity.x < 0 ){this.scene.speedParticles.particleRotate = 180;}
         else{this.scene.speedParticles.particleRotate = 0;}
         this.scene.speedParticles.start();

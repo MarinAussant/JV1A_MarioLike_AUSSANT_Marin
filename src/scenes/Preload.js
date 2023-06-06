@@ -49,6 +49,9 @@ class Preload extends Phaser.Scene {
         this.load.image("backLevel01", "assets/levels/Level_01_back.png");
         this.load.image("backLevel02", "assets/levels/Level_02_back.png");
         this.load.image("backLevel03", "assets/levels/Level_03_back.png");
+        this.load.image("backLevel04", "assets/levels/Level_04_back.png");
+        this.load.image("backLevel05", "assets/levels/Level_05_back.png");
+        this.load.image("backLevel06", "assets/levels/Level_06_back.png");
 
         //Fronts
         this.load.image("front", "assets/testLevelPlace.png");
@@ -57,6 +60,9 @@ class Preload extends Phaser.Scene {
         this.load.image("frontLevel01", "assets/levels/Level_01_front.png");
         this.load.image("frontLevel02", "assets/levels/Level_02_front.png");
         this.load.image("frontLevel03", "assets/levels/Level_03_front.png");
+        this.load.image("frontLevel04", "assets/levels/Level_04_front.png");
+        this.load.image("frontLevel05", "assets/levels/Level_05_front.png");
+        this.load.image("frontLevel06", "assets/levels/Level_06_front.png");
 
         //Player
         this.load.spritesheet("idleSprite", "assets/anims/idleSprite3.png",
