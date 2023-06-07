@@ -34,6 +34,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.playerLightDown = this.scene.lights.addLight(this.x, this.y+120, 1200, 0xd5bc70, 0.20);
 
         this.isOnFloor;
+        this.canMove = true;
 
         this.gravity = 2000;
         this.speed = 400;
@@ -237,6 +238,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 const jumpSkyglow = this.listeSkyglow.find(skyglow => skyglow.type == "jump");
 
                 if (jumpSkyglow){
+
+                    this.skyglowActiveSound = this.scene.sound.add('skyglowActive').setVolume(0.01);
+                    this.skyglowActiveSound.play({ loop: false });
+
                     this.scene.jumpParticles.start();
                     this.canJumpBoost = true;
                     jumpSkyglow.skyglowLight.setVisible(true);
@@ -252,7 +257,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             
             const speedSkyglow = this.listeSkyglow.find(skyglow => skyglow.type == "speed");
 
-            if (speedSkyglow){    
+            if (speedSkyglow){  
+
+                this.skyglowActiveSound = this.scene.sound.add('skyglowActive').setVolume(0.01);
+                this.skyglowActiveSound.play({ loop: false });
 
                 this.canSpeedBoost = true;
                 speedSkyglow.skyglowLight.setVisible(true);
@@ -269,7 +277,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         // Gestion States
 
-        if (this.currentState) {
+        if (this.currentState && this.canMove) {
             this.currentState.update(); // Mettre à jour l'état actuel
         }
 
@@ -367,7 +375,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     activeSpeedRoutine(){
-        
+
         this.scene.speedParticles.speedX = 500 * Math.sign(this.body.velocity.x);
         if(this.body.velocity.x < 0 ){this.scene.speedParticles.particleRotate = 180;}
         else{this.scene.speedParticles.particleRotate = 0;}

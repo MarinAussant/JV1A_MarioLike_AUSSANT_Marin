@@ -12,12 +12,14 @@ export default class RunState extends State {
         // code pour entrer dans l'état "idle"
         // Jouer animation idle
         this.player.anims.play("run", true);
-        // Son idle ?
+        this.runSound = this.scene.sound.add('footstep').setVolume(0.02);
+        this.runSound.play({ loop: true });
+        
         // Décélaration ?
     }
 
     exit() {
-        // code pour sortir de l'état "idle"
+        this.runSound.stop();
     }
 
     update() {

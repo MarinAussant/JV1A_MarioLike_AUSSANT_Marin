@@ -1,4 +1,4 @@
-
+import Player from "../entities/Player.js";
 class Menu extends Phaser.Scene {
 
     constructor(config) {
@@ -18,6 +18,14 @@ class Menu extends Phaser.Scene {
         this.SCREEN_HEIGHT = this.config.height;
         this.zoom = this.config.zoomFactor;
         this.sceneName = this.add.systems.config;
+
+        this.player = new Player(this, 1000, 0);
+        this.player.setSize(250, 550).setOffset(375,630);
+        this.player.setDepth(-2);
+        if(this.gamepad){
+            this.player.gamepadEventConnect();
+        }
+        this.physics.world.setBounds(0, 0, this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
 
         // Chargement des backgrounds + parralax
         
@@ -151,7 +159,16 @@ class Menu extends Phaser.Scene {
 
             this.cameras.main.fadeOut(1100, 34, 27, 29);
             this.time.delayedCall(1200, () => {
-				this.scene.start("Level_01");
+
+                let haveGamepad = false;
+                if(this.player.gamepad){
+                    haveGamepad = true;
+                }
+                else{
+                    haveGamepad = false;
+                }
+
+				this.scene.start("Level_01",{gamepad : haveGamepad});
             })
             
         });

@@ -149,10 +149,16 @@ class Level01 extends Phaser.Scene {
 
 
         // Création de la musique
-        this.mainTheme = this.sound.add('mainTheme');
+        this.mainTheme = this.sound.add('mainTheme').setVolume(0.08);
 
         // Lecture de la musique en boucle
         this.mainTheme.play({ loop: true });
+
+        this.foretSound = this.sound.add('foret').setVolume(0.3);
+        this.foretSound.play({ loop: true });
+
+        this.oiseauxSound = this.sound.add('oiseaux').setVolume(0.5);
+        this.oiseauxSound.play({ loop: true });
 
     }
 
@@ -201,6 +207,8 @@ class Level01 extends Phaser.Scene {
     }
 
     endLevel(player, endPoint){ 
+
+        player.states["run"].runSound.stop();
 
         let haveGamepad = false;
         if(player.gamepad){
@@ -302,8 +310,6 @@ class Level01 extends Phaser.Scene {
         })
 
         return groupKill;
-
-        //TODO GERER L'APPARITION DES ZONE DE KILL GRACE AU CALQUE OBJECT (EN GERANT LA ROTATION)
 
     }
 

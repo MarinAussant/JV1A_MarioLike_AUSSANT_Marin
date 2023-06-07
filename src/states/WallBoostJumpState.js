@@ -12,7 +12,8 @@ export default class WallBoostJumpState extends State {
         // code pour entrer dans l'état "saut"
         // Jouer animation idle
         this.player.anims.play("boostJump", false);
-        // Son jump ?
+        this.jumpSound = this.scene.sound.add('jump').setVolume(0.02);
+        this.jumpSound.play({ loop: false });
         this.timeAtStartWallJump = getTimestamp();
         this.player.setVelocityY(-this.player.boostJumpSpeed);
         if (this.player.lastWallDirection == "right") {

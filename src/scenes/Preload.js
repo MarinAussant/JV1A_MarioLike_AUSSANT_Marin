@@ -15,6 +15,7 @@ class Preload extends Phaser.Scene {
         this.load.tilemapTiledJSON("level04", "levels/Level_04.json");
         this.load.tilemapTiledJSON("level05", "levels/Level_05.json");
         this.load.tilemapTiledJSON("level06", "levels/Level_06.json");
+        this.load.tilemapTiledJSON("level07", "levels/Level_07.json");
 
         //Tileset
         this.load.image("tileset", "assets/placeholder.png");
@@ -52,6 +53,7 @@ class Preload extends Phaser.Scene {
         this.load.image("backLevel04", "assets/levels/Level_04_back.png");
         this.load.image("backLevel05", "assets/levels/Level_05_back.png");
         this.load.image("backLevel06", "assets/levels/Level_06_back.png");
+        this.load.image("backLevel07", "assets/levels/Level_07_back.png");
 
         //Fronts
         this.load.image("front", "assets/testLevelPlace.png");
@@ -63,6 +65,7 @@ class Preload extends Phaser.Scene {
         this.load.image("frontLevel04", "assets/levels/Level_04_front.png");
         this.load.image("frontLevel05", "assets/levels/Level_05_front.png");
         this.load.image("frontLevel06", "assets/levels/Level_06_front.png");
+        this.load.image("frontLevel07", "assets/levels/Level_07_front.png");
 
         //Player
         this.load.spritesheet("idleSprite", "assets/anims/idleSprite3.png",
@@ -95,6 +98,12 @@ class Preload extends Phaser.Scene {
         //Music and Sound
         this.load.audio('menuTheme', 'assets/sounds/menu.mp3');
         this.load.audio('mainTheme', 'assets/sounds/mainTheme.mp3');
+        this.load.audio('oiseaux', 'assets/sounds/oiseaux.mp3');
+        this.load.audio('foret', 'assets/sounds/foret.mp3');
+        this.load.audio('footstep', 'assets/sounds/pas.mp3');
+        this.load.audio('jump', 'assets/sounds/jump.mp3');
+        this.load.audio('skyglow', 'assets/sounds/skyglow.mp3');
+        this.load.audio('skyglowActive', 'assets/sounds/skyglowActive.mp3');
 
     }
 

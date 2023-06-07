@@ -197,6 +197,8 @@ class Level02 extends Phaser.Scene {
 
     endLevel(player, endPoint){ 
 
+        player.states["run"].runSound.stop();
+
         let haveGamepad = false;
         if(player.gamepad){
             haveGamepad = true;
