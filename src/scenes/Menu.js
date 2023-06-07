@@ -12,6 +12,8 @@ class Menu extends Phaser.Scene {
 
     create() {
 
+        this.cameras.main.fadeIn(7000, 34, 27, 29);
+
         this.SCREEN_WIDTH = this.config.width;
         this.SCREEN_HEIGHT = this.config.height;
         this.zoom = this.config.zoomFactor;
@@ -137,8 +139,18 @@ class Menu extends Phaser.Scene {
 
         this.playButton.on('pointerup', () => {
 
-            this.cameras.main.fadeOut(1000, 34, 27, 29);
-            this.time.delayedCall(1000, () => {
+            this.tweens.add({
+                targets: this.menuTheme,
+                volume: 0,
+                duration: 1000, // Durée du fondu en millisecondes
+                onComplete: () => {
+                  // Une fois le fondu terminé, arrêter la musique
+                  this.menuTheme.stop();
+                }
+              });
+
+            this.cameras.main.fadeOut(1100, 34, 27, 29);
+            this.time.delayedCall(1200, () => {
 				this.scene.start("Level_01");
             })
             
@@ -146,8 +158,18 @@ class Menu extends Phaser.Scene {
 
         this.quitButton.on('pointerup', () => {
 
-            this.cameras.main.fadeOut(1000, 34, 27, 29);
-            this.time.delayedCall(1000, () => {
+            this.tweens.add({
+                targets: this.menuTheme,
+                volume: 0,
+                duration: 1000, // Durée du fondu en millisecondes
+                onComplete: () => {
+                  // Une fois le fondu terminé, arrêter la musique
+                  this.menuTheme.stop();
+                }
+              });
+
+            this.cameras.main.fadeOut(1100, 34, 27, 29);
+            this.time.delayedCall(1200, () => {
 				this.game.destroy();
             })
             
@@ -168,6 +190,13 @@ class Menu extends Phaser.Scene {
             this.cameras.main.scrollX += deltaX * sensitivity;
             this.cameras.main.scrollY += deltaY * sensitivity;
           });
+
+
+        // Création de la musique
+        this.menuTheme = this.sound.add('menuTheme');
+
+        // Lecture de la musique en boucle
+        this.menuTheme.play({ loop: true });
         
     }
 

@@ -147,6 +147,13 @@ class Level01 extends Phaser.Scene {
         this.speedParticles.setDepth(0);
         this.speedParticles.startFollow(this.player);
 
+
+        // Création de la musique
+        this.mainTheme = this.sound.add('mainTheme');
+
+        // Lecture de la musique en boucle
+        this.mainTheme.play({ loop: true });
+
     }
 
     //Creation de la map

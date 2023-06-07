@@ -91,6 +91,11 @@ class Preload extends Phaser.Scene {
         this.load.spritesheet("falling", "assets/anims/fallingPlatform.png",
             { frameWidth: 212, frameHeight: 276 });
 
+        
+        //Music and Sound
+        this.load.audio('menuTheme', 'assets/sounds/menu.mp3');
+        this.load.audio('mainTheme', 'assets/sounds/mainTheme.mp3');
+
     }
 
     create() {
